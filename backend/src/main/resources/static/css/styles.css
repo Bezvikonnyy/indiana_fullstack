@@ -1,0 +1,208 @@
+/* Установка высоты страницы и гибкой структуры */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* общий стиль */
+section {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* только для auth-страниц — логин, регистрация */
+main.auth section {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-link {
+    color: white; /* всегда видны */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.header-link:hover {
+    color: blue; /* при наведении синие */
+}
+
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select,
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #007BFF;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 40px;
+    flex-shrink: 0;
+}
+
+/* Ошибки */
+.error-message {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Контейнер категорий */
+.categories {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Категория */
+.category-item h3 {
+    margin: 0 0 10px 0;
+    text-align: left;
+}
+
+/* Ряд игр */
+.games-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+/* Карточка игры */
+.game-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 180px;
+    flex: 0 0 auto;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Картинка */
+.game-image {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Название игры */
+.game-title {
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.game-title:hover {
+    color: #007BFF;
+}
+
+.add-game-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* зелёная */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-bottom: 15px;
+}
+
+.add-game-button:hover {
+    background-color: #45a049;
+}
+

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultCategoryService implements CategoryService{
+public class CRUDCategoryServiceImpl implements CRUDCategoryService{
 
     private final CategoryRepository categoryRepository;
 

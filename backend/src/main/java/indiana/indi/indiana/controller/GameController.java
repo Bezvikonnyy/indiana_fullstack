@@ -3,8 +3,8 @@ package indiana.indi.indiana.controller;
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
 import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.service.categories.CategoryService;
-import indiana.indi.indiana.service.game.GameService;
+import indiana.indi.indiana.service.categories.CRUDCategoryServiceImpl;
+import indiana.indi.indiana.service.game.CRUDGameServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ import java.util.NoSuchElementException;
 @RequestMapping("/game")
 public class GameController {
 
-    private final GameService gameService;
+    private final CRUDGameServiceImpl gameService;
 
-    private final CategoryService categoryService;
+    private final CRUDCategoryServiceImpl categoryService;
 
     private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
 

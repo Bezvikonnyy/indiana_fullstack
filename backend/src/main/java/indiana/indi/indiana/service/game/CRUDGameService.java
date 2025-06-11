@@ -7,7 +7,7 @@ import indiana.indi.indiana.entity.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface GameService {
+public interface CRUDGameService {
 
     Iterable<Game> findAllGames(String filter);
 

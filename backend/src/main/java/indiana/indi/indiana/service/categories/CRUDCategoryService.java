@@ -5,7 +5,7 @@ import indiana.indi.indiana.entity.Category;
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryService {
+public interface CRUDCategoryService {
 
     Iterable<Category> findAllCategory(String filter);
 

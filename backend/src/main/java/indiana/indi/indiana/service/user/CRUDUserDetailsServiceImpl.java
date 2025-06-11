@@ -5,23 +5,19 @@ import indiana.indi.indiana.dto.RoleDto;
 import indiana.indi.indiana.dto.UserDto;
 import indiana.indi.indiana.entity.Role;
 import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.repository.RoleRepository;
 import indiana.indi.indiana.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultUserDetailsService implements UserDetailsService{
+public class CRUDUserDetailsServiceImpl implements CRUDUserDetailsService{
 
     private final UserRepository userRepository;
 

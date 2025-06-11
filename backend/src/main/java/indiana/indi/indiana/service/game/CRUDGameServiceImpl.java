@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultGameService implements GameService {
+public class CRUDGameServiceImpl implements CRUDGameService {
 
     private final GameRepository gameRepository;
     private final CategoryRepository categoryRepository;

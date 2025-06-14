@@ -1,35 +1,33 @@
 package indiana.indi.indiana.service.game;
 
-import indiana.indi.indiana.entity.Comment;
+import indiana.indi.indiana.controller.payload.EditGamePayload;
+import indiana.indi.indiana.controller.payload.NewGamePayload;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.service.user.CustomUserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 public interface CRUDGameService {
 
-    Iterable<Game> findAllGames(String filter);
-
     Game createGame(
-            String title,
-            String details,
-            String imageUrl,
-            String gameFileUrl,
-            List<Long> categoryId,
-            List<Comment> comments,
+            NewGamePayload payload,
+            MultipartFile imageFile,
+            MultipartFile gaveFile,
             User author);
 
     Optional<Game> findGame(Long gameId);
 
-    void editGame(
+    Game editGame(
             Long id,
-            String title,
-            String details,
-            String imageUrl,
-            String gameFileUrl,
-            List<Long> categoryId
-    );
+            EditGamePayload payload,
+            MultipartFile imageFile,
+            MultipartFile gameFile,
+            CustomUserDetails userDetails
+    ) throws IOException;
 
-    void deleteGame(Long id);
+    void deleteGame(Long id,CustomUserDetails userDetails);
 }

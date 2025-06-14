@@ -5,6 +5,7 @@ import indiana.indi.indiana.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,6 +21,13 @@ public class CustomUserDetails implements UserDetails {
     public User getUser() {
         return user;
     }
+
+
+    public boolean isAdmin() {
+        return getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+    }
+
 
     @Override
     public String getUsername(){

@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/game")
+@RequestMapping("/api/game")
 public class GameController {
 
     private final CRUDGameServiceImpl crudGameService;
@@ -82,7 +82,7 @@ public class GameController {
         return ResponseEntity.ok(updateGame);
     }
 
-    @DeleteMapping("/{gameId}")
+    @DeleteMapping("/delete/{gameId}")
     public ResponseEntity<Void> deleteGame(
             @PathVariable("gameId") Long gameId,
             @AuthenticationPrincipal CustomUserDetails userDetails

@@ -23,3 +23,7 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/, file:./uploads/
+
+  jwt:
+    secret: "h38*Gdf69Y$#fR9N%58K3FTel:9iF$%&"
+    expiration: 3600000

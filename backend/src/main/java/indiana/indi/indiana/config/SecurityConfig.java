@@ -6,16 +6,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -28,42 +29,26 @@ public class SecurityConfig {
     }
 
     @Bean
-    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
-        return new GrantedAuthorityDefaults(""); // отключает "ROLE_" префикс
-    }
-
-    @Bean
-    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new HiddenHttpMethodFilter();
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/user/login",
-                                "/user/registration",
-                                "/home",
-                                "/game/*",
+                                "/api/user/login",
+                                "/api/user/registration",
+                                "/api/home",
+                                "/api/game",
+                                "/api/game/*",
                                 "/css/**",
                                 "/js/**")
                         .permitAll()
-                        .requestMatchers("/user/edit_profile/**")
-                        .hasAnyRole("Пользователь", "Автор", "Администратор")
-                        .requestMatchers("/game/delete/**", "/game/edit/**")
-                        .hasAnyRole("Автор", "Администратор")
-                        .anyRequest().authenticated() // всё остальное требует входа
+                        .requestMatchers("/api/user/edit_profile", "/api/user/delete_profile")
+                        .hasAnyRole("USER", "AUTHOR", "ADMIN")
+                        .requestMatchers("/api/game/delete/*", "/api/game/edit/**", "/api/game/new_game")
+                        .hasAnyRole("AUTHOR", "ADMIN")
+                        .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/user/login")           // Стандартная страница логина
-                        .loginProcessingUrl("/login")  // Стандартный путь для обработки POST-запроса
-                        .defaultSuccessUrl("/home", true)   // После успешного входа перенаправление на главную
-                        .failureUrl("/user/login?error=true") // В случае ошибки авторизации
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/user/login")  // Страница для логаута
-                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

@@ -25,19 +25,19 @@ public class CRUDUserDetailsServiceImpl implements CRUDUserDetailsService{
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(roles);
-        return this.userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public User editUser(Long id, String username, String password, Set<Role> roles) throws UsernameNotFoundException{
-        return this.userRepository.findById(id).map(
+        return userRepository.findById(id).map(
                 user -> {
                     user.setUsername(username);
                     user.setPassword(passwordEncoder.encode(password));
                     user.setRoles(roles);
 
                     return userRepository.save(user);
-                }).orElseThrow(() -> new UsernameNotFoundException("User not found!" + id));
+                }).orElseThrow(() -> new UsernameNotFoundException("User with id: " + id + " not found!"));
     }
 
     @Override
@@ -49,9 +49,9 @@ public class CRUDUserDetailsServiceImpl implements CRUDUserDetailsService{
     @Override
     public void deleteUser(Long id) throws UsernameNotFoundException {
         if (!userRepository.existsById(id)) {
-            throw new UsernameNotFoundException("User with id " + id + " not found");
+            throw new UsernameNotFoundException("User with id: " + id + " not found");
         }
-        this.userRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -60,5 +60,4 @@ public class CRUDUserDetailsServiceImpl implements CRUDUserDetailsService{
                 .map(CustomUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
 }

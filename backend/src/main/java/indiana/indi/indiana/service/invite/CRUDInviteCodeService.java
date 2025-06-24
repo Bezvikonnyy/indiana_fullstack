@@ -44,7 +44,7 @@ public class CRUDInviteCodeService implements CRUDInviteCodeInterfaceService{
     @Override
     public void deleteInviteCodeByCode(String code) {
         InviteCode invite = this.repository.findByCode(code)
-                .orElseThrow(() -> new EntityNotFoundException("Инвайт код не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Invite code not found!"));
         repository.delete(invite);
     }
 }

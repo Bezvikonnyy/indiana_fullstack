@@ -2,11 +2,11 @@ package indiana.indi.indiana.service.categories;
 
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.repository.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +25,9 @@ public class CRUDCategoryServiceImpl implements CRUDCategoryService{
     }
 
     @Override
-    public Optional<Category> findById(Long id) {
-        return categoryRepository.findById(id);
+    public Category findById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
     }
 
     @Override
@@ -36,6 +37,10 @@ public class CRUDCategoryServiceImpl implements CRUDCategoryService{
 
     @Override
     public void deleteById(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException("Category not found with id: " + id);
+        }
         categoryRepository.deleteById(id);
     }
+
 }

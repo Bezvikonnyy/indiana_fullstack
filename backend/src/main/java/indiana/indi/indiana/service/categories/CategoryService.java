@@ -2,6 +2,7 @@ package indiana.indi.indiana.service.categories;
 
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.repository.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAllById(categoryId);
 
         if(categories.size() != categoryId.size()){
-            throw  new RuntimeException("Category not found!");
+            throw  new EntityNotFoundException("Category not found!");
         }
         return categories;
     }

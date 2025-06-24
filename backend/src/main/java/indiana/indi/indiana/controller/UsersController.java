@@ -26,28 +26,25 @@ public class UsersController {
     private final RegisterUserService registerUserService;
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDto> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        User user = userDetails.getUser();
-        UserDto dto = userMapper.toDto(user);
-        return ResponseEntity.ok(dto);
+    public UserDto getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userMapper.toDto(userDetails.getUser());
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<UserDto> registerUser (@Valid @RequestBody NewUsersPayload payload) {
+    public UserDto registerUser (@Valid @RequestBody NewUsersPayload payload) {
         int id = registerUserService.searchRole(payload.roleId(), payload.inviteCode());
         User user = registerUserService.saveUserRole(id, payload.username(), payload.password());
         registerUserService.requestAuthor(payload.roleId(), user);
-        UserDto dto = userMapper.toDto(user);
-        return ResponseEntity.ok(dto);
+        return userMapper.toDto(user);
     }
 
     @PutMapping("/edit_profile")
-    public ResponseEntity<UserDto> editProfile(@Valid @RequestBody EditUsersPayload payload,
+    public UserDto editProfile(@Valid @RequestBody EditUsersPayload payload,
                                                @AuthenticationPrincipal CustomUserDetails userDetails) {
         User user = userDetails.getUser();
         User editUser = userDetailsService.editUser(
                 user.getId(), payload.username(), payload.password(), userDetails.getUser().getRoles());
-        return ResponseEntity.ok(userMapper.toDto(editUser));
+        return userMapper.toDto(editUser);
     }
 
     @DeleteMapping("/delete_profile")

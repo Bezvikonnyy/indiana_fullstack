@@ -8,28 +8,24 @@ import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.repository.GameRepository;
 import indiana.indi.indiana.service.categories.CategoryService;
 import indiana.indi.indiana.service.user.CustomUserDetails;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.access.AccessDeniedException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CRUDGameServiceImpl implements CRUDGameService {
 
     private final GameRepository gameRepository;
-
     private final CategoryService categoryService;
-
     private final FileService fileService;
-
 
     @Override
     @Transactional
@@ -39,31 +35,35 @@ public class CRUDGameServiceImpl implements CRUDGameService {
             MultipartFile gameFile,
             User author
     ) {
+        String imageFileUrl;
+        String gameFileUrl;
+
         try {
-            String imageFileUrl = fileService.saveFile(imageFile, "imageFile");
-            String gameFileUrl = fileService.saveFile(gameFile, "gameFile");
-
-            List<Category> categories = categoryService.validCategoryByGame(payload.categoryId());
-
-            Game game = Game.builder()
-                    .title(payload.title())
-                    .details(payload.details())
-                    .imageUrl(imageFileUrl)
-                    .gameFileUrl(gameFileUrl)
-                    .categories(categories)
-                    .author(author)
-                    .build();
-
-            return gameRepository.save(game);
+            imageFileUrl = fileService.saveFile(imageFile, "imageFile");
+            gameFileUrl = fileService.saveFile(gameFile, "gameFile");
         } catch (IOException e) {
             throw new RuntimeException("Ошибка при сохранении файлов", e);
         }
+
+        List<Category> categories = categoryService.validCategoryByGame(payload.categoryId());
+
+        Game game = Game.builder()
+                .title(payload.title())
+                .details(payload.details())
+                .imageUrl(imageFileUrl)
+                .gameFileUrl(gameFileUrl)
+                .categories(categories)
+                .author(author)
+                .build();
+
+        return gameRepository.save(game);
     }
 
-
-
     @Override
-    public Optional<Game> findGame(Long gameId) { return this.gameRepository.findById(gameId);}
+    public Game findGame(Long gameId) {
+        return gameRepository.findById(gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Игра с ID " + gameId + " не найдена"));
+    }
 
     @Override
     @Transactional
@@ -73,35 +73,36 @@ public class CRUDGameServiceImpl implements CRUDGameService {
             MultipartFile imageFile,
             MultipartFile gameFile,
             CustomUserDetails userDetails
-    ) throws IOException {
+    ) {
+        Game existingGame = findGame(id);
+
+        boolean isAdmin = userDetails.isAdmin();
+        boolean isAuthor = Objects.equals(existingGame.getAuthor().getId(), userDetails.getId());
+
+        if (!isAuthor && !isAdmin) {
+            throw new AccessDeniedException("Вы не являетесь автором этой игры и не администратор");
+        }
+
         List<Category> categories = categoryService.validCategoryByGame(payload.categoryId());
 
-        Game existingGame = findGame(id)
-                .orElseThrow(() -> new NoSuchElementException("game.not_found"));
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                fileService.deleteFileIfExists(existingGame.getImageUrl());
+                String newImageFileUrl = fileService.saveFile(imageFile, "imageFile");
+                existingGame.setImageUrl(newImageFileUrl);
+            }
 
-        boolean admin = userDetails.isAdmin();
-
-        if (!Objects.equals(existingGame.getAuthor().getId(), userDetails.getId()) && !admin) {
-            throw new AccessDeniedException("Вы не являетесь автором этой игры и не администратор!");
-        }
-
-        String imageFileUrl = existingGame.getImageUrl();
-        String gameFileUrl = existingGame.getGameFileUrl();
-
-        if (imageFile != null && !imageFile.isEmpty()) {
-            fileService.deleteFileIfExists(imageFileUrl); // Удаляем старый файл
-            imageFileUrl = fileService.saveFile(imageFile, "imageFile");
-        }
-
-        if (gameFile != null && !gameFile.isEmpty()) {
-            fileService.deleteFileIfExists(gameFileUrl); // Удаляем старый файл
-            gameFileUrl = fileService.saveFile(gameFile, "gameFile");
+            if (gameFile != null && !gameFile.isEmpty()) {
+                fileService.deleteFileIfExists(existingGame.getGameFileUrl());
+                String newGameFileUrl = fileService.saveFile(gameFile, "gameFile");
+                existingGame.setGameFileUrl(newGameFileUrl);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при обновлении файлов", e);
         }
 
         existingGame.setTitle(payload.title());
         existingGame.setDetails(payload.details());
-        existingGame.setImageUrl(imageFileUrl);
-        existingGame.setGameFileUrl(gameFileUrl);
         existingGame.setCategories(categories);
 
         return gameRepository.save(existingGame);
@@ -110,19 +111,23 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     @Override
     @Transactional
     public void deleteGame(Long id, CustomUserDetails userDetails) {
-        Game existingGame = findGame(id)
-                .orElseThrow(() -> new NoSuchElementException("game.not_found"));
+        Game existingGame = findGame(id);
 
-        boolean admin = userDetails.isAdmin();
+        boolean isAdmin = userDetails.isAdmin();
+        boolean isAuthor = Objects.equals(existingGame.getAuthor().getId(), userDetails.getId());
 
-        if (!Objects.equals(existingGame.getAuthor().getId(), userDetails.getId()) && !admin) {
-            throw new AccessDeniedException("Вы не являетесь автором этой игры и не администратор!");
+        if (!isAuthor && !isAdmin) {
+            throw new AccessDeniedException("Вы не являетесь автором этой игры и не администратор");
         }
 
         existingGame.getCategories().clear();
-        fileService.deleteFileIfExists(existingGame.getImageUrl());
-        fileService.deleteFileIfExists(existingGame.getGameFileUrl());
+
+        try {
+            fileService.deleteFileIfExists(existingGame.getImageUrl());
+            fileService.deleteFileIfExists(existingGame.getGameFileUrl());
+        } catch (Exception e) {
+        }
+
         gameRepository.delete(existingGame);
     }
-
 }

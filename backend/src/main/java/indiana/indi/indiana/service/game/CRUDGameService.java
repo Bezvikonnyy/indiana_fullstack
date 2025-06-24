@@ -19,7 +19,7 @@ public interface CRUDGameService {
             MultipartFile gaveFile,
             User author);
 
-    Optional<Game> findGame(Long gameId);
+    Game findGame(Long gameId);
 
     Game editGame(
             Long id,

@@ -11,7 +11,7 @@ public interface CRUDCategoryService {
 
     List<Category> findAll();
 
-    Optional<Category> findById(Long id);
+    Category findById(Long id);
 
     Category save(Category category);
 

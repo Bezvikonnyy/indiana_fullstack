@@ -14,27 +14,36 @@ public class FileService {
     private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
 
     public String saveFile(MultipartFile file, String folder) throws IOException {
-        String folderPath = UPLOAD_DIR + folder;
-        File directory = new File(folderPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Файл пустой или не передан");
         }
 
-        String fileName = file.getOriginalFilename();
-        if (fileName != null) {
-            String fileUrl = folderPath + "/" + fileName;
-            File destination = new File(fileUrl);
-            file.transferTo(destination);
-            return "/uploads/" + folder + "/" + fileName;
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName == null || originalFileName.contains("..")) {
+            throw new IllegalArgumentException("Недопустимое имя файла");
         }
-        return null;
+
+        String folderPath = UPLOAD_DIR + folder;
+        File directory = new File(folderPath);
+        if (!directory.exists() && !directory.mkdirs()) {
+            throw new IOException("Не удалось создать директорию для загрузки файлов");
+        }
+
+        File destination = new File(folderPath + "/" + originalFileName);
+        file.transferTo(destination);
+
+        return "/uploads/" + folder + "/" + originalFileName;
     }
 
     public void deleteFileIfExists(String path) {
-        if (path == null) return; // Проверка на null
+        if (path == null || path.isBlank()) return;
+
         File file = new File(System.getProperty("user.dir") + path);
         if (file.exists()) {
-            file.delete();
+            if (!file.delete()) {
+                System.err.println("Не удалось удалить файл: " + file.getAbsolutePath());
+            }
         }
     }
 }
+

@@ -27,7 +27,6 @@ public class CustomUserDetails implements UserDetails {
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
     }
 
-
     @Override
     public String getUsername(){
         return user.getUsername();

@@ -6,7 +6,6 @@
     <module name="backend" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="indiana.indi.indiana.IndianaApplication" />
     <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev " />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

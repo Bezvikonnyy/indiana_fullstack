@@ -1,12 +1,24 @@
-import './App.css';
-import HomePage from './components/HomePage';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import HomePage from './pages/HomePage';
+import Header from "./components/Header";
 
 function App() {
-  return (
-    <div className="App">
-      <HomePage/>
-    </div>
-  );
+    return (
+        <Router>
+            <Header />
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/home" element={<HomePage />} />
+                {/* Здесь позже добавим другие страницы */}
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
+
+

@@ -19,7 +19,7 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAllById(categoryId);
 
         if(categories.size() != categoryId.size()){
-            throw  new EntityNotFoundException("Category not found!");
+            throw  new EntityNotFoundException("Category not found.");
         }
         return categories;
     }

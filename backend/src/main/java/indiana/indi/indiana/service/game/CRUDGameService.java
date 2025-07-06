@@ -7,10 +7,6 @@ import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.AccessDeniedException;
-import java.util.Optional;
-
 public interface CRUDGameService {
 
     Game createGame(
@@ -27,7 +23,7 @@ public interface CRUDGameService {
             MultipartFile imageFile,
             MultipartFile gameFile,
             CustomUserDetails userDetails
-    ) throws IOException;
+    );
 
     void deleteGame(Long id,CustomUserDetails userDetails);
 }

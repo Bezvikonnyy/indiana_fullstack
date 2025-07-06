@@ -13,26 +13,30 @@ public class FileService {
 
     private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
 
-    public String saveFile(MultipartFile file, String folder) throws IOException {
-        if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException("Файл пустой или не передан");
+    public String saveFile(MultipartFile file, String folder) {
+        try {
+            if (file == null || file.isEmpty()) {
+                throw new IllegalArgumentException("File is empty.");
+            }
+
+            String originalFileName = file.getOriginalFilename();
+            if (originalFileName == null || originalFileName.contains("..")) {
+                throw new IllegalArgumentException("Invalid file name.");
+            }
+
+            String folderPath = UPLOAD_DIR + folder;
+            File directory = new File(folderPath);
+            if (!directory.exists() && !directory.mkdirs()) {
+                throw new IOException("Failed to create directory for file upload.");
+            }
+
+            File destination = new File(folderPath + "/" + originalFileName);
+            file.transferTo(destination);
+
+            return "/uploads/" + folder + "/" + originalFileName;
+        } catch (IOException ex) {
+            throw new RuntimeException("Error while saving.", ex);
         }
-
-        String originalFileName = file.getOriginalFilename();
-        if (originalFileName == null || originalFileName.contains("..")) {
-            throw new IllegalArgumentException("Недопустимое имя файла");
-        }
-
-        String folderPath = UPLOAD_DIR + folder;
-        File directory = new File(folderPath);
-        if (!directory.exists() && !directory.mkdirs()) {
-            throw new IOException("Не удалось создать директорию для загрузки файлов");
-        }
-
-        File destination = new File(folderPath + "/" + originalFileName);
-        file.transferTo(destination);
-
-        return "/uploads/" + folder + "/" + originalFileName;
     }
 
     public void deleteFileIfExists(String path) {
@@ -41,9 +45,8 @@ public class FileService {
         File file = new File(System.getProperty("user.dir") + path);
         if (file.exists()) {
             if (!file.delete()) {
-                System.err.println("Не удалось удалить файл: " + file.getAbsolutePath());
+                System.err.println("Failed to delete file: " + file.getAbsolutePath());
             }
         }
     }
 }
-

@@ -2,6 +2,9 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
+import indiana.indi.indiana.dto.CategoryDto;
+import indiana.indi.indiana.dto.CategoryForGameDto;
+import indiana.indi.indiana.dto.GameFullDto;
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
@@ -25,6 +28,20 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     private final GameRepository gameRepository;
     private final CategoryService categoryService;
     private final FileService fileService;
+
+    @Override
+    public GameFullDto getFullDtoGame(Long gameId){
+        Game game = findGame(gameId);
+        return new GameFullDto(
+                        game.getId(),
+                        game.getTitle(),
+                        game.getDetails(),
+                        game.getImageUrl(),
+                        game.getGameFileUrl(),
+                        game.getAuthor().getId(),
+                        game.getCategories().stream().map(cat ->
+                                new CategoryForGameDto(cat.getId(), cat.getTitle())).toList());
+    }
 
     @Override
     @Transactional

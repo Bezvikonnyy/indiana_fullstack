@@ -4,7 +4,7 @@
     padding: 2rem;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
 }
 
@@ -14,10 +14,9 @@
     gap: 1rem;
 }
 
-.game-form input[type="text"],
-.game-form textarea,
-.game-form select,
-.game-form input[type="file"] {
+input[type="text"],
+textarea,
+input[type="file"] {
     padding: 0.6rem 1rem;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -25,16 +24,15 @@
     font-family: inherit;
 }
 
-.game-form textarea {
+textarea {
     resize: vertical;
 }
 
-.game-form label {
+label {
     font-weight: bold;
-    margin-top: 0.5rem;
 }
 
-.game-form button {
+button {
     background-color: #2e7d32;
     color: white;
     padding: 0.8rem 1.2rem;
@@ -46,6 +44,33 @@
     transition: background-color 0.3s ease;
 }
 
-.game-form button:hover {
+button:hover {
     background-color: #276127;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.category-option {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.category-option.selected {
+    background-color: #2e7d32;
+    color: white;
+    border-color: #2e7d32;
 }

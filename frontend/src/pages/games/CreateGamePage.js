@@ -9,7 +9,7 @@ function CreateGamePage() {
     const defaultCategoryId = queryParams.get('categoryId');
 
     const [categories, setCategories] = useState([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState(defaultCategoryId || '');
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState(defaultCategoryId ? [parseInt(defaultCategoryId)] : []);
     const [title, setTitle] = useState('');
     const [details, setDetails] = useState('');
     const [imageFile, setImageFile] = useState(null);
@@ -25,7 +25,7 @@ function CreateGamePage() {
             .then(data => {
                 setCategories(data);
                 if (!defaultCategoryId && data.length > 0) {
-                    setSelectedCategoryId(data[0].id);
+                    setSelectedCategoryIds([data[0].id]);
                 }
             })
             .catch(err => {
@@ -33,11 +33,19 @@ function CreateGamePage() {
             });
     }, [defaultCategoryId]);
 
+    const handleCategoryClick = (id) => {
+        setSelectedCategoryIds(prev =>
+            prev.includes(id)
+                ? prev.filter(cid => cid !== id)
+                : [...prev, id]
+        );
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!selectedCategoryId) {
-            alert('Пожалуйста, выберите категорию');
+        if (selectedCategoryIds.length === 0) {
+            alert('Пожалуйста, выберите хотя бы одну категорию');
             return;
         }
         if (!imageFile || !gameFile) {
@@ -48,7 +56,7 @@ function CreateGamePage() {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('details', details);
-        formData.append('categoryId', selectedCategoryId);
+        selectedCategoryIds.forEach(id => formData.append('categoryId', id));
         formData.append('imageFile', imageFile);
         formData.append('gameFile', gameFile);
 
@@ -93,16 +101,18 @@ function CreateGamePage() {
                     required
                 />
 
-                <select
-                    value={selectedCategoryId}
-                    onChange={e => setSelectedCategoryId(e.target.value)}
-                    required
-                >
-                    <option value="">-- Выберите категорию --</option>
+                <label>Категории (можно выбрать несколько):</label>
+                <div className="category-options">
                     {categories.map(cat => (
-                        <option key={cat.id} value={cat.id}>{cat.title}</option>
+                        <div
+                            key={cat.id}
+                            className={`category-option ${selectedCategoryIds.includes(cat.id) ? 'selected' : ''}`}
+                            onClick={() => handleCategoryClick(cat.id)}
+                        >
+                            {cat.title}
+                        </div>
                     ))}
-                </select>
+                </div>
 
                 <label>Изображение (jpg, png):</label>
                 <input

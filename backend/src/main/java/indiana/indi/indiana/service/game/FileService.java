@@ -42,7 +42,7 @@ public class FileService {
     public void deleteFileIfExists(String path) {
         if (path == null || path.isBlank()) return;
 
-        File file = new File(System.getProperty("user.dir") + path);
+        File file = new File(System.getProperty("user.dir")+ "/backend" + path);
         if (file.exists()) {
             if (!file.delete()) {
                 System.err.println("Failed to delete file: " + file.getAbsolutePath());

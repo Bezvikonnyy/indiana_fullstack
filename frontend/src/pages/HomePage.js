@@ -1,6 +1,5 @@
-// src/pages/HomePage.jsx
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './HomePage.css';
 
 function HomePage() {
@@ -64,14 +63,19 @@ function HomePage() {
                             </div>
                             <div className="games-row">
                                 {category.games.map(game => (
-                                    <div key={game.id} className="game-card">
+                                    <Link
+                                        key={game.id}
+                                        to={`/games/${game.id}`}
+                                        className="game-card"
+                                        style={{ textDecoration: 'none', color: 'inherit' }}
+                                    >
                                         <img
                                             src={game.imageUrl}
                                             alt={game.title}
                                             className="game-image"
                                         />
                                         <p className="game-title">{game.title}</p>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </section>

@@ -2,6 +2,7 @@ package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
+import indiana.indi.indiana.dto.GameFullDto;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.service.game.CRUDGameServiceImpl;
 import indiana.indi.indiana.service.game.GameService;
@@ -10,7 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,8 +29,8 @@ public class GameController {
     }
 
     @GetMapping("/{gameId}")
-    public Game getGame(@PathVariable("gameId") long gameId) {
-        return crudGameService.findGame(gameId);
+    public GameFullDto getGame(@PathVariable("gameId") long gameId) {
+        return crudGameService.getFullDtoGame(gameId);
     }
 
     @PostMapping("/new_game")

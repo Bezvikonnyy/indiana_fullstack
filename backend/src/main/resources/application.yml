@@ -22,7 +22,7 @@ spring:
 
   web:
     resources:
-      static-locations: classpath:/static/, file:./uploads/
+      static-locations: classpath:/static/, file:/home/administrator/Documents/indiana_fullstack/backend/uploads
 
 jwt:
   secret: "h38*Gdf69Y$#fR9N%58K3FTel:9iF$%&"

@@ -59,12 +59,15 @@ public class SecurityConfig {
                                 "/api/game",
                                 "/api/game/*",
                                 "/css/**",
-                                "/js/**")
+                                "/js/**",
+                                "/uploads/**")
                         .permitAll()
                         .requestMatchers("/api/user/edit_profile", "/api/user/delete_profile")
-                        .hasAnyRole("USER", "AUTHOR", "ADMIN")
+                        .hasAnyAuthority("ROLE_USER", "ROLE_AUTHOR", "ROLE_ADMIN")
+                        .requestMatchers("/api/categories/**")
+                        .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/game/delete/*", "/api/game/edit/**", "/api/game/new_game")
-                        .hasAnyRole("AUTHOR", "ADMIN")
+                        .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

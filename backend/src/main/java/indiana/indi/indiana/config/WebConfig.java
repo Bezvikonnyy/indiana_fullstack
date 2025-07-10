@@ -10,6 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/uploads/**")
-                .addResourceLocations("file:/Users/Sergey/Desktop/Java/Indiana/indiana/uploads/");
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/backend/uploads/");
     }
 }

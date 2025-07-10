@@ -1,5 +1,7 @@
 package indiana.indi.indiana.service.categories;
 
+import indiana.indi.indiana.dto.CategoryDto;
+import indiana.indi.indiana.dto.GameDto;
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +23,20 @@ public class CRUDCategoryServiceImpl implements CRUDCategoryService{
     }
 
     @Override
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> findAll() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(cat -> new CategoryDto(
+                        cat.getId(),
+                        cat.getTitle(),
+                        cat.getGames()
+                                .stream()
+                                .map(game -> new GameDto(game.getId(), game.getTitle(), game.getImageUrl()))
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public Category findById(Long id) {

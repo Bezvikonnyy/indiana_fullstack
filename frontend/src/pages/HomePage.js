@@ -1,10 +1,12 @@
+// src/pages/HomePage.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './HomePage.css';
 
 function HomePage() {
     const [categories, setCategories] = useState([]);
+    const [userRole, setUserRole] = useState(null);
     const navigate = useNavigate();
-    const isLoggedIn = !!localStorage.getItem('token'); // true/false
 
     useEffect(() => {
         fetch('http://localhost:8080/api/home')
@@ -13,66 +15,68 @@ function HomePage() {
             .catch(err => console.error('Ошибка при загрузке категорий:', err));
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                let role = payload.role;
+                if (typeof role === 'string' && role.startsWith('ROLE_')) {
+                    role = role.substring(5);
+                }
+                setUserRole(role);
+            } catch (e) {
+                console.error('Ошибка при декодировании токена', e);
+            }
+        }
+    }, []);
 
-    const handleLoginRedirect = () => {
-        navigate('/login');
+    const handleAddGame = (categoryId) => {
+        navigate(`/games/create?categoryId=${categoryId}`);
     };
 
     return (
-        <div>
-            <header style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-                {isLoggedIn ? (
-                    <button onClick={handleLogout}>Выйти</button>
-                ) : (
-                    <button onClick={handleLoginRedirect}>Войти</button>
-                )}
-            </header>
-
-            <div style={{ display: 'flex' }}>
-                {/* Список категорий слева */}
-                <div style={{ width: '200px', padding: '10px', position: 'sticky', top: '0' }}>
+        <div className="home-page">
+            <div className="home-content">
+                <nav className="categories-list">
                     <h3>Категории</h3>
-                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                    <ul>
                         {categories.map(category => (
                             <li key={category.id}>{category.title}</li>
                         ))}
                     </ul>
-                </div>
+                </nav>
 
-                {/* Игры по категориям */}
-                <div style={{ flex: 1, padding: '10px' }}>
+                <main className="games-list">
                     {categories.map(category => (
-                        <div key={category.id} style={{ marginBottom: '40px' }}>
-                            <h2>{category.title}</h2>
-                            <div style={{ display: 'flex', overflowX: 'auto', gap: '10px' }}>
-                                {category.games.map(game => (
-                                    <div
-                                        key={game.id}
-                                        style={{
-                                            minWidth: '150px',
-                                            border: '1px solid #ccc',
-                                            padding: '10px',
-                                            borderRadius: '8px',
-                                            textAlign: 'center',
-                                            backgroundColor: '#f9f9f9',
-                                        }}
+                        <section key={category.id} className="category-section">
+                            <div className="category-header">
+                                <h2>{category.title}</h2>
+                                {(userRole === 'AUTHOR' || userRole === 'ADMIN') && (
+                                    <button
+                                        className="add-game-button"
+                                        onClick={() => handleAddGame(category.id)}
+                                        title="Добавить игру"
                                     >
+                                        +
+                                    </button>
+                                )}
+                            </div>
+                            <div className="games-row">
+                                {category.games.map(game => (
+                                    <div key={game.id} className="game-card">
                                         <img
                                             src={game.imageUrl}
                                             alt={game.title}
-                                            style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '4px' }}
+                                            className="game-image"
                                         />
-                                        <p style={{ marginTop: '10px' }}>{game.title}</p>
+                                        <p className="game-title">{game.title}</p>
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </section>
                     ))}
-                </div>
+                </main>
             </div>
         </div>
     );

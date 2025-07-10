@@ -1,5 +1,6 @@
 package indiana.indi.indiana.config;
 
+import indiana.indi.indiana.entity.Role;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -31,8 +32,18 @@ public class JWTUtil {
     public String generateToken(CustomUserDetails userDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
-        String str = Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(now)
-                .setExpiration(expiryDate).signWith(key()).compact();
+
+        Long id = userDetails.getId();
+        String role = userDetails.getUser().getRoles().stream().findFirst().get().getTitle();
+
+        String str =
+                Jwts.builder()
+                        .setSubject(userDetails.getUsername())
+                        .claim("id", id)
+                        .claim("role", role)
+                        .setIssuedAt(now)
+                        .setExpiration(expiryDate)
+                        .signWith(key()).compact();
         return str;
     }
 

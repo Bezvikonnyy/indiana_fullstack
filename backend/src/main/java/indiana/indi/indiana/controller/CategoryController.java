@@ -1,8 +1,10 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.dto.CategoryDto;
-import indiana.indi.indiana.service.DefaultHomeService;
+
+import indiana.indi.indiana.service.categories.CRUDCategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,13 +13,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/home")
-public class HomeController {
+@RequestMapping("/api/categories")
+public class CategoryController {
 
-    private final DefaultHomeService homeService;
+    private final CRUDCategoryServiceImpl service;
 
     @GetMapping
-    public List<CategoryDto> getCategoriesList(){
-        return homeService.getCategoriesGamesDto();
+    public List<CategoryDto> getAllCategories() {
+        return service.findAll();
     }
 }

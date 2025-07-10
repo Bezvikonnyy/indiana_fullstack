@@ -11,7 +11,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FileService {
 
-    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
+    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/backend/uploads/";
 
     public String saveFile(MultipartFile file, String folder) {
         try {

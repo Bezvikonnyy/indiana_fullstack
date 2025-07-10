@@ -1,0 +1,51 @@
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+.game-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.game-form input[type="text"],
+.game-form textarea,
+.game-form select,
+.game-form input[type="file"] {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.game-form textarea {
+    resize: vertical;
+}
+
+.game-form label {
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.game-form button {
+    background-color: #2e7d32;
+    color: white;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.game-form button:hover {
+    background-color: #276127;
+}

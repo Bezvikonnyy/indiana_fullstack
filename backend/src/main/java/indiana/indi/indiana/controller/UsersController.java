@@ -8,6 +8,7 @@ import indiana.indi.indiana.mapper.UserMapper;
 import indiana.indi.indiana.service.user.CRUDUserDetailsServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import indiana.indi.indiana.service.user.RegisterUserService;
+import indiana.indi.indiana.service.user.UserDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,12 @@ public class UsersController {
 
     private final RegisterUserService registerUserService;
 
+    private final UserDetailsService usDetails;
+
     @GetMapping("/profile")
     public UserDto getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userMapper.toDto(userDetails.getUser());
+        User user = usDetails.getUser(userDetails.getId());
+        return userMapper.toDto(user);
     }
 
     @PostMapping("/registration")

@@ -1,23 +1,41 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import hatIcon from '../assets/hat.png';
 
 function Header() {
     const navigate = useNavigate();
     const isLoggedIn = !!localStorage.getItem('token');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    const toggleMenu = () => {
+        setMenuOpen(prev => !prev);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        setMenuOpen(false);
         navigate('/login');
     };
 
-    const handleLoginRedirect = () => {
-        navigate('/login');
+    const handleProfile = () => {
+        setMenuOpen(false);
+        navigate('/profile');
     };
 
-    const handleRegisterRedirect = () => {
-        navigate('/register');
-    };
+    const handleLoginRedirect = () => navigate('/login');
+    const handleRegisterRedirect = () => navigate('/register');
+
+    // Закрытие меню при клике вне
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     return (
         <header style={styles.header}>
@@ -33,7 +51,17 @@ function Header() {
 
             <div style={styles.buttonsContainer}>
                 {isLoggedIn ? (
-                    <button style={styles.button} onClick={handleLogout}>Выйти</button>
+                    <div style={{ position: 'relative' }} ref={menuRef}>
+                        <button onClick={toggleMenu} style={styles.burgerButton}>
+                            ☰
+                        </button>
+                        {menuOpen && (
+                            <div style={styles.dropdownMenu}>
+                                <button onClick={handleProfile} style={styles.menuItem}>Профиль</button>
+                                <button onClick={handleLogout} style={styles.menuItem}>Выйти</button>
+                            </div>
+                        )}
+                    </div>
                 ) : (
                     <>
                         <button style={styles.button} onClick={handleLoginRedirect}>Войти</button>
@@ -50,7 +78,7 @@ const styles = {
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',  // Кнопки справа
+        justifyContent: 'flex-end',
         padding: '0 20px',
         height: '4rem',
         backgroundColor: '#2e7d32',
@@ -95,10 +123,13 @@ const styles = {
         transform: 'rotate(-15deg)',
         pointerEvents: 'none',
     },
+
     buttonsContainer: {
         display: 'flex',
+        alignItems: 'center',
         gap: '12px',
     },
+
     button: {
         backgroundColor: '#4caf50',
         color: 'white',
@@ -109,8 +140,44 @@ const styles = {
         cursor: 'pointer',
         transition: 'background-color 0.3s ease',
     },
+
     secondaryButton: {
         backgroundColor: '#81c784',
+    },
+
+    burgerButton: {
+        backgroundColor: '#4caf50',
+        color: 'white',
+        border: 'none',
+        padding: '6px 12px',
+        fontSize: '1.5rem',
+        borderRadius: '6px',
+        cursor: 'pointer',
+        userSelect: 'none',
+    },
+
+    dropdownMenu: {
+        position: 'absolute',
+        right: 0,
+        top: '110%',
+        backgroundColor: '#fff',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: '150px',
+        zIndex: 1000,
+    },
+
+    menuItem: {
+        padding: '10px 16px',
+        border: 'none',
+        background: 'none',
+        textAlign: 'left',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        color: '#333',
     },
 };
 

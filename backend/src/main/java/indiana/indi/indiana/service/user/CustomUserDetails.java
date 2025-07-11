@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.user;
 
-
 import indiana.indi.indiana.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-
     private User user;
 
     public CustomUserDetails(User user) {

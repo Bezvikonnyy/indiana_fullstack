@@ -4,6 +4,7 @@ import indiana.indi.indiana.service.user.CRUDUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -62,7 +63,13 @@ public class SecurityConfig {
                                 "/js/**",
                                 "/uploads/**")
                         .permitAll()
-                        .requestMatchers("/api/user/edit_profile", "/api/user/delete_profile")
+                        .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
+                        .requestMatchers("/api/user/edit_profile",
+                                "/api/user/delete_profile",
+                                "/api/comment/create_comment",
+                                "/api/comment/edit_comment/**",
+                                "/api/comment/delete_comment/**"
+                                )
                         .hasAnyAuthority("ROLE_USER", "ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/categories/**")
                         .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")

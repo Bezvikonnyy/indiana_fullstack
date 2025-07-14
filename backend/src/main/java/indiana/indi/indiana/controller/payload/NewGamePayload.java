@@ -5,5 +5,4 @@ import java.util.List;
 public record NewGamePayload(
         String title,
         String details,
-        List<Long> categoryId) {
-}
+        List<Long> categoryId) {}

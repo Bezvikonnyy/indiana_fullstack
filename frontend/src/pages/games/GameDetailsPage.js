@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getUserId, hasRole } from '../../utils/auth';
+import CommentSection from '../../components/CommentSection';
 
 function GameDetailsPage() {
     const { id } = useParams();
@@ -80,6 +81,11 @@ function GameDetailsPage() {
                     </>
                 )}
             </div>
+
+            {/* Секция комментариев */}
+            <div style={{ marginTop: '3rem' }}>
+                <CommentSection gameId={id} />
+            </div>
         </div>
     );
 }
@@ -93,7 +99,7 @@ const styles = {
         borderRadius: 8,
         boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
         fontFamily: 'Arial, sans-serif',
-        textAlign: 'center', // выравнивание содержимого по центру
+        textAlign: 'center',
     },
     title: {
         fontSize: '2.5rem',
@@ -104,8 +110,8 @@ const styles = {
     image: {
         width: '100%',
         maxWidth: '600px',
-        height: 'auto',        // сохраняет пропорции изображения
-        objectFit: 'contain',  // изображение масштабируется, не обрезается
+        height: 'auto',
+        objectFit: 'contain',
         borderRadius: 6,
         marginBottom: '1rem',
     },

@@ -73,6 +73,8 @@ public class SecurityConfig {
                         .hasAnyAuthority("ROLE_USER", "ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/categories/**")
                         .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
+                        .requestMatchers("/api/admin/**")
+                        .hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/game/delete/*", "/api/game/edit/**", "/api/game/new_game")
                         .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
                         .anyRequest().authenticated()

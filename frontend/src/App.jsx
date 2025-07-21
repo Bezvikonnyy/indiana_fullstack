@@ -11,6 +11,7 @@ import CreateGamePage from './pages/games/CreateGamePage';
 import EditGamePage from './pages/games/EditGamePage';
 import GameDetailsPage from './pages/games/GameDetailsPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminPanelPage from './pages/AdminPanelPage'; // <== Импортируем страницу админки
 
 function PrivateRoute({ children, roles }) {
     const user = getUserFromToken();
@@ -24,7 +25,7 @@ function PrivateRoute({ children, roles }) {
 function App() {
     return (
         <Router>
-            <Header /> {/* Шапка всегда отображается */}
+            <Header />
             <Routes>
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -45,6 +46,14 @@ function App() {
                     element={
                         <PrivateRoute roles={['AUTHOR', 'ADMIN']}>
                             <EditGamePage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <PrivateRoute roles={['ADMIN']}>
+                            <AdminPanelPage />
                         </PrivateRoute>
                     }
                 />

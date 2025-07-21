@@ -1,0 +1,7 @@
+CREATE TABLE invite_code (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(500) NOT NULL UNIQUE,
+    used BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL,
+    expires_at TIMESTAMP
+);

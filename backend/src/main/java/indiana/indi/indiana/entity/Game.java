@@ -29,7 +29,7 @@ public class Game {
 
     @Column(name = "details")
     @NotNull
-    @Size(min = 50, max = 500)
+    @Size(min = 50, max = 2000)
     private String details;
 
     @Column(name = "image_url")

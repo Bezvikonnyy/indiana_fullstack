@@ -1,0 +1,83 @@
+.admin-panel {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.accordion-btn {
+    display: block;
+    width: 100%;
+    background: #2d7a2d;
+    color: white;
+    font-size: 18px;
+    padding: 10px 15px;
+    border: none;
+    margin: 10px 0;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.3s ease;
+}
+
+.accordion-btn:hover,
+.accordion-btn.active {
+    background: #1f4e1f;
+}
+
+.user-requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.user-requests-table th,
+.user-requests-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-requests-table th {
+    background-color: #f2f2f2;
+}
+
+.user-requests-table button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: #2d7a2d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.user-requests-table button:hover {
+    background-color: #1f4e1f;
+}
+
+.invite-codes-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.invite-codes-list li {
+    padding: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.invite-codes-list button {
+    padding: 5px 10px;
+    background-color: #a22d2d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.invite-codes-list button:hover {
+    background-color: #6e1f1f;
+}

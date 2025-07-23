@@ -1,27 +1,19 @@
 package indiana.indi.indiana.service.categories;
 
 import indiana.indi.indiana.entity.Category;
-import indiana.indi.indiana.repository.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class CategoryService {
+public interface CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    Iterable<Category> findAllCategory(String filter);
 
-    public List<Category> validCategoryByGame(List<Long> categoryId) {
+    List<Category> findAll();
 
-        List<Category> categories = categoryRepository.findAllById(categoryId);
+    Category findById(Long id);
 
-        if(categories.size() != categoryId.size()){
-            throw  new EntityNotFoundException("Category not found.");
-        }
-        return categories;
-    }
+    Category save(Category category);
+
+    void deleteById(Long id);
 
 }

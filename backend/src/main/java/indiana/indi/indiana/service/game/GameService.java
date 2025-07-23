@@ -6,13 +6,15 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GameService {
 
     private final GameRepository gameRepository;
 
-    public Iterable<Game> findAllGames(String filter) {
+    public List<Game> findAllGames(String filter) {
         if(filter != null && !filter.isBlank()){
             return gameRepository.findAllByTitleLikeIgnoreCase("%" + filter + "%");
         } else {

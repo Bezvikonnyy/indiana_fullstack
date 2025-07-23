@@ -8,13 +8,12 @@ import org.springframework.stereotype.Component;
 public class CommentMapper {
 
     public CommentDto toCommentDto(Comment comment) {
-        CommentDto dto = new CommentDto(
+        return new CommentDto(
                 comment.getId(),
                 comment.getText(),
                 comment.getAuthor().getId(),
                 comment.getAuthor().getUsername(),
                 comment.getCreatedAt(),
                 comment.getGame().getId());
-        return dto;
     }
 }

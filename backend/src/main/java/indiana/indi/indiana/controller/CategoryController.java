@@ -2,7 +2,8 @@ package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.dto.CategoryDto;
 
-import indiana.indi.indiana.service.categories.CRUDCategoryServiceImpl;
+import indiana.indi.indiana.service.categories.CategoryForControllerService;
+import indiana.indi.indiana.service.categories.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/categories")
 public class CategoryController {
 
-    private final CRUDCategoryServiceImpl service;
+    private final CategoryForControllerService service;
 
     @GetMapping
     public List<CategoryDto> getAllCategories() {

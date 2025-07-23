@@ -1,10 +1,8 @@
 package indiana.indi.indiana.service.comments;
 
 import indiana.indi.indiana.controller.payload.CommentPayload;
-import indiana.indi.indiana.dto.CommentDto;
 import indiana.indi.indiana.entity.Comment;
 import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.mapper.CommentMapper;
 import indiana.indi.indiana.repository.CommentRepository;
 import indiana.indi.indiana.repository.GameRepository;
 import indiana.indi.indiana.repository.UserRepository;
@@ -27,8 +25,6 @@ public class CRUDCommentsServiceImpl implements CRUDCommentsService{
     private final GameRepository gameRepository;
 
     private final CommentService service;
-
-    private final CommentMapper mapper;
 
     @Override
     public Comment createComment(CommentPayload payload,Long authorId) {
@@ -54,16 +50,15 @@ public class CRUDCommentsServiceImpl implements CRUDCommentsService{
         return repository.save(comment);
     }
 
-
     @Override
     public Comment getComment(Long id) {
         return service.findComment(id);
     }
 
     @Override
-    public List<CommentDto> getComments(Long id) {
+    public List<Comment> getComments(Long id) {
         Game game = gameRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Game not found."));
-        return game.getComments().stream().map(com -> mapper.toCommentDto(com)).toList();
+        return game.getComments().stream().toList();
     }
 
     @Override

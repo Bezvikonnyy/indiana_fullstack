@@ -1,7 +1,6 @@
 package indiana.indi.indiana.service.comments;
 
 import indiana.indi.indiana.controller.payload.CommentPayload;
-import indiana.indi.indiana.dto.CommentDto;
 import indiana.indi.indiana.entity.Comment;
 
 import java.nio.file.AccessDeniedException;
@@ -15,7 +14,7 @@ public interface CRUDCommentsService {
 
     Comment getComment(Long id);
 
-    List<CommentDto> getComments(Long id);
+    List<Comment> getComments(Long id);
 
     void deleteComment(Long id, Long currentUserId) throws AccessDeniedException;
 }

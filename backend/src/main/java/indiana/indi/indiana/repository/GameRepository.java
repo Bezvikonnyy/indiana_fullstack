@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    Iterable<Game> findAllByTitleLikeIgnoreCase(String filter);
+    List<Game> findAllByTitleLikeIgnoreCase(String filter);
 
     List<Game> findByCategoriesContaining(Category category);
 

@@ -5,7 +5,7 @@ import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.repository.GameRepository;
-import indiana.indi.indiana.service.categories.CategoryService;
+import indiana.indi.indiana.service.categories.CategoryServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +29,7 @@ class CRUDGameServiceImplTest {
     GameRepository repository;
 
     @Mock
-    CategoryService categoryService;
+    CategoryServiceImpl categoryService;
 
     @Mock
     FileService fileService;

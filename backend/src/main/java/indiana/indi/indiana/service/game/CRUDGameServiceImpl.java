@@ -2,14 +2,11 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
-import indiana.indi.indiana.dto.CategoryDto;
-import indiana.indi.indiana.dto.CategoryForGameDto;
-import indiana.indi.indiana.dto.GameFullDto;
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.repository.GameRepository;
-import indiana.indi.indiana.service.categories.CategoryService;
+import indiana.indi.indiana.service.categories.CategoryServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,22 +23,13 @@ import java.util.Objects;
 public class CRUDGameServiceImpl implements CRUDGameService {
 
     private final GameRepository gameRepository;
-    private final CategoryService categoryService;
+
+    private final CategoryServiceImpl categoryService;
+
     private final FileService fileService;
 
     @Override
-    public GameFullDto getFullDtoGame(Long gameId){
-        Game game = findGame(gameId);
-        return new GameFullDto(
-                        game.getId(),
-                        game.getTitle(),
-                        game.getDetails(),
-                        game.getImageUrl(),
-                        game.getGameFileUrl(),
-                        game.getAuthor().getId(),
-                        game.getCategories().stream().map(cat ->
-                                new CategoryForGameDto(cat.getId(), cat.getTitle())).toList());
-    }
+    public Game getGame(Long gameId){return findGame(gameId);}
 
     @Override
     @Transactional

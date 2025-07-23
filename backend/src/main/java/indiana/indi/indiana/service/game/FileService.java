@@ -20,7 +20,7 @@ public class FileService {
             }
 
             String originalFileName = file.getOriginalFilename();
-            if (originalFileName == null || originalFileName.contains("..")) {
+            if (originalFileName.contains("..")) {
                 throw new IllegalArgumentException("Invalid file name.");
             }
 

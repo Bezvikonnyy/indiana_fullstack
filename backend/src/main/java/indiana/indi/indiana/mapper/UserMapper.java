@@ -12,12 +12,11 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     public UserDto toDto(User user) {
-        UserDto dto = new UserDto(
+        return new UserDto(
                 user.getId(),
                 user.getUsername(),
                 user.getRoles().stream().map(r -> new RoleDto(r.getId(), r.getTitle())).collect(Collectors.toSet()),
                 user.getGames().stream().map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl())).toList()
         );
-        return dto;
     }
 }

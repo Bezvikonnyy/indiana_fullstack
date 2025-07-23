@@ -11,10 +11,9 @@ public class RequestUserMapper {
 
     public RequestUserDto toDto(RequestUsers request){
 
-        RequestUserDto requestUserDto = new RequestUserDto(
+        return new RequestUserDto(
                 request.getId(),
                 request.getBodyRequest()
         );
-        return requestUserDto;
     }
 }

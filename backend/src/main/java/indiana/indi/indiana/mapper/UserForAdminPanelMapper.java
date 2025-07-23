@@ -12,14 +12,13 @@ import java.util.stream.Collectors;
 public class UserForAdminPanelMapper {
 
     public UserForAdminPanelDto toDto(User user, String requestUser){
-        UserForAdminPanelDto userDto = new UserForAdminPanelDto(
+        return new UserForAdminPanelDto(
                 user.getId(),
                 user.getUsername(),
                 user.getRoles().stream().map(r -> new RoleDto(r.getId(), r.getTitle())).collect(Collectors.toSet()),
                 user.getGames().stream().map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl())).toList(),
                 requestUser
         );
-        return userDto;
     }
 
 }

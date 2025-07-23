@@ -35,7 +35,7 @@ public class UsersController {
     }
 
     @PostMapping("/registration")
-    public UserDto registerUser (@Valid @RequestBody NewUsersPayload payload) {
+    public UserDto registerUser(@Valid @RequestBody NewUsersPayload payload) {
         int id = registerUserService.searchRole(payload.roleId(), payload.inviteCode());
         User user = registerUserService.saveUserRole(id, payload.username(), payload.password());
         registerUserService.requestAuthor(payload.roleId(), user);

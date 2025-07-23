@@ -44,6 +44,19 @@ function UserRequests() {
             .catch(err => alert(err.message));
     };
 
+    const deleteUser = (id) => {
+        if (!window.confirm('Удалить пользователя? Это действие необратимо.')) return;
+        fetch(`http://localhost:8080/api/admin/delete/user/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(res => {
+                if (!res.ok) throw new Error('Ошибка удаления пользователя');
+                fetchUsers();
+            })
+            .catch(err => alert(err.message));
+    };
+
     return (
         <div className="user-requests">
             <h3>Пользователи и заявки на авторов</h3>
@@ -74,6 +87,9 @@ function UserRequests() {
                                             <button onClick={() => deleteRequest(user.id)}>Отклонить</button>
                                         </>
                                     )}
+                                    <button onClick={() => deleteUser(user.id)} style={{ marginLeft: '10px', color: 'red' }}>
+                                        Удалить пользователя
+                                    </button>
                                 </td>
                             </tr>
                         );

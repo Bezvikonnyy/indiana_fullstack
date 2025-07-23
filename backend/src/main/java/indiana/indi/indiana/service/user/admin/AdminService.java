@@ -92,4 +92,9 @@ public class AdminService {
         checkAdmin(admin);
         inviteRepository.findById(id).ifPresent(inviteRepository::delete);
     }
+
+    public void deleteUser(CustomUserDetails admin, Long id) throws AccessDeniedException {
+        checkAdmin(admin);
+        userRepository.findById(id).ifPresent(userRepository::delete);
+    }
 }

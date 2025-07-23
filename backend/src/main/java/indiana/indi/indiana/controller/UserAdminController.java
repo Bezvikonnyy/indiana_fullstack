@@ -44,4 +44,8 @@ public class UserAdminController {
     @DeleteMapping("/delete/invite/{id}")
     public void deleteInviteCode(@AuthenticationPrincipal CustomUserDetails admin, @PathVariable Long id)
             throws AccessDeniedException {adminService.deleteInviteCode(admin,id);}
+
+    @DeleteMapping("/delete/user/{id}")
+    public void deleteUser(@AuthenticationPrincipal CustomUserDetails admin, @PathVariable Long id)
+            throws AccessDeniedException {adminService.deleteUser(admin,id);}
 }

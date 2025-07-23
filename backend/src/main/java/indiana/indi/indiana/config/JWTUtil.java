@@ -1,6 +1,5 @@
 package indiana.indi.indiana.config;
 
-import indiana.indi.indiana.entity.Role;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -34,22 +33,22 @@ public class JWTUtil {
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
         Long id = userDetails.getId();
-        String role = userDetails.getUser().getRoles().stream().findFirst().get().getTitle();
+        String role = userDetails.getUser().getRoles().stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("User must have at least one role"))
+                .getTitle();
 
-        String str =
-                Jwts.builder()
+        return Jwts.builder()
                         .setSubject(userDetails.getUsername())
                         .claim("id", id)
                         .claim("role", role)
                         .setIssuedAt(now)
                         .setExpiration(expiryDate)
                         .signWith(key()).compact();
-        return str;
     }
 
     public String extractUsername(String token) {
-        String subject = parser().parseClaimsJws(token).getBody().getSubject();
-        return subject;
+        return parser().parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean isTokenValid(String token, CustomUserDetails userDetails) {

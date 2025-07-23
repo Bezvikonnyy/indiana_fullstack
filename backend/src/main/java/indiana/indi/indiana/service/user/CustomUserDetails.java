@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -65,7 +64,7 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public long getId() {
+    public Long getId() {
         return user.getId();
     }
 }

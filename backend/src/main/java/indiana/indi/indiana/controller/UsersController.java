@@ -1,17 +1,12 @@
 package indiana.indi.indiana.controller;
 
-import indiana.indi.indiana.controller.payload.EditUsersPayload;
-import indiana.indi.indiana.controller.payload.NewUsersPayload;
+import indiana.indi.indiana.controller.payload.EditUserPayload;
+import indiana.indi.indiana.controller.payload.NewUserPayload;
 import indiana.indi.indiana.dto.UserDto;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.mapper.UserMapper;
-import indiana.indi.indiana.service.user.CRUDUserDetailsServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
-import indiana.indi.indiana.service.user.RegisterUserService;
-import indiana.indi.indiana.service.user.UserDetailsService;
+import indiana.indi.indiana.service.user.UserForControllerServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,42 +14,26 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UsersController {
-
-    private final CRUDUserDetailsServiceImpl userDetailsService;
-
-    private final UserMapper userMapper;
-
-    private final RegisterUserService registerUserService;
-
-    private final UserDetailsService usDetails;
+    private final UserForControllerServiceImpl service;
 
     @GetMapping("/profile")
     public UserDto getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        User user = usDetails.getUser(userDetails.getId());
-        return userMapper.toDto(user);
+        return service.getProfile(userDetails);
     }
 
     @PostMapping("/registration")
-    public UserDto registerUser(@Valid @RequestBody NewUsersPayload payload) {
-        int id = registerUserService.searchRole(payload.roleId(), payload.inviteCode());
-        User user = registerUserService.saveUserRole(id, payload.username(), payload.password());
-        registerUserService.requestAuthor(payload.roleId(), user);
-        return userMapper.toDto(user);
+    public UserDto registerUser(@Valid @RequestBody NewUserPayload payload) {
+        return service.registerUser(payload);
     }
 
     @PutMapping("/edit_profile")
-    public UserDto editProfile(@Valid @RequestBody EditUsersPayload payload,
+    public UserDto editProfile(@Valid @RequestBody EditUserPayload payload,
                                                @AuthenticationPrincipal CustomUserDetails userDetails) {
-        User user = userDetails.getUser();
-        User editUser = userDetailsService.editUser(
-                user.getId(), payload.username(), payload.password(), userDetails.getUser().getRoles());
-        return userMapper.toDto(editUser);
+        return service.editProfile(payload, userDetails);
     }
 
     @DeleteMapping("/delete_profile")
-    public ResponseEntity<Void> deleteProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long id = userDetails.getId();
-        userDetailsService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    public void deleteProfile(@AuthenticationPrincipal CustomUserDetails user) {
+        service.deleteUser(user);
     }
 }

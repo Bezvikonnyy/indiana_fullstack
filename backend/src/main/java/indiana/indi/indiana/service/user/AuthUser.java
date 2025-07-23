@@ -28,7 +28,6 @@ public class AuthUser {
         String token = jwtUtil.generateToken(customUserDetails);
         User user = customUserDetails.getUser();
         UserDto userDto = userMapper.toDto(user);
-        AuthResponseDto authResponseDto = new AuthResponseDto(token, userDto);
-        return authResponseDto;
+        return new AuthResponseDto(token, userDto);
     }
 }

@@ -3,6 +3,7 @@ package indiana.indi.indiana.service.user;
 import indiana.indi.indiana.entity.Role;
 import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,6 +45,11 @@ public class CRUDUserDetailsServiceImpl implements CRUDUserDetailsService{
     public User getUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found user."));
     }
 
     @Override

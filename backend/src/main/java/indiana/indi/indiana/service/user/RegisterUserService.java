@@ -54,12 +54,11 @@ public class RegisterUserService {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Нет такой роли"));
         final Set<Role> roles = Set.of(role);
-        User user = userDetailsService.createUser(
+        return userDetailsService.createUser(
                 username,
                 password,
                 roles
         );
-        return user;
     }
 
     public void requestAuthor(int roleId,User user) {

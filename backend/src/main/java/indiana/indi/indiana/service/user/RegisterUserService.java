@@ -30,7 +30,8 @@ public class RegisterUserService {
     public int searchRole(int roleId, String inviteCode) {
         int defaultRoleId = 1;
         switch (roleId) {
-            case 1,2 -> defaultRoleId = 1;
+            case 1,2 -> {
+            }
             case 3 -> {
                 if (inviteCode != null) {
                     Optional<InviteCode> optionalInvite = inviteCodeRepository.findByCode(inviteCode);

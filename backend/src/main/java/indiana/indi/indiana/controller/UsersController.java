@@ -28,7 +28,7 @@ public class UsersController {
 
     @PutMapping("/edit_profile")
     public UserDto editProfile(@Valid @RequestBody EditUserPayload payload,
-                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
+                               @AuthenticationPrincipal CustomUserDetails userDetails) {
         return service.editProfile(payload, userDetails);
     }
 

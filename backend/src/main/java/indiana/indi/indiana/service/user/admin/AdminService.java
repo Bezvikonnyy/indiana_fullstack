@@ -83,9 +83,8 @@ public class AdminService {
     public List<InviteCodeDto> getAllInviteCode(CustomUserDetails admin) throws AccessDeniedException {
         checkAdmin(admin);
         List<InviteCode> inviteCodes = inviteRepository.findAll().stream().toList();
-        List<InviteCodeDto> inviteCodeDtoList = inviteCodes.stream().
-                map(invite -> inviteCodeMapper.toDto(invite)).toList();
-        return inviteCodeDtoList;
+        return inviteCodes.stream().
+                map(inviteCodeMapper::toDto).toList();
     }
 
     public void deleteInviteCode(CustomUserDetails admin, Long id) throws AccessDeniedException {

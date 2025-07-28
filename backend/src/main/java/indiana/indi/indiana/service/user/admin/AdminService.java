@@ -21,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +65,7 @@ public class AdminService {
         requestUsers.findByUserId(id).ifPresent(requestUsers::delete);
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found."));
         Role role = roleRepository.findById(2).orElseThrow(() -> new EntityNotFoundException("Role not found."));
-        user.setRoles(Set.of(role));
+        user.setRoles(new HashSet<>(List.of(role)));
         userRepository.save(user);
         return mapper.toDto(user);
     }

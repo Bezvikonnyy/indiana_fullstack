@@ -81,3 +81,34 @@
 .invite-codes-list button:hover {
     background-color: #6e1f1f;
 }
+
+.user-requests-table .action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.user-requests-table .approve-btn {
+    background-color: #2d7a2d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+.user-requests-table .approve-btn:hover {
+    background-color: #1f4e1f;
+}
+
+.user-requests-table .reject-btn {
+    background-color: #a22d2d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 5px 10px;
+}
+
+.user-requests-table .reject-btn:hover {
+    background-color: #6e1f1f;
+}

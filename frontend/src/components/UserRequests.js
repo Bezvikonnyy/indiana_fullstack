@@ -19,7 +19,7 @@ function UserRequests() {
         fetchUsers();
     }, []);
 
-    const approveRequest = (id) => {
+    const handleApprove = (id) => {
         fetch(`http://localhost:8080/api/admin/approve/${id}`, {
             method: 'PUT',
             headers: { Authorization: `Bearer ${token}` }
@@ -31,7 +31,7 @@ function UserRequests() {
             .catch(err => alert(err.message));
     };
 
-    const deleteRequest = (id) => {
+    const handleReject = (id) => {
         if (!window.confirm('Удалить заявку?')) return;
         fetch(`http://localhost:8080/api/admin/delete/request/${id}`, {
             method: 'DELETE',
@@ -68,26 +68,32 @@ function UserRequests() {
                     <tr>
                         <th>Имя пользователя</th>
                         <th>Роли</th>
-                        <th>Заявка</th>
-                        <th>Действия</th>
+                        <th style={{ width: '120px' }}>Заявка</th>
+                        <th style={{ width: '160px' }}>Действия</th>
                     </tr>
                     </thead>
                     <tbody>
                     {users.map(user => {
-                        const hasRequest = !!user.requestUserDto;
+                        const hasRequest = user.requestUsers && user.requestUsers.trim() !== '';
                         return (
                             <tr key={user.id}>
                                 <td>{user.username}</td>
                                 <td>{user.roles.map(r => r.title).join(', ')}</td>
-                                <td>{hasRequest ? user.requestUserDto.bodyRequest : '-'}</td>
-                                <td>
-                                    {hasRequest && (
-                                        <>
-                                            <button onClick={() => approveRequest(user.id)}>Одобрить</button>
-                                            <button onClick={() => deleteRequest(user.id)}>Отклонить</button>
-                                        </>
+                                <td style={{ textAlign: 'center' }}>
+                                    {hasRequest ? (
+                                        <div className="action-buttons">
+                                            <button className="approve-btn" onClick={() => handleApprove(user.id)}>✔</button>
+                                            <button className="reject-btn" onClick={() => handleReject(user.id)}>✖</button>
+                                        </div>
+                                    ) : (
+                                        '–'
                                     )}
-                                    <button onClick={() => deleteUser(user.id)} style={{ marginLeft: '10px', color: 'red' }}>
+                                </td>
+                                <td>
+                                    <button
+                                        onClick={() => deleteUser(user.id)}
+                                        style={{ color: 'red' }}
+                                    >
                                         Удалить пользователя
                                     </button>
                                 </td>

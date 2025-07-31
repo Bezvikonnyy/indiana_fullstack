@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -54,4 +55,7 @@ public class Game {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
+
+    @Column(name = "price")
+    private BigDecimal price;
 }

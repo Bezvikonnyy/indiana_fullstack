@@ -27,3 +27,7 @@ spring:
 jwt:
   secret: "h38*Gdf69Y$#fR9N%58K3FTel:9iF$%&"
   expiration: 3600000
+
+liqpay:
+  public-key: "sandbox_i3313929016"
+  private-key: "sandbox_CLG6EiScGm6QdaTAj09wfSstQoDd71JEK76leYIU"

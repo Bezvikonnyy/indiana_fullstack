@@ -54,6 +54,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
                 .gameFileUrl(gameFileUrl)
                 .categories(categories)
                 .author(author)
+                .price(payload.price())
                 .build();
 
         return gameRepository.save(game);
@@ -101,6 +102,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
         existingGame.setTitle(payload.title());
         existingGame.setDetails(payload.details());
         existingGame.setCategories(categories);
+        existingGame.setPrice(payload.price());
 
         return gameRepository.save(existingGame);
     }

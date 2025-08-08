@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,7 @@ class CRUDGameServiceImplTest {
         //arrange
         String title = "gameName";
         String details = "gameDetails";
+        BigDecimal price = new BigDecimal(1);
         String imageUrl = "url/to/image.png";
         String gameUrl = "url/to/game.zip";
 
@@ -50,7 +52,7 @@ class CRUDGameServiceImplTest {
 
         List<Category> categories = List.of(new Category(1L, "Шутеры", List.of()));
 
-        NewGamePayload payload = new NewGamePayload(title, details, List.of(1L));
+        NewGamePayload payload = new NewGamePayload(title, details, List.of(1L), price);
         User author = new User();
         //act
         when(fileService.saveFile(imageFile, "imageFile")).thenReturn(imageUrl);

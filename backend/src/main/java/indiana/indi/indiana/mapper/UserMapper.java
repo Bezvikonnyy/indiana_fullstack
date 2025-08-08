@@ -16,7 +16,8 @@ public class UserMapper {
                 user.getId(),
                 user.getUsername(),
                 user.getRoles().stream().map(r -> new RoleDto(r.getId(), r.getTitle())).collect(Collectors.toSet()),
-                user.getGames().stream().map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl())).toList()
+                user.getGames().stream().map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl(), g.getPrice()))
+                        .toList()
         );
     }
 }

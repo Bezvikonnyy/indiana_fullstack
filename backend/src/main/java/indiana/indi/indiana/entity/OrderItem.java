@@ -2,6 +2,7 @@ package indiana.indi.indiana.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "order_item")
 public class OrderItem {
 
@@ -30,5 +32,6 @@ public class OrderItem {
     private BigDecimal price;
 
     @Column(name = "quantity",nullable = false)
+    @Builder.Default
     private Integer quantity = 1;
 }

@@ -25,7 +25,8 @@ public class DefaultHomeService implements HomeService {
         return getAllCategories().stream().map(c -> new CategoryDto(
                 c.getId(),
                 c.getTitle(),
-                c.getGames().stream().map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl())).toList()
+                c.getGames().stream().map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl(),g.getPrice()))
+                        .toList()
         )).toList();
     }
 

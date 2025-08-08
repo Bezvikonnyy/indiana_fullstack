@@ -1,9 +1,9 @@
 package indiana.indi.indiana.repository;
 
-import indiana.indi.indiana.entity.CartItem;
+import indiana.indi.indiana.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
 }

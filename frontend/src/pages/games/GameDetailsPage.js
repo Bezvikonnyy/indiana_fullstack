@@ -43,6 +43,29 @@ function GameDetailsPage() {
         }
     };
 
+    const handleAddToCart = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await fetch("http://localhost:8080/api/cart/add", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ gameId: id }),
+            });
+
+            if (res.ok) {
+                alert(`Игра "${game.title}" добавлена в корзину!`);
+            } else {
+                const text = await res.text();
+                alert("Ошибка при добавлении: " + text);
+            }
+        } catch (err) {
+            alert("Ошибка сети: " + err.message);
+        }
+    };
+
     if (!game) return <p style={{ textAlign: 'center', marginTop: '2rem' }}>Загрузка...</p>;
 
     const isAuthor = game.authorId === currentUserId;
@@ -65,10 +88,25 @@ function GameDetailsPage() {
                     : 'Нет категорий'}
             </p>
 
+            {/* Цена */}
+            <p style={styles.price}>
+                <strong>Цена: </strong>
+                {game.price ? `${game.price} грн` : 'Бесплатно'}
+            </p>
+
             <div style={styles.buttons}>
                 <a href={`http://localhost:8080${game.gameFileUrl}`} download>
                     <button style={styles.button}>Скачать</button>
                 </a>
+
+                {/* Новая кнопка "Добавить в корзину" */}
+                <button
+                    style={{ ...styles.button, backgroundColor: '#1976d2' }}
+                    onClick={handleAddToCart}
+                >
+                    Добавить в корзину
+                </button>
+
                 {(isAuthor || isAdmin) && (
                     <>
                         <button style={styles.button} onClick={handleEdit}>Редактировать</button>
@@ -122,8 +160,14 @@ const styles = {
     },
     categories: {
         fontSize: '1rem',
-        marginBottom: '2rem',
+        marginBottom: '1rem',
         color: '#555',
+    },
+    price: {
+        fontSize: '1.2rem',
+        marginBottom: '2rem',
+        color: '#000',
+        fontWeight: 'bold',
     },
     buttons: {
         display: 'flex',

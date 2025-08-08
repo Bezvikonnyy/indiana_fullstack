@@ -1,5 +1,6 @@
 package indiana.indi.indiana.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record GameFullDto(
@@ -9,5 +10,6 @@ public record GameFullDto(
         String imageUrl,
         String gameFileUrl,
         Long authorId,
-        List<CategoryForGameDto> categories) {
+        List<CategoryForGameDto> categories,
+        BigDecimal price) {
 }

@@ -12,6 +12,7 @@ function CreateGamePage() {
     const [selectedCategoryIds, setSelectedCategoryIds] = useState(defaultCategoryId ? [parseInt(defaultCategoryId)] : []);
     const [title, setTitle] = useState('');
     const [details, setDetails] = useState('');
+    const [price, setPrice] = useState(''); // строка, чтобы можно было очистить поле
     const [imageFile, setImageFile] = useState(null);
     const [gameFile, setGameFile] = useState(null);
 
@@ -52,10 +53,19 @@ function CreateGamePage() {
             alert('Пожалуйста, загрузите изображение и файл игры');
             return;
         }
+        if (price === '') {
+            alert('Пожалуйста, введите цену');
+            return;
+        }
+        if (isNaN(price) || Number(price) < 0) {
+            alert('Цена должна быть неотрицательным числом');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('title', title);
         formData.append('details', details);
+        formData.append('price', price.toString()); // цена в строку
         selectedCategoryIds.forEach(id => formData.append('categoryId', id));
         formData.append('imageFile', imageFile);
         formData.append('gameFile', gameFile);
@@ -113,6 +123,16 @@ function CreateGamePage() {
                         </div>
                     ))}
                 </div>
+
+                <input
+                    type="number"
+                    placeholder="Цена"
+                    min="0"
+                    step="0.01"
+                    value={price}
+                    onChange={e => setPrice(e.target.value)}
+                    required
+                />
 
                 <label>Изображение (jpg, png):</label>
                 <input

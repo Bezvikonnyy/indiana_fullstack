@@ -15,6 +15,7 @@ function EditGamePage() {
                 setInitialData({
                     title: data.title,
                     details: data.details,
+                    price: data.price,
                     categoryIds: data.categories.map(cat => cat.id),
                 });
             })

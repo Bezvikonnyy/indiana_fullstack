@@ -15,7 +15,8 @@ public class CategoryMapper {
                 category.getId(),
                 category.getTitle(),
                 category.getGames().stream()
-                        .map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl())).collect(Collectors.toList())
+                        .map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl(), g.getPrice()))
+                        .collect(Collectors.toList())
         );
     }
 }

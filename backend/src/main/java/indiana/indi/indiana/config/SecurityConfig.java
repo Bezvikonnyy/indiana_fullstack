@@ -68,7 +68,8 @@ public class SecurityConfig {
                                 "/api/user/delete_profile",
                                 "/api/comment/create_comment",
                                 "/api/comment/edit_comment/**",
-                                "/api/comment/delete_comment/**"
+                                "/api/comment/delete_comment/**",
+                                "/api/cart/**"
                                 )
                         .hasAnyAuthority("ROLE_USER", "ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/categories/**")

@@ -20,7 +20,8 @@ public class GameFullMapper {
                 game.getAuthor().getId(),
                 game.getCategories().stream().map(category -> new CategoryForGameDto(
                         category.getId(),
-                        category.getTitle())).collect(Collectors.toList())
+                        category.getTitle())).collect(Collectors.toList()),
+                game.getPrice()
                 );
     }
 }

@@ -111,3 +111,20 @@
     font-size: 1rem;
     color: #333;
 }
+.cart-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.cart-icon {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1); /* чтобы иконка была белой */
+    transition: transform 0.2s ease;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
+}

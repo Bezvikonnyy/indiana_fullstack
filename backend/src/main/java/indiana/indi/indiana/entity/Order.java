@@ -3,16 +3,19 @@ package indiana.indi.indiana.entity;
 import indiana.indi.indiana.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "user_orders")
 public class Order {
 
@@ -33,6 +36,9 @@ public class Order {
 
     @Column(name = "total_amount",nullable = false)
     private BigDecimal totalAmount;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items;
 
     @PrePersist
     private void prePersist() {

@@ -1,4 +1,6 @@
 package indiana.indi.indiana.dto;
 
-public record GameDto(Long id,String title, String imageUrl) {
+import java.math.BigDecimal;
+
+public record GameDto(Long id, String title, String imageUrl, BigDecimal price) {
 }

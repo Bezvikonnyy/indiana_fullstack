@@ -5,11 +5,12 @@ import indiana.indi.indiana.controller.payload.NewOrderPayload;
 import indiana.indi.indiana.entity.*;
 import indiana.indi.indiana.repository.CartRepository;
 import indiana.indi.indiana.repository.OrderRepository;
-import indiana.indi.indiana.repository.UserRepository;
 import indiana.indi.indiana.service.order.CRUDOrderServiceImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,30 +55,36 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public Order toOrder(Long userId, User user, NewOrderPayload payload) {
-        Cart cart = cartService.getCart(userId);
+    @Transactional
+    public Order toOrder(User user, NewOrderPayload payload) {
+        Cart cart = cartService.getCart(user.getId());
         List<CartItem> cartItems = cart.getItems();
 
-        Order order = orderService.createOrder(payload);
+        Order order = orderService.createOrder(user, payload);  // Лучше изменить этот метод, чтобы принимал User, а не userId из payload
         order.setUser(user);
 
         List<OrderItem> orderItems = cartItems.stream()
                 .map(cartItem -> {
                     Game game = cartItem.getGame();
-                    OrderItem orderItem = OrderItem
-                            .builder()
+                    OrderItem orderItem = OrderItem.builder()
                             .order(order)
                             .game(game)
                             .price(game.getPrice())
                             .quantity(1)
                             .build();
-                    orderItem.setOrder(order);
                     return orderItem;
                 })
                 .collect(Collectors.toList());
 
         order.setItems(orderItems);
 
+        BigDecimal totalAmount = orderItems.stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        order.setTotalAmount(totalAmount);
+
         return orderRepository.save(order);
     }
+
 }

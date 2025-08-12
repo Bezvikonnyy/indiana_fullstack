@@ -16,5 +16,5 @@ public interface CartService {
 
     Cart cleanCart(Long id);
 
-    Order toOrder(Long cartId, User user, NewOrderPayload payload);
+    Order toOrder(User user, NewOrderPayload payload);
 }

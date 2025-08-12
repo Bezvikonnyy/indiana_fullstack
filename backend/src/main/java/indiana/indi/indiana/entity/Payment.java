@@ -4,6 +4,7 @@ import indiana.indi.indiana.enums.PaymentMethod;
 import indiana.indi.indiana.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "payments")
 public class Payment {
 

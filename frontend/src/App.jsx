@@ -12,7 +12,8 @@ import EditGamePage from './pages/games/EditGamePage';
 import GameDetailsPage from './pages/games/GameDetailsPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPanelPage from './pages/AdminPanelPage';
-import CartPage from "./pages/CartPage"; // <== Импортируем страницу админки
+import CartPage from "./pages/CartPage";
+import PaymentResultPage from "./pages/payment/PaymentResultPage"; // <== Импортируем страницу админки
 
 function PrivateRoute({ children, roles }) {
     const user = getUserFromToken();
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/games/:id" element={<GameDetailsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/order/:orderId/result" element={<PaymentResultPage />} />
                 <Route
                     path="/cart"
                     element={

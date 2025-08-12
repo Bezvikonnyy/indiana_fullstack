@@ -36,7 +36,7 @@ public class CartForControllerService {
         return cartMapper.toDto(cartService.cleanCart(userId));
     }
 
-    public OrderDto toOrder(Long userId, User user, NewOrderPayload payload){
-        return orderMapper.toDto(cartService.toOrder(userId, user, payload));
+    public OrderDto toOrder(User user, NewOrderPayload payload){
+        return orderMapper.toDto(cartService.toOrder(user, payload));
     }
 }

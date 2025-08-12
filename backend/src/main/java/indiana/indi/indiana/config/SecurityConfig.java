@@ -61,7 +61,8 @@ public class SecurityConfig {
                                 "/api/game/*",
                                 "/css/**",
                                 "/js/**",
-                                "/uploads/**")
+                                "/uploads/**",
+                                "/api/cart/liqpay/result")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
                         .requestMatchers("/api/user/edit_profile",

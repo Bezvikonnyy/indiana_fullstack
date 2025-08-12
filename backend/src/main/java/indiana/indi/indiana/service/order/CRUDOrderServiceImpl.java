@@ -5,7 +5,6 @@ import indiana.indi.indiana.entity.Order;
 import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.enums.OrderStatus;
 import indiana.indi.indiana.repository.OrderRepository;
-import indiana.indi.indiana.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,13 @@ public class CRUDOrderServiceImpl implements CRUDOrderService{
 
     private final OrderRepository orderRepository;
 
-    private final UserRepository userRepository;
-
     @Override
-    public Order createOrder(NewOrderPayload payload) {
-        User user = userRepository.findById(payload.userId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found."));
-        Order order = Order.builder().user(user).status(OrderStatus.NEW).totalAmount(BigDecimal.ZERO).build();
+    public Order createOrder(User user, NewOrderPayload payload) {
+        Order order = Order.builder()
+                .user(user)
+                .status(OrderStatus.NEW)
+                .totalAmount(BigDecimal.ZERO)
+                .build();
         return orderRepository.save(order);
     }
 

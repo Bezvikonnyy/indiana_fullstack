@@ -4,7 +4,10 @@ import indiana.indi.indiana.controller.payload.CartItemPayload;
 import indiana.indi.indiana.controller.payload.NewOrderPayload;
 import indiana.indi.indiana.dto.CartDto;
 import indiana.indi.indiana.dto.OrderDto;
+import indiana.indi.indiana.dto.OrderStatusDto;
+import indiana.indi.indiana.dto.PaymentRequestDto;
 import indiana.indi.indiana.service.cart.CartForControllerService;
+import indiana.indi.indiana.service.order.LiqPayService;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartForControllerService service;
+
+    private final LiqPayService liqPayService;
 
     @GetMapping("/my")
     public CartDto getCart(@AuthenticationPrincipal CustomUserDetails user){
@@ -42,6 +47,23 @@ public class CartController {
     @PutMapping("/order")
     public OrderDto toOrder(@AuthenticationPrincipal CustomUserDetails user,
                             @RequestBody NewOrderPayload payload) {
-        return service.toOrder(user.getId(), user.getUser(), payload);
+        return service.toOrder(user.getUser(), payload);
+    }
+
+    @PostMapping("/checkout")
+    public PaymentRequestDto checkout(@AuthenticationPrincipal CustomUserDetails user,
+                                      @RequestBody NewOrderPayload payload) throws Exception {
+        OrderDto orderDto = service.toOrder(user.getUser(), payload);
+        return liqPayService.createPayment(orderDto);
+    }
+
+    @PostMapping("/liqpay/result")
+    public void payment(@RequestParam("data") String data, @RequestParam("signature") String signature)
+            throws Exception {liqPayService.processCallback(data, signature);
+    }
+
+    @GetMapping("/order/{orderId}/result")
+    public OrderStatusDto getStatusPayment(@PathVariable Long orderId) {
+        return liqPayService.getOrderStatus(orderId);
     }
 }

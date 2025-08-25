@@ -48,6 +48,11 @@ function Header() {
         navigate('/profile');
     };
 
+    const handlePurchased = () => {
+        setMenuOpen(false);
+        navigate('/purchased')
+    }
+
     const handleLoginRedirect = () => navigate('/login');
     const handleRegisterRedirect = () => navigate('/register');
     const handleCart = () => navigate('/cart');
@@ -92,6 +97,7 @@ function Header() {
                                             Админ-панель
                                         </button>
                                     )}
+                                    <button onClick={handlePurchased} className="menu-item">Мои покупки</button>
                                     <button onClick={handleLogout} className="menu-item">Выйти</button>
                                 </div>
                             )}

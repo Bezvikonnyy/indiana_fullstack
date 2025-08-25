@@ -31,6 +31,11 @@ public class CRUDCartItemServiceImpl implements CRUDCartItemService{
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found."));
         Cart cart = cartRepository.findByUser(user).orElseThrow(() -> new EntityNotFoundException("Cart not found."));
         boolean isCartItem = cart.getItems().stream().anyMatch(c -> c.getGame().getId().equals(game.getId()));
+        boolean isPurchasedCartItem = userRepository.existsByIdAndPurchasedGames_Id(userId, game.getId());
+
+        if(isPurchasedCartItem) {
+            throw new IllegalStateException("Game already in purchased.");
+        }
         if(isCartItem) {
             throw new IllegalStateException("Game already in cart.");
         }

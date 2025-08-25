@@ -1,15 +1,15 @@
 package indiana.indi.indiana.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +34,14 @@ public class User {
     )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",fetch = FetchType.EAGER)
     private List<Game> games = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_purchased_games",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    private Set<Game> purchasedGames = new HashSet<>();
 }

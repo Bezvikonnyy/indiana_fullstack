@@ -7,6 +7,7 @@ import indiana.indi.indiana.dto.OrderDto;
 import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.mapper.CartMapper;
 import indiana.indi.indiana.mapper.OrderMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,7 @@ public class CartForControllerService {
         return cartMapper.toDto(cartService.cleanCart(userId));
     }
 
+    @Transactional
     public OrderDto toOrder(User user, NewOrderPayload payload){
         return orderMapper.toDto(cartService.toOrder(user, payload));
     }

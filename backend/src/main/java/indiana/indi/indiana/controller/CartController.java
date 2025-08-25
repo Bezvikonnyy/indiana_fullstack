@@ -9,6 +9,7 @@ import indiana.indi.indiana.dto.PaymentRequestDto;
 import indiana.indi.indiana.service.cart.CartForControllerService;
 import indiana.indi.indiana.service.order.LiqPayService;
 import indiana.indi.indiana.service.user.CustomUserDetails;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,7 @@ public class CartController {
         return service.toOrder(user.getUser(), payload);
     }
 
+    @Transactional
     @PostMapping("/checkout")
     public PaymentRequestDto checkout(@AuthenticationPrincipal CustomUserDetails user,
                                       @RequestBody NewOrderPayload payload) throws Exception {
@@ -58,7 +60,8 @@ public class CartController {
     }
 
     @PostMapping("/liqpay/result")
-    public void payment(@RequestParam("data") String data, @RequestParam("signature") String signature)
+    public void payment(@RequestParam("data") String data,
+                        @RequestParam("signature") String signature)
             throws Exception {liqPayService.processCallback(data, signature);
     }
 

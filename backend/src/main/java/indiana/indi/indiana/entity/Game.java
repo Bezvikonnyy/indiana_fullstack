@@ -3,15 +3,15 @@ package indiana.indi.indiana.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -41,7 +41,7 @@ public class Game {
     @NotNull
     private String gameFileUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "game_category",
             joinColumns = @JoinColumn(name = "game_id"),
@@ -58,4 +58,7 @@ public class Game {
 
     @Column(name = "price")
     private BigDecimal price;
+
+    @ManyToMany(mappedBy = "purchasedGames")
+    private Set<User> buyers;
 }

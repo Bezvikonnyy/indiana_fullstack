@@ -14,7 +14,8 @@ import ProfilePage from './pages/ProfilePage';
 import AdminPanelPage from './pages/AdminPanelPage';
 import CartPage from "./pages/CartPage";
 import PaymentResultPage from "./pages/payment/PaymentResultPage";
-import PurchasedGamesPage from "./pages/games/PurchasedGamesPage"; // <== Импортируем страницу админки
+import PurchasedGamesPage from "./pages/games/PurchasedGamesPage";
+import CreatedGamesPage from "./pages/games/CreatedGamesPage"; // импорт страницы авторских игр
 
 function PrivateRoute({ children, roles }) {
     const user = getUserFromToken();
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/games/:id" element={<GameDetailsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/order/:orderId/result" element={<PaymentResultPage />} />
+
                 <Route
                     path="/cart"
                     element={
@@ -61,6 +63,7 @@ function App() {
                         </PrivateRoute>
                     }
                 />
+
                 <Route
                     path="/admin"
                     element={
@@ -69,13 +72,25 @@ function App() {
                         </PrivateRoute>
                     }
                 />
+
+                {/* Купленные игры */}
                 <Route
                     path="/purchased"
                     element={
                         <PrivateRoute roles={['USER', 'AUTHOR', 'ADMIN']}>
                             <PurchasedGamesPage />
                         </PrivateRoute>
-                       }
+                    }
+                />
+
+                {/* Созданные игры (для автора) */}
+                <Route
+                    path="/created"
+                    element={
+                        <PrivateRoute roles={['AUTHOR', 'ADMIN']}>
+                            <CreatedGamesPage />
+                        </PrivateRoute>
+                    }
                 />
 
                 <Route path="*" element={<Navigate to="/home" />} />

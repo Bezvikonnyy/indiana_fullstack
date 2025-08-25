@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,5 +62,15 @@ public class UserForControllerServiceImpl implements UserForControllerService {
         return games.stream()
                 .map(game -> new GameDto(game.getId(), game.getTitle(), game.getImageUrl(), game.getPrice()))
                 .collect(Collectors.toSet());
+    }
+
+    @Transactional
+    public List<GameDto> myGame(User userAuth) {
+        User user = userRepository.findById(userAuth.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
+        List<Game> games = user.getGames();
+        return games.stream()
+                .map(game -> new GameDto(game.getId(), game.getTitle(), game.getImageUrl(), game.getPrice()))
+                .collect(Collectors.toList());
     }
 }

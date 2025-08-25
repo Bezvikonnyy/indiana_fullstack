@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './PurchasedGamesPage.css';
+import GameList from '../../components/GameList';
 
 function PurchasedGamesPage() {
     const [games, setGames] = useState([]);
@@ -27,37 +27,9 @@ function PurchasedGamesPage() {
             });
     }, []);
 
-    if (loading) {
-        return <p className="purchased-loading">Загрузка...</p>;
-    }
+    if (loading) return <p className="gameList-loading">Загрузка...</p>;
 
-    if (games.length === 0) {
-        return <p className="purchased-empty">У вас пока нет купленных игр.</p>;
-    }
-
-    return (
-        <div className="purchased-container">
-            <h2 className="purchased-title">Мои игры</h2>
-            <div className="purchased-grid">
-                {games.map(game => (
-                    <div key={game.id} className="purchased-card">
-                        <img
-                            src={`http://localhost:8080${game.imageUrl}`}
-                            alt={game.title}
-                            className="purchased-image"
-                        />
-                        <h3 className="purchased-gameTitle">{game.title}</h3>
-                        <p className="purchased-price">
-                            {game.price ? `${game.price} грн` : "Бесплатно"}
-                        </p>
-                        <a href={`http://localhost:8080${game.gameFileUrl}`} download>
-                            <button className="purchased-button">Скачать</button>
-                        </a>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+    return <GameList games={games} title="Мои игры" showDownload={true} />;
 }
 
 export default PurchasedGamesPage;

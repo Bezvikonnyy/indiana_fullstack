@@ -28,11 +28,11 @@ function CartIcon() {
 function Header() {
     const navigate = useNavigate();
     const isLoggedIn = !!localStorage.getItem('token');
-    const role = localStorage.getItem('role');
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
     const isAdmin = hasRole(['ADMIN']);
+    const isAuthor = hasRole(['AUTHOR', 'ADMIN']);
 
     const toggleMenu = () => setMenuOpen(prev => !prev);
 
@@ -50,8 +50,13 @@ function Header() {
 
     const handlePurchased = () => {
         setMenuOpen(false);
-        navigate('/purchased')
-    }
+        navigate('/purchased');
+    };
+
+    const handleCreated = () => {
+        setMenuOpen(false);
+        navigate('/created');
+    };
 
     const handleLoginRedirect = () => navigate('/login');
     const handleRegisterRedirect = () => navigate('/register');
@@ -82,7 +87,6 @@ function Header() {
             <div className="buttons-container">
                 {isLoggedIn ? (
                     <>
-                        {/* Кнопка корзины */}
                         <button onClick={handleCart} className="cart-button" aria-label="Корзина">
                             <CartIcon />
                         </button>
@@ -92,6 +96,11 @@ function Header() {
                             {menuOpen && (
                                 <div className="dropdown-menu">
                                     <button onClick={handleProfile} className="menu-item">Профиль</button>
+                                    {isAuthor && (
+                                        <button onClick={handleCreated} className="menu-item">
+                                            Мои игры
+                                        </button>
+                                    )}
                                     {isAdmin && (
                                         <button onClick={() => navigate('/admin')} className="menu-item">
                                             Админ-панель

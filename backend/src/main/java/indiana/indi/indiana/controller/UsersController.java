@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -41,7 +42,12 @@ public class UsersController {
     }
 
     @GetMapping("/purchased_game")
-    public Set<GameDto> gerPurchasedGame(@AuthenticationPrincipal CustomUserDetails user) {
+    public Set<GameDto> getPurchasedGame(@AuthenticationPrincipal CustomUserDetails user) {
         return service.purchasedGame(user.getUser());
+    }
+
+    @GetMapping("/my_game")
+    public List<GameDto> getMyGame(@AuthenticationPrincipal CustomUserDetails user) {
+        return service.myGame(user.getUser());
     }
 }

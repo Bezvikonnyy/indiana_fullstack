@@ -73,4 +73,13 @@ public class UserForControllerServiceImpl implements UserForControllerService {
                 .map(game -> new GameDto(game.getId(), game.getTitle(), game.getImageUrl(), game.getPrice()))
                 .collect(Collectors.toList());
     }
+
+    public Set<GameDto> favoriteGames(User user) {
+    }
+
+    public GameDto addFavorite(User user) {
+    }
+
+    public void removeFavorite(User user) {
+    }
 }

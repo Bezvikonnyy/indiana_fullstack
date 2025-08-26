@@ -1,4 +1,4 @@
-CREATE TABLE user_purchased_games(
+CREATE TABLE user_favorite_games(
     user_id BIGINT NOT NULL,
     game_id BIGINT NOT NULL,
     PRIMARY KEY(user_id, game_id),

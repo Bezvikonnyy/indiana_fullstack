@@ -44,4 +44,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private Set<Game> purchasedGames = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_games",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    private Set<Game> favoriteGames = new HashSet<>();
 }

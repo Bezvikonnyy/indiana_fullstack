@@ -50,4 +50,19 @@ public class UsersController {
     public List<GameDto> getMyGame(@AuthenticationPrincipal CustomUserDetails user) {
         return service.myGame(user.getUser());
     }
+
+    @GetMapping("/my_favorite_games")
+    public Set<GameDto> getMyFavoriteGames(@AuthenticationPrincipal CustomUserDetails user) {
+        return service.favoriteGames(user.getUser());
+    }
+
+    @PostMapping("/add_favorite")
+    public GameDto addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user) {
+        return service.addFavorite(user.getUser());
+    }
+
+    @DeleteMapping("/remove_favorite")
+    public void removeFavoriteGame(@AuthenticationPrincipal CustomUserDetails user) {
+        service.removeFavorite(user.getUser());
+    }
 }

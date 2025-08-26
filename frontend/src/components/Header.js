@@ -53,6 +53,11 @@ function Header() {
         navigate('/purchased');
     };
 
+    const handeFavorite = () => {
+        setMenuOpen(false);
+        navigate('favorite')
+    }
+
     const handleCreated = () => {
         setMenuOpen(false);
         navigate('/created');
@@ -107,6 +112,7 @@ function Header() {
                                         </button>
                                     )}
                                     <button onClick={handlePurchased} className="menu-item">Мои покупки</button>
+                                    <button onClick={handeFavorite} className="menu-item">Избранные</button>
                                     <button onClick={handleLogout} className="menu-item">Выйти</button>
                                 </div>
                             )}

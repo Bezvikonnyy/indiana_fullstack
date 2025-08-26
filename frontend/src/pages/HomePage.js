@@ -5,6 +5,7 @@ import './HomePage.css';
 function HomePage() {
     const [categories, setCategories] = useState([]);
     const [userRole, setUserRole] = useState(null);
+    const [favoriteGames, setFavoriteGames] = useState(new Set());
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,8 +31,49 @@ function HomePage() {
         }
     }, []);
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        fetch('http://localhost:8080/api/user/my_favorite_games', {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then(res => res.json())
+            .then(data => {
+                const ids = new Set(data.map(game => game.id));
+                setFavoriteGames(ids);
+            })
+            .catch(err => console.error('Ошибка при загрузке избранного:', err));
+    }, []);
+
     const handleAddGame = (categoryId) => {
         navigate(`/games/create?categoryId=${categoryId}`);
+    };
+
+    const toggleFavorite = async (gameId) => {
+        const token = localStorage.getItem('token');
+        if (!token) return alert('Сначала войдите в аккаунт');
+
+        try {
+            if (favoriteGames.has(gameId)) {
+                await fetch(`http://localhost:8080/api/user/remove_favorite/${gameId}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setFavoriteGames(prev => {
+                    const copy = new Set(prev);
+                    copy.delete(gameId);
+                    return copy;
+                });
+            } else {
+                await fetch(`http://localhost:8080/api/user/add_favorite/${gameId}`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setFavoriteGames(prev => new Set(prev).add(gameId));
+            }
+        } catch (err) {
+            console.error('Ошибка при обновлении избранного:', err);
+        }
     };
 
     return (
@@ -61,21 +103,28 @@ function HomePage() {
                                     </button>
                                 )}
                             </div>
+
                             <div className="games-row">
                                 {category.games.map(game => (
-                                    <Link
-                                        key={game.id}
-                                        to={`/games/${game.id}`}
-                                        className="game-card"
-                                        style={{ textDecoration: 'none', color: 'inherit' }}
-                                    >
-                                        <img
-                                            src={game.imageUrl}
-                                            alt={game.title}
-                                            className="game-image"
-                                        />
-                                        <p className="game-title">{game.title}</p>
-                                    </Link>
+                                    <div key={game.id} className="game-card">
+                                        <Link
+                                            to={`/games/${game.id}`}
+                                            style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
+                                        >
+                                            <img
+                                                src={game.imageUrl}
+                                                alt={game.title}
+                                                className="game-image"
+                                            />
+                                            <p className="game-title">{game.title}</p>
+                                        </Link>
+                                        <span
+                                            className={`favorite-btn ${favoriteGames.has(game.id) ? 'active' : ''}`}
+                                            onClick={() => toggleFavorite(game.id)}
+                                        >
+                                            ♥
+                                        </span>
+                                    </div>
                                 ))}
                             </div>
                         </section>

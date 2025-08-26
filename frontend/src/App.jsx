@@ -15,7 +15,8 @@ import AdminPanelPage from './pages/AdminPanelPage';
 import CartPage from "./pages/CartPage";
 import PaymentResultPage from "./pages/payment/PaymentResultPage";
 import PurchasedGamesPage from "./pages/games/PurchasedGamesPage";
-import CreatedGamesPage from "./pages/games/CreatedGamesPage"; // импорт страницы авторских игр
+import CreatedGamesPage from "./pages/games/CreatedGamesPage";
+import FavoritePage from "./pages/games/FavoritePage"; // импорт страницы авторских игр
 
 function PrivateRoute({ children, roles }) {
     const user = getUserFromToken();
@@ -89,6 +90,14 @@ function App() {
                     element={
                         <PrivateRoute roles={['AUTHOR', 'ADMIN']}>
                             <CreatedGamesPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/favorite"
+                    element={
+                        <PrivateRoute roles={['USER', 'AUTHOR', 'ADMIN']}>
+                            <FavoritePage/>
                         </PrivateRoute>
                     }
                 />

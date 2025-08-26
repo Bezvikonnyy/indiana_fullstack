@@ -66,4 +66,8 @@ public class CRUDUserDetailsServiceImpl implements CRUDUserDetailsService{
                 .map(CustomUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found."));
+    }
 }

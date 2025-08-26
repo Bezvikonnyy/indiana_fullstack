@@ -10,15 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface CRUDGameService {
 
-    Game getGame(Long gameId);
-
     Game createGame(
             NewGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gaveFile,
             User author);
 
-    Game findGame(Long gameId);
+    Game getGameById(Long gameId);
 
     Game editGame(
             Long id,

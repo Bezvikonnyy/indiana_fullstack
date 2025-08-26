@@ -6,9 +6,10 @@ import indiana.indi.indiana.dto.GameDto;
 import indiana.indi.indiana.dto.UserDto;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.mapper.GameMapper;
 import indiana.indi.indiana.mapper.UserMapper;
 import indiana.indi.indiana.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import indiana.indi.indiana.service.game.CRUDGameServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,17 +22,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserForControllerServiceImpl implements UserForControllerService {
 
-    private final CRUDUserDetailsServiceImpl service;
+    private final CRUDUserDetailsServiceImpl userService;
+
+    private final CRUDGameServiceImpl gameService;
 
     private final RegisterUserService registerUserService;
 
     private final UserMapper mapper;
 
+    private final GameMapper gameMapper;
+
     private final UserRepository userRepository;
 
     @Override
     public UserDto getProfile(CustomUserDetails userDetails) {
-        return mapper.toDto(service.getUser(userDetails.getId()));
+        return mapper.toDto(userService.getUser(userDetails.getId()));
     }
 
     @Override
@@ -45,41 +50,51 @@ public class UserForControllerServiceImpl implements UserForControllerService {
     @Override
     public UserDto editProfile(EditUserPayload payload, CustomUserDetails userDetails) {
         User user = userDetails.getUser();
-        User editUser = service.editUser(
+        User editUser = userService.editUser(
                 user.getId(), payload.username(), payload.password(), userDetails.getUser().getRoles());
         return mapper.toDto(editUser);
     }
 
     @Override
     public void deleteUser(CustomUserDetails user) {
-        service.deleteUser(user.getId());
+        userService.deleteUser(user.getId());
     }
 
+    @Override
     public Set<GameDto> purchasedGame(User userAuth) {
-        User user = userRepository.findById(userAuth.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found."));
-        Set<Game> games = user.getPurchasedGames();
-        return games.stream()
-                .map(game -> new GameDto(game.getId(), game.getTitle(), game.getImageUrl(), game.getPrice()))
-                .collect(Collectors.toSet());
+        User user = userService.getUserById(userAuth.getId());
+        return user.getPurchasedGames().stream().map(gameMapper::toDto).collect(Collectors.toSet());
     }
 
+    @Override
     @Transactional
     public List<GameDto> myGame(User userAuth) {
-        User user = userRepository.findById(userAuth.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found."));
-        List<Game> games = user.getGames();
-        return games.stream()
-                .map(game -> new GameDto(game.getId(), game.getTitle(), game.getImageUrl(), game.getPrice()))
-                .collect(Collectors.toList());
+        User user = userService.getUserById(userAuth.getId());
+        return user.getGames().stream().map(gameMapper::toDto).collect(Collectors.toList());
     }
 
-    public Set<GameDto> favoriteGames(User user) {
+    @Override
+    public Set<GameDto> favoriteGames(User userAuth) {
+        User user = userService.getUserById(userAuth.getId());
+        return user.getFavoriteGames().stream().map(gameMapper::toDto).collect(Collectors.toSet());
     }
 
-    public GameDto addFavorite(User user) {
+    @Override
+    @Transactional
+    public GameDto addFavorite(User userAuth, Long id) {
+        User user = userService.getUserById(userAuth.getId());
+        Game game = gameService.getGameById(id);
+        user.getFavoriteGames().add(game);
+        userRepository.save(user);
+        return gameMapper.toDto(game);
     }
 
-    public void removeFavorite(User user) {
+    @Override
+    @Transactional
+    public void removeFavorite(User userAuth, Long id) {
+        User user = userService.getUserById(userAuth.getId());
+        Game game = gameService.getGameById(id);
+        user.getFavoriteGames().remove(game);
+        userRepository.save(user);
     }
 }

@@ -56,13 +56,13 @@ public class UsersController {
         return service.favoriteGames(user.getUser());
     }
 
-    @PostMapping("/add_favorite")
-    public GameDto addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user) {
-        return service.addFavorite(user.getUser());
+    @PostMapping("/add_favorite/{gameId}")
+    public GameDto addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
+        return service.addFavorite(user.getUser(), gameId);
     }
 
-    @DeleteMapping("/remove_favorite")
-    public void removeFavoriteGame(@AuthenticationPrincipal CustomUserDetails user) {
-        service.removeFavorite(user.getUser());
+    @DeleteMapping("/remove_favorite/{gameId}")
+    public void removeFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
+        service.removeFavorite(user.getUser(), gameId);
     }
 }

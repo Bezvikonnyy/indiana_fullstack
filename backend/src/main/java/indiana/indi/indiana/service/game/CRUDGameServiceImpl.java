@@ -29,9 +29,6 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     private final FileService fileService;
 
     @Override
-    public Game getGame(Long gameId){return findGame(gameId);}
-
-    @Override
     @Transactional
     public Game createGame(
             NewGamePayload payload,
@@ -61,7 +58,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     }
 
     @Override
-    public Game findGame(Long gameId) {
+    public Game getGameById(Long gameId) {
         return gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game ID " + gameId + " not found."));
     }
@@ -75,7 +72,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
             MultipartFile gameFile,
             CustomUserDetails userDetails
     ) {
-        Game existingGame = findGame(id);
+        Game existingGame = getGameById(id);
 
         boolean isAdmin = userDetails.isAdmin();
         boolean isAuthor = Objects.equals(existingGame.getAuthor().getId(), userDetails.getId());
@@ -110,7 +107,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     @Override
     @Transactional
     public void deleteGame(Long id, CustomUserDetails userDetails) {
-        Game existingGame = findGame(id);
+        Game existingGame = getGameById(id);
 
         boolean isAdmin = userDetails.isAdmin();
         boolean isAuthor = Objects.equals(existingGame.getAuthor().getId(), userDetails.getId());

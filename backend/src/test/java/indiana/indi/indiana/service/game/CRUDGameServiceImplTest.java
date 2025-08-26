@@ -84,7 +84,7 @@ class CRUDGameServiceImplTest {
 
         when(repository.findById(id)).thenReturn(Optional.of(mockGame));
         //act
-        Game result = gameService.findGame(id);
+        Game result = gameService.getGameById(id);
         //assert
         assertNotNull(result);
         assertEquals("gameName", result.getTitle());

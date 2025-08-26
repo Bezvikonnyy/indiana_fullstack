@@ -61,4 +61,7 @@ public class Game {
 
     @ManyToMany(mappedBy = "purchasedGames")
     private Set<User> buyers;
+
+    @ManyToMany(mappedBy = "favoriteGames")
+    private Set<User> favorites;
 }

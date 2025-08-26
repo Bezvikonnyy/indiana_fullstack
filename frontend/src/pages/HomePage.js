@@ -8,6 +8,7 @@ function HomePage() {
     const [favoriteGames, setFavoriteGames] = useState(new Set());
     const navigate = useNavigate();
 
+    // Загружаем категории
     useEffect(() => {
         fetch('http://localhost:8080/api/home')
             .then(res => res.json())
@@ -15,6 +16,7 @@ function HomePage() {
             .catch(err => console.error('Ошибка при загрузке категорий:', err));
     }, []);
 
+    // Получаем роль пользователя
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -31,6 +33,7 @@ function HomePage() {
         }
     }, []);
 
+    // Загружаем избранное
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) return;

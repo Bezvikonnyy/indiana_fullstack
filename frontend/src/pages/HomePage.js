@@ -6,7 +6,10 @@ function HomePage() {
     const [categories, setCategories] = useState([]);
     const [userRole, setUserRole] = useState(null);
     const [favoriteGames, setFavoriteGames] = useState(new Set());
+    const [isAuthorized, setIsAuthorized] = useState(false);
     const navigate = useNavigate();
+
+    console.log(favoriteGames)
 
     // Загружаем категории
     useEffect(() => {
@@ -16,7 +19,7 @@ function HomePage() {
             .catch(err => console.error('Ошибка при загрузке категорий:', err));
     }, []);
 
-    // Получаем роль пользователя
+    // Получаем роль пользователя и проверяем авторизацию
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -27,35 +30,45 @@ function HomePage() {
                     role = role.substring(5);
                 }
                 setUserRole(role);
+                setIsAuthorized(true);
             } catch (e) {
                 console.error('Ошибка при декодировании токена', e);
+                setIsAuthorized(false);
             }
         }
     }, []);
 
-    // Загружаем избранное
+    // Загружаем избранное только если пользователь авторизован
     useEffect(() => {
+        if (!isAuthorized) {
+            setFavoriteGames(new Set());
+            return;
+        }
+
         const token = localStorage.getItem('token');
-        if (!token) return;
         fetch('http://localhost:8080/api/user/my_favorite_games', {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then(res => res.json())
             .then(data => {
-                const ids = new Set(data.map(game => game.id));
+                // Приводим все id к числу для корректного сравнения
+                const ids = new Set(data.map(game => Number(game.id)));
                 setFavoriteGames(ids);
             })
-            .catch(err => console.error('Ошибка при загрузке избранного:', err));
-    }, []);
+            .catch(err => {
+                console.error('Ошибка при загрузке избранного:', err);
+                setFavoriteGames(new Set());
+            });
+    }, [isAuthorized]);
 
     const handleAddGame = (categoryId) => {
         navigate(`/games/create?categoryId=${categoryId}`);
     };
 
     const toggleFavorite = async (gameId) => {
-        const token = localStorage.getItem('token');
-        if (!token) return alert('Сначала войдите в аккаунт');
+        if (!isAuthorized) return alert('Сначала войдите в аккаунт');
 
+        const token = localStorage.getItem('token');
         try {
             if (favoriteGames.has(gameId)) {
                 await fetch(`http://localhost:8080/api/user/remove_favorite/${gameId}`, {
@@ -72,7 +85,11 @@ function HomePage() {
                     method: 'POST',
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setFavoriteGames(prev => new Set(prev).add(gameId));
+                setFavoriteGames(prev => {
+                    const copy = new Set(prev);
+                    copy.add(gameId);
+                    return copy;
+                });
             }
         } catch (err) {
             console.error('Ошибка при обновлении избранного:', err);
@@ -121,12 +138,14 @@ function HomePage() {
                                             />
                                             <p className="game-title">{game.title}</p>
                                         </Link>
-                                        <span
-                                            className={`favorite-btn ${favoriteGames.has(game.id) ? 'active' : ''}`}
-                                            onClick={() => toggleFavorite(game.id)}
-                                        >
-                                            ♥
-                                        </span>
+                                        {isAuthorized && (
+                                            <span
+                                                className={`favorite-btn-home ${favoriteGames.has(Number(game.id)) ? 'active' : 'not-active'}`}
+                                                onClick={() => toggleFavorite(Number(game.id))}
+                                            >
+                                                ♥
+                                            </span>
+                                        )}
                                     </div>
                                 ))}
                             </div>

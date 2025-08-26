@@ -113,7 +113,7 @@
 
 .game-card {
     width: 160px;
-    height: 200px; /* фиксированная высота для одинаковой формы */
+    height: 200px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -150,16 +150,19 @@
     justify-content: center;
 }
 
-.favorite-btn {
+.favorite-btn-home {
     position: absolute;
     bottom: 8px;
-    right: 8px; /* переместили в правый нижний угол */
+    right: 8px;
     font-size: 22px;
     cursor: pointer;
-    color: gray; /* по умолчанию серое */
     user-select: none;
 }
 
-.favorite-btn.active {
-    color: red;
+.not-active {
+    color: gray;
+}
+
+.active {
+    color: red; /* только для избранных */
 }

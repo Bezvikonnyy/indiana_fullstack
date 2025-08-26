@@ -41,7 +41,7 @@ public class GameForControllerService {
         return mapper.toDto(game);
     }
 
-    public GameFullDto getGame(Long id){ return mapper.toDto(crudService.getGame(id));}
+    public GameFullDto getGame(Long id){ return mapper.toDto(crudService.getGameById(id));}
 
     public List<GameFullDto> getAllGames(String filter) {
         List<Game> games = gameService.findAllGames(filter);

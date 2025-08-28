@@ -1,0 +1,117 @@
+.game-details-container {
+    display: flex;
+    align-items: flex-start; /* выравнивание сверху */
+    justify-content: flex-start;
+    margin: 0 auto;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Левая часть (картинка + кнопки) */
+.left-container-game-details {
+    flex: 0 0 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Правая часть (текст) */
+.right-container-game-details {
+    flex: 1; /* занимает всё оставшееся пространство */
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+/* Комментарии */
+.comments-section-game-details {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.game-image-game-details {
+    width: 80%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.game-buttons-game-details {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+}
+
+.button-game-details {
+    padding: 0.8rem 1.5rem;
+    background-color: #2e7d32;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.button-game-details:hover {
+    background-color: #1b5e20;
+    transform: translateY(-2px);
+}
+
+.add-cart-button-game-details {
+    background-color: #1976d2;
+}
+
+.add-cart-button-game-details:hover {
+    background-color: #0d47a1;
+}
+
+.delete-button-game-details {
+    background-color: #b71c1c;
+}
+
+.delete-button-game-details:hover {
+    background-color: #7f0000;
+}
+
+.favorite-btn-game-details.inline {
+    position: relative; /* или relative, чтобы она стала обычным элементом flex */
+}
+
+.game-title-game-details {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #2e7d32;
+    font-weight: 700;
+}
+
+.game-description-game-details {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.game-categories-game-details {
+    font-size: 1rem;
+    color: #555;
+}
+
+.game-price-game-details {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Текст загрузки */
+.loading-text-game-details {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    color: #555;
+}

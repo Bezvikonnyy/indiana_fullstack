@@ -149,20 +149,3 @@
     align-items: center;
     justify-content: center;
 }
-
-.favorite-btn-home {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    font-size: 22px;
-    cursor: pointer;
-    user-select: none;
-}
-
-.not-active {
-    color: gray;
-}
-
-.active {
-    color: red; /* только для избранных */
-}

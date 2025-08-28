@@ -3,19 +3,23 @@ package indiana.indi.indiana.mapper;
 import indiana.indi.indiana.dto.CategoryDto;
 import indiana.indi.indiana.dto.GameDto;
 import indiana.indi.indiana.entity.Category;
+import indiana.indi.indiana.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class CategoryMapper {
 
-    public CategoryDto toDto(Category category) {
+    private final GameMapper gameMapper;
+    public CategoryDto toDto(Category category, User user) {
         return new CategoryDto(
                 category.getId(),
                 category.getTitle(),
                 category.getGames().stream()
-                        .map(g -> new GameDto(g.getId(), g.getTitle(), g.getImageUrl(), g.getPrice()))
+                        .map(g -> gameMapper.toDto(g, user))
                         .collect(Collectors.toList())
         );
     }

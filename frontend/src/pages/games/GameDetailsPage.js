@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getUserId, hasRole } from '../../utils/auth';
 import CommentSection from '../../components/CommentSection';
+import FavoriteButton from '../../components/FavoriteButton';
+import './GameDetailsPage.css';
 
 function GameDetailsPage() {
     const { id } = useParams();
@@ -66,126 +68,64 @@ function GameDetailsPage() {
         }
     };
 
-    if (!game) return <p style={{ textAlign: 'center', marginTop: '2rem' }}>Загрузка...</p>;
+    if (!game) return <p className="loading-text">Загрузка...</p>;
 
     const isAuthor = game.authorId === currentUserId;
     const isAdmin = hasRole(['ADMIN']);
 
     return (
-        <div style={styles.container}>
-            <h2 style={styles.title}>{game.title}</h2>
-            <img
-                src={`http://localhost:8080${game.imageUrl}`}
-                alt={game.title}
-                style={styles.image}
-            />
-            <p style={styles.description}>{game.details}</p>
+        <>
+        <div className="game-details-container">
+            <div className="left-container-game-details">
 
-            <p style={styles.categories}>
-                <strong>Категории: </strong>
-                {Array.isArray(game.categories) && game.categories.length > 0
-                    ? game.categories.map(cat => cat.title).join(', ')
-                    : 'Нет категорий'}
-            </p>
+                <img
+                    src={`http://localhost:8080${game.imageUrl}`}
+                    alt={game.title}
+                    className="game-image-game-details"
+                />
 
-            {/* Цена */}
-            <p style={styles.price}>
-                <strong>Цена: </strong>
-                {game.price ? `${game.price} грн` : 'Бесплатно'}
-            </p>
+                <div className="game-buttons-game-details">
+                    <a href={`http://localhost:8080${game.gameFileUrl}`} download>
+                        <button className="button-game-details">Скачать</button>
+                    </a>
+                    <button className="button add-cart-button-game-details" onClick={handleAddToCart}>
+                        Добавить в корзину
+                    </button>
+                        {(isAuthor || isAdmin) && (
+                        <>
+                            <button className="button" onClick={handleEdit}>Редактировать</button>
+                            <button className="button delete-button-game-details" onClick={handleDelete}>Удалить</button>
+                        </>
+                    )}
+                    <div className="favorite-wrapper-game-details">
+                        <FavoriteButton gameId={game.id} className="" />
+                    </div>
+                </div>
 
-            <div style={styles.buttons}>
-                <a href={`http://localhost:8080${game.gameFileUrl}`} download>
-                    <button style={styles.button}>Скачать</button>
-                </a>
-
-                {/* Новая кнопка "Добавить в корзину" */}
-                <button
-                    style={{ ...styles.button, backgroundColor: '#1976d2' }}
-                    onClick={handleAddToCart}
-                >
-                    Добавить в корзину
-                </button>
-
-                {(isAuthor || isAdmin) && (
-                    <>
-                        <button style={styles.button} onClick={handleEdit}>Редактировать</button>
-                        <button
-                            style={{ ...styles.button, backgroundColor: '#b71c1c' }}
-                            onClick={handleDelete}
-                        >
-                            Удалить
-                        </button>
-                    </>
-                )}
             </div>
+            <div className="right-container-game-details">
+                <h2 className="game-title-game-details">{game.title}</h2>
 
-            {/* Секция комментариев */}
-            <div style={{ marginTop: '3rem' }}>
-                <CommentSection gameId={id} />
+                <p className="game-description-game-details">{game.details}</p>
+
+                <p className="game-categories-game-details">
+                    <strong>Категории: </strong>
+                    {Array.isArray(game.categories) && game.categories.length > 0
+                        ? game.categories.map(cat => cat.title).join(', ')
+                        : 'Нет категорий'}
+                </p>
+
+                <p className="game-price-game-details">
+                    <strong>Цена: </strong>
+                    {game.price ? `${game.price} грн` : 'Бесплатно'}
+                </p>
             </div>
         </div>
+        <div className="comments-section-game-details">
+            <CommentSection gameId={id} />
+        </div>
+        </>
     );
 }
-
-const styles = {
-    container: {
-        maxWidth: 700,
-        margin: '40px auto',
-        padding: '2rem',
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
-        fontFamily: 'Arial, sans-serif',
-        textAlign: 'center',
-    },
-    title: {
-        fontSize: '2.5rem',
-        marginBottom: '1rem',
-        color: '#2e7d32',
-        fontWeight: '700',
-    },
-    image: {
-        width: '100%',
-        maxWidth: '600px',
-        height: 'auto',
-        objectFit: 'contain',
-        borderRadius: 6,
-        marginBottom: '1rem',
-    },
-    description: {
-        marginBottom: '1.5rem',
-        fontSize: '1.1rem',
-        color: '#333',
-    },
-    categories: {
-        fontSize: '1rem',
-        marginBottom: '1rem',
-        color: '#555',
-    },
-    price: {
-        fontSize: '1.2rem',
-        marginBottom: '2rem',
-        color: '#000',
-        fontWeight: 'bold',
-    },
-    buttons: {
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '15px',
-        flexWrap: 'wrap',
-    },
-    button: {
-        padding: '0.6rem 1.5rem',
-        backgroundColor: '#2e7d32',
-        color: '#fff',
-        border: 'none',
-        borderRadius: 5,
-        cursor: 'pointer',
-        fontWeight: 'bold',
-        fontSize: '1rem',
-        transition: 'background-color 0.3s ease',
-    },
-};
 
 export default GameDetailsPage;

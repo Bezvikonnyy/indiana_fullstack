@@ -1,6 +1,7 @@
 package indiana.indi.indiana.service.categories;
 
 import indiana.indi.indiana.dto.CategoryDto;
+import indiana.indi.indiana.entity.User;
 import indiana.indi.indiana.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,9 @@ public class CategoryForControllerService {
 
     private final CategoryMapper mapper;
 
-    public List<CategoryDto> findAll() {
+    public List<CategoryDto> findAll(User user) {
         return service.findAll().stream()
-                .map(cat -> mapper.toDto(cat))
+                .map(cat -> mapper.toDto(cat, user))
                 .collect(Collectors.toList());
     }
 }

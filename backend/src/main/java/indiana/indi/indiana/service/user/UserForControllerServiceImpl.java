@@ -63,20 +63,20 @@ public class UserForControllerServiceImpl implements UserForControllerService {
     @Override
     public Set<GameDto> purchasedGame(User userAuth) {
         User user = userService.getUserById(userAuth.getId());
-        return user.getPurchasedGames().stream().map(gameMapper::toDto).collect(Collectors.toSet());
+        return user.getPurchasedGames().stream().map(g -> gameMapper.toDto(g, user)).collect(Collectors.toSet());
     }
 
     @Override
     @Transactional
     public List<GameDto> myGame(User userAuth) {
         User user = userService.getUserById(userAuth.getId());
-        return user.getGames().stream().map(gameMapper::toDto).collect(Collectors.toList());
+        return user.getGames().stream().map(game -> gameMapper.toDto(game, user)).collect(Collectors.toList());
     }
 
     @Override
     public Set<GameDto> favoriteGames(User userAuth) {
         User user = userService.getUserById(userAuth.getId());
-        return user.getFavoriteGames().stream().map(gameMapper::toDto).collect(Collectors.toSet());
+        return user.getFavoriteGames().stream().map(g -> gameMapper.toDto(g, user)).collect(Collectors.toSet());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class UserForControllerServiceImpl implements UserForControllerService {
         Game game = gameService.getGameById(id);
         user.getFavoriteGames().add(game);
         userRepository.save(user);
-        return gameMapper.toDto(game);
+        return gameMapper.toDto(game, user);
     }
 
     @Override

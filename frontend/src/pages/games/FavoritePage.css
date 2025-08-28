@@ -53,12 +53,3 @@
     justify-content: center;
 }
 
-.favorite-btn {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    font-size: 22px;
-    cursor: pointer;
-    color: red;
-    user-select: none;
-}

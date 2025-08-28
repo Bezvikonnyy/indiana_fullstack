@@ -1,0 +1,22 @@
+.favorite-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    font-size: 28px; /* увеличиваем размер */
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.not-active {
+    color: gray;
+}
+
+.active {
+    color: red;
+}
+
+/* лёгкое увеличение при наведении */
+.favorite-btn:hover {
+    transform: scale(1.15);
+}

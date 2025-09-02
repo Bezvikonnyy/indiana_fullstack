@@ -3,7 +3,6 @@ package indiana.indi.indiana.controller;
 import indiana.indi.indiana.dto.CategoryDto;
 
 import indiana.indi.indiana.service.categories.CategoryForControllerService;
-import indiana.indi.indiana.service.categories.CategoryServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 

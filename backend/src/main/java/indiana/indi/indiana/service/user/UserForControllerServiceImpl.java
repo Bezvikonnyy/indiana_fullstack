@@ -2,7 +2,7 @@ package indiana.indi.indiana.service.user;
 
 import indiana.indi.indiana.controller.payload.EditUserPayload;
 import indiana.indi.indiana.controller.payload.NewUserPayload;
-import indiana.indi.indiana.dto.GameDto;
+import indiana.indi.indiana.dto.CardItemDto;
 import indiana.indi.indiana.dto.UserDto;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
@@ -61,27 +61,27 @@ public class UserForControllerServiceImpl implements UserForControllerService {
     }
 
     @Override
-    public Set<GameDto> purchasedGame(User userAuth) {
+    public Set<CardItemDto> purchasedGame(User userAuth) {
         User user = userService.getUserById(userAuth.getId());
         return user.getPurchasedGames().stream().map(g -> gameMapper.toDto(g, user)).collect(Collectors.toSet());
     }
 
     @Override
     @Transactional
-    public List<GameDto> myGame(User userAuth) {
+    public List<CardItemDto> myGame(User userAuth) {
         User user = userService.getUserById(userAuth.getId());
         return user.getGames().stream().map(game -> gameMapper.toDto(game, user)).collect(Collectors.toList());
     }
 
     @Override
-    public Set<GameDto> favoriteGames(User userAuth) {
+    public Set<CardItemDto> favoriteGames(User userAuth) {
         User user = userService.getUserById(userAuth.getId());
         return user.getFavoriteGames().stream().map(g -> gameMapper.toDto(g, user)).collect(Collectors.toSet());
     }
 
     @Override
     @Transactional
-    public GameDto addFavorite(User userAuth, Long id) {
+    public CardItemDto addFavorite(User userAuth, Long id) {
         User user = userService.getUserById(userAuth.getId());
         Game game = gameService.getGameById(id);
         user.getFavoriteGames().add(game);

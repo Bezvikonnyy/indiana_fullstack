@@ -2,7 +2,7 @@ package indiana.indi.indiana.dtoInterface;
 
 import java.math.BigDecimal;
 
-public interface CartItemDto {
+public interface CardItemDtoInter {
     Long getId();
     String getTitle();
     String getImageUrl();

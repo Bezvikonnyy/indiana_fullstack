@@ -2,7 +2,7 @@ package indiana.indi.indiana.service.user;
 
 import indiana.indi.indiana.controller.payload.EditUserPayload;
 import indiana.indi.indiana.controller.payload.NewUserPayload;
-import indiana.indi.indiana.dto.GameDto;
+import indiana.indi.indiana.dto.CardItemDto;
 import indiana.indi.indiana.dto.UserDto;
 import indiana.indi.indiana.entity.User;
 import jakarta.transaction.Transactional;
@@ -20,15 +20,15 @@ public interface UserForControllerService {
 
     void deleteUser(CustomUserDetails user);
 
-    Set<GameDto> purchasedGame(User userAuth);
+    Set<CardItemDto> purchasedGame(User userAuth);
 
     @Transactional
-    List<GameDto> myGame(User userAuth);
+    List<CardItemDto> myGame(User userAuth);
 
-    Set<GameDto> favoriteGames(User userAuth);
+    Set<CardItemDto> favoriteGames(User userAuth);
 
     @Transactional
-    GameDto addFavorite(User userAuth, Long id);
+    CardItemDto addFavorite(User userAuth, Long id);
 
     @Transactional
     void removeFavorite(User userAuth, Long id);

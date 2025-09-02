@@ -7,6 +7,6 @@ public record UserForAdminPanelDto(
         Long id,
         String username,
         Set<RoleDto> roles,
-        List<GameDto> game,
+        List<CardItemDto> game,
         String requestUsers) {
 }

@@ -1,7 +1,7 @@
 package indiana.indi.indiana.mapperInterface;
 
-import indiana.indi.indiana.dto.GameDto;
-import indiana.indi.indiana.dtoInterface.CartItemDto;
+import indiana.indi.indiana.dto.CardItemDto;
+import indiana.indi.indiana.dtoInterface.CardItemDtoInter;
 import indiana.indi.indiana.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,9 @@ public class GameMapperInterface {
 
     private final CartRepository cartRepository;
 
-    public GameDto toDto(CartItemDto projection) {
+    public CardItemDto toDto(CardItemDtoInter projection) {
 
-        return new GameDto(
+        return new CardItemDto(
                 projection.getId(),
                 projection.getTitle(),
                 projection.getImageUrl(),

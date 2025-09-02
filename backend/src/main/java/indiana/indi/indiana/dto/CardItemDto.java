@@ -2,7 +2,7 @@ package indiana.indi.indiana.dto;
 
 import java.math.BigDecimal;
 
-public record GameDto(
+public record CardItemDto(
         Long id,
         String title,
         String imageUrl,

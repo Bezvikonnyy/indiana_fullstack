@@ -1,6 +1,6 @@
 package indiana.indi.indiana.repository;
 
-import indiana.indi.indiana.dtoInterface.CartItemDto;
+import indiana.indi.indiana.dtoInterface.CardItemDtoInter;
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.entity.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,7 +30,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             JOIN g.categories c
             WHERE c.id = :categoryId
             """)
-    List<CartItemDto> findAllByCategoryWithUserStatus(
+    List<CardItemDtoInter> findAllByCategoryWithUserStatus(
             @Param("categoryId") Long categoryId,
             @Param("user") indiana.indi.indiana.entity.User user
     );

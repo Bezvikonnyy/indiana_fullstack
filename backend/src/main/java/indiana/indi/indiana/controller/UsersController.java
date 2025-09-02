@@ -2,7 +2,7 @@ package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.EditUserPayload;
 import indiana.indi.indiana.controller.payload.NewUserPayload;
-import indiana.indi.indiana.dto.GameDto;
+import indiana.indi.indiana.dto.CardItemDto;
 import indiana.indi.indiana.dto.UserDto;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import indiana.indi.indiana.service.user.UserForControllerServiceImpl;
@@ -42,22 +42,22 @@ public class UsersController {
     }
 
     @GetMapping("/purchased_game")
-    public Set<GameDto> getPurchasedGame(@AuthenticationPrincipal CustomUserDetails user) {
+    public Set<CardItemDto> getPurchasedGame(@AuthenticationPrincipal CustomUserDetails user) {
         return service.purchasedGame(user.getUser());
     }
 
     @GetMapping("/my_game")
-    public List<GameDto> getMyGame(@AuthenticationPrincipal CustomUserDetails user) {
+    public List<CardItemDto> getMyGame(@AuthenticationPrincipal CustomUserDetails user) {
         return service.myGame(user.getUser());
     }
 
     @GetMapping("/my_favorite_games")
-    public Set<GameDto> getMyFavoriteGames(@AuthenticationPrincipal CustomUserDetails user) {
+    public Set<CardItemDto> getMyFavoriteGames(@AuthenticationPrincipal CustomUserDetails user) {
         return service.favoriteGames(user.getUser());
     }
 
     @PostMapping("/add_favorite/{gameId}")
-    public GameDto addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
+    public CardItemDto addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
         return service.addFavorite(user.getUser(), gameId);
     }
 

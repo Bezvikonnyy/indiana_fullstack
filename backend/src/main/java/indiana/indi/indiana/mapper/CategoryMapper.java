@@ -1,7 +1,6 @@
 package indiana.indi.indiana.mapper;
 
 import indiana.indi.indiana.dto.CategoryDto;
-import indiana.indi.indiana.dto.GameDto;
 import indiana.indi.indiana.entity.Category;
 import indiana.indi.indiana.entity.User;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package indiana.indi.indiana.mapper;
 
-import indiana.indi.indiana.dto.GameDto;
+import indiana.indi.indiana.dto.CardItemDto;
 import indiana.indi.indiana.entity.Cart;
 import indiana.indi.indiana.entity.Game;
 import indiana.indi.indiana.entity.User;
@@ -15,7 +15,7 @@ public class GameMapper {
 
     private final CartRepository cartRepository;
 
-    public GameDto toDto(Game game, User user) {
+    public CardItemDto toDto(Game game, User user) {
         boolean isFavorite = false;
         boolean isInCart = false;
         boolean isPurchased = false;
@@ -30,7 +30,7 @@ public class GameMapper {
             isInCart = cart.getItems().contains(game);
             isPurchased = game.getBuyers().contains(user);
         }
-        return new GameDto(
+        return new CardItemDto(
                 game.getId(),
                 game.getTitle(),
                 game.getImageUrl(),

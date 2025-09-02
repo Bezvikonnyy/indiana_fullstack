@@ -1,6 +1,6 @@
 package indiana.indi.indiana.service.cart;
 
-import indiana.indi.indiana.entity.Cart;
+import indiana.indi.indiana.entity.cartAndPay.Cart;
 
 public interface CRUDCartService {
 

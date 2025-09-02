@@ -1,6 +1,6 @@
 package indiana.indi.indiana.controller.payload;
 
-import indiana.indi.indiana.entity.Role;
+import indiana.indi.indiana.entity.users.Role;
 
 import java.util.Set;
 

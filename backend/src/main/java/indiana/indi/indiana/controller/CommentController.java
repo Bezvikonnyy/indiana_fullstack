@@ -1,7 +1,7 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.CommentPayload;
-import indiana.indi.indiana.dto.CommentDto;
+import indiana.indi.indiana.dto.comments.CommentDto;
 import indiana.indi.indiana.service.comments.CommentForControllerService;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import jakarta.validation.Valid;

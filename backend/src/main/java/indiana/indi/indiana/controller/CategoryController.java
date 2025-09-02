@@ -1,6 +1,6 @@
 package indiana.indi.indiana.controller;
 
-import indiana.indi.indiana.dto.CategoryDto;
+import indiana.indi.indiana.dto.categories.CategoryDto;
 
 import indiana.indi.indiana.service.categories.CategoryForControllerService;
 import indiana.indi.indiana.service.user.CustomUserDetails;

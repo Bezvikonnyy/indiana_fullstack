@@ -2,10 +2,10 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
-import indiana.indi.indiana.entity.Category;
-import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.repository.GameRepository;
+import indiana.indi.indiana.entity.categories.Category;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.service.categories.CategoryServiceImpl;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;

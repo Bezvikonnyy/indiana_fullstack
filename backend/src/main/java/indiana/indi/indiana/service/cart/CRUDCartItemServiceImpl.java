@@ -1,13 +1,13 @@
 package indiana.indi.indiana.service.cart;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
-import indiana.indi.indiana.entity.Cart;
-import indiana.indi.indiana.entity.CartItem;
-import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.repository.CartItemRepository;
-import indiana.indi.indiana.repository.CartRepository;
-import indiana.indi.indiana.repository.UserRepository;
+import indiana.indi.indiana.entity.cartAndPay.Cart;
+import indiana.indi.indiana.entity.cartAndPay.CartItem;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.repository.cartAndPay.CartItemRepository;
+import indiana.indi.indiana.repository.cartAndPay.CartRepository;
+import indiana.indi.indiana.repository.users.UserRepository;
 import indiana.indi.indiana.service.game.GameService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

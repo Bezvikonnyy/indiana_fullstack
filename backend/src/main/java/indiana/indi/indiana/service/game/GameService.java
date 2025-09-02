@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.game;
 
-import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.repository.GameRepository;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.repository.games.GameRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

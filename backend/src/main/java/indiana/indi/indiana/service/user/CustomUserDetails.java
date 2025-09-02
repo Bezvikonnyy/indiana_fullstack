@@ -1,6 +1,6 @@
 package indiana.indi.indiana.service.user;
 
-import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.entity.users.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,6 +1,6 @@
 package indiana.indi.indiana.service.categories;
 
-import indiana.indi.indiana.entity.Category;
+import indiana.indi.indiana.entity.categories.Category;
 
 import java.util.List;
 

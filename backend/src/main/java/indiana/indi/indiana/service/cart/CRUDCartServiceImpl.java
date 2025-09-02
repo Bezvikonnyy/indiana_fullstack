@@ -1,9 +1,9 @@
 package indiana.indi.indiana.service.cart;
 
-import indiana.indi.indiana.entity.Cart;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.repository.CartRepository;
-import indiana.indi.indiana.repository.UserRepository;
+import indiana.indi.indiana.entity.cartAndPay.Cart;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.repository.cartAndPay.CartRepository;
+import indiana.indi.indiana.repository.users.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

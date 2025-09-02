@@ -1,10 +1,10 @@
 package indiana.indi.indiana.service.order;
 
 import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.entity.Order;
-import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.entity.cartAndPay.Order;
+import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.enums.OrderStatus;
-import indiana.indi.indiana.repository.OrderRepository;
+import indiana.indi.indiana.repository.cartAndPay.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

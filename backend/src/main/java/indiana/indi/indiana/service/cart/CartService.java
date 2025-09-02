@@ -2,9 +2,9 @@ package indiana.indi.indiana.service.cart;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
 import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.entity.Cart;
-import indiana.indi.indiana.entity.Order;
-import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.entity.cartAndPay.Cart;
+import indiana.indi.indiana.entity.cartAndPay.Order;
+import indiana.indi.indiana.entity.users.User;
 
 public interface CartService {
 

@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.categories;
 
-import indiana.indi.indiana.entity.Category;
-import indiana.indi.indiana.repository.CategoryRepository;
+import indiana.indi.indiana.entity.categories.Category;
+import indiana.indi.indiana.repository.categories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,11 @@
 package indiana.indi.indiana.service.comments;
 
 import indiana.indi.indiana.controller.payload.CommentPayload;
-import indiana.indi.indiana.entity.Comment;
-import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.repository.CommentRepository;
-import indiana.indi.indiana.repository.GameRepository;
-import indiana.indi.indiana.repository.UserRepository;
+import indiana.indi.indiana.entity.comments.Comment;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.repository.comments.CommentRepository;
+import indiana.indi.indiana.repository.games.GameRepository;
+import indiana.indi.indiana.repository.users.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

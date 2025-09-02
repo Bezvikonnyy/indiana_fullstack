@@ -1,6 +1,6 @@
 package indiana.indi.indiana.service.invite;
 
-import indiana.indi.indiana.entity.InviteCode;
+import indiana.indi.indiana.entity.users.InviteCode;
 
 public interface CRUDInviteCodeInterfaceService {
 

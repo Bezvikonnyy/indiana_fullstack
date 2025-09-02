@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.invite;
 
-import indiana.indi.indiana.entity.InviteCode;
-import indiana.indi.indiana.repository.InviteCodeRepository;
+import indiana.indi.indiana.entity.users.InviteCode;
+import indiana.indi.indiana.repository.users.InviteCodeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;

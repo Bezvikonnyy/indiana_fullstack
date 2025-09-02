@@ -1,7 +1,7 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.AuthUserPayload;
-import indiana.indi.indiana.dto.AuthResponseDto;
+import indiana.indi.indiana.dto.users.AuthResponseDto;
 import indiana.indi.indiana.service.user.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

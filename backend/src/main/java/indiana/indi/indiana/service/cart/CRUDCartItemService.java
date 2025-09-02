@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.cart;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
-import indiana.indi.indiana.entity.CartItem;
+import indiana.indi.indiana.entity.cartAndPay.CartItem;
 
 public interface CRUDCartItemService {
 

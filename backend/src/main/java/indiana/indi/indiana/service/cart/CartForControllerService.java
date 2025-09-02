@@ -2,11 +2,11 @@ package indiana.indi.indiana.service.cart;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
 import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.dto.CartDto;
-import indiana.indi.indiana.dto.OrderDto;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.mapper.CartMapper;
-import indiana.indi.indiana.mapper.OrderMapper;
+import indiana.indi.indiana.dto.cartAndPay.CartDto;
+import indiana.indi.indiana.dto.cartAndPay.OrderDto;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.mapper.cartAndPay.CartMapper;
+import indiana.indi.indiana.mapper.cartAndPay.OrderMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

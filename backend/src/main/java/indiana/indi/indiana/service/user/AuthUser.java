@@ -2,10 +2,10 @@ package indiana.indi.indiana.service.user;
 
 import indiana.indi.indiana.config.JWTUtil;
 import indiana.indi.indiana.controller.payload.AuthUserPayload;
-import indiana.indi.indiana.dto.AuthResponseDto;
-import indiana.indi.indiana.dto.UserDto;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.mapper.UserMapper;
+import indiana.indi.indiana.dto.users.AuthResponseDto;
+import indiana.indi.indiana.dto.users.UserDto;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.mapper.users.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

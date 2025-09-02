@@ -2,9 +2,14 @@ package indiana.indi.indiana.service.cart;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
 import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.entity.*;
-import indiana.indi.indiana.repository.CartRepository;
-import indiana.indi.indiana.repository.OrderRepository;
+import indiana.indi.indiana.entity.cartAndPay.Cart;
+import indiana.indi.indiana.entity.cartAndPay.CartItem;
+import indiana.indi.indiana.entity.cartAndPay.Order;
+import indiana.indi.indiana.entity.cartAndPay.OrderItem;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.repository.cartAndPay.CartRepository;
+import indiana.indi.indiana.repository.cartAndPay.OrderRepository;
 import indiana.indi.indiana.service.order.CRUDOrderServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +65,7 @@ public class CartServiceImpl implements CartService{
         Cart cart = cartService.getCart(user.getId());
         List<CartItem> cartItems = cart.getItems();
 
-        Order order = orderService.createOrder(user, payload);  // Лучше изменить этот метод, чтобы принимал User, а не userId из payload
+        Order order = orderService.createOrder(user, payload);
         order.setUser(user);
 
         List<OrderItem> orderItems = cartItems.stream()

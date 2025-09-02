@@ -1,8 +1,8 @@
 package indiana.indi.indiana.service.user;
 
-import indiana.indi.indiana.entity.Role;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.repository.UserRepository;
+import indiana.indi.indiana.entity.users.Role;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.repository.users.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

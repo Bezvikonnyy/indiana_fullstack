@@ -1,11 +1,11 @@
 package indiana.indi.indiana.service.order;
 
 import indiana.indi.indiana.controller.payload.NewOrderItemPayload;
-import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.entity.Order;
-import indiana.indi.indiana.entity.OrderItem;
-import indiana.indi.indiana.repository.OrderItemRepository;
-import indiana.indi.indiana.repository.OrderRepository;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.cartAndPay.Order;
+import indiana.indi.indiana.entity.cartAndPay.OrderItem;
+import indiana.indi.indiana.repository.cartAndPay.OrderItemRepository;
+import indiana.indi.indiana.repository.cartAndPay.OrderRepository;
 import indiana.indi.indiana.service.game.GameService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

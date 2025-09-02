@@ -2,9 +2,9 @@ package indiana.indi.indiana.service.user;
 
 import indiana.indi.indiana.controller.payload.EditUserPayload;
 import indiana.indi.indiana.controller.payload.NewUserPayload;
-import indiana.indi.indiana.dto.CardItemDto;
-import indiana.indi.indiana.dto.UserDto;
-import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.dto.games.CardItemDto;
+import indiana.indi.indiana.dto.users.UserDto;
+import indiana.indi.indiana.entity.users.User;
 import jakarta.transaction.Transactional;
 
 import java.util.List;

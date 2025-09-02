@@ -2,10 +2,10 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
-import indiana.indi.indiana.dto.GameFullDto;
-import indiana.indi.indiana.entity.Game;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.mapper.GameFullMapper;
+import indiana.indi.indiana.dto.games.GameFullDto;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.mapper.games.GameFullMapper;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

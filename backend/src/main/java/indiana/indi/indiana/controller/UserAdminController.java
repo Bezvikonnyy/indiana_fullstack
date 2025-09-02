@@ -1,8 +1,8 @@
 package indiana.indi.indiana.controller;
 
-import indiana.indi.indiana.dto.InviteCodeDto;
-import indiana.indi.indiana.dto.UserDto;
-import indiana.indi.indiana.dto.UserForAdminPanelDto;
+import indiana.indi.indiana.dto.users.InviteCodeDto;
+import indiana.indi.indiana.dto.users.UserDto;
+import indiana.indi.indiana.dto.users.UserForAdminPanelDto;
 import indiana.indi.indiana.service.user.CustomUserDetails;
 import indiana.indi.indiana.service.user.admin.AdminService;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,12 @@
 package indiana.indi.indiana.service.user;
 
-import indiana.indi.indiana.entity.InviteCode;
-import indiana.indi.indiana.entity.RequestUsers;
-import indiana.indi.indiana.entity.Role;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.repository.InviteCodeRepository;
-import indiana.indi.indiana.repository.RequestUsersRepository;
-import indiana.indi.indiana.repository.RoleRepository;
+import indiana.indi.indiana.entity.users.InviteCode;
+import indiana.indi.indiana.entity.users.RequestUsers;
+import indiana.indi.indiana.entity.users.Role;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.repository.users.InviteCodeRepository;
+import indiana.indi.indiana.repository.users.RequestUsersRepository;
+import indiana.indi.indiana.repository.users.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

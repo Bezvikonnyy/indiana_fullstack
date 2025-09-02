@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.user;
 
-import indiana.indi.indiana.entity.Role;
-import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.entity.users.Role;
+import indiana.indi.indiana.entity.users.User;
 
 import java.util.Set;
 

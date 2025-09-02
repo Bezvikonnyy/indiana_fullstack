@@ -1,7 +1,7 @@
 package indiana.indi.indiana.controller.payload;
 
-import indiana.indi.indiana.dto.CardItemDto;
-import indiana.indi.indiana.entity.User;
+import indiana.indi.indiana.dto.games.CardItemDto;
+import indiana.indi.indiana.entity.users.User;
 
 import java.util.List;
 

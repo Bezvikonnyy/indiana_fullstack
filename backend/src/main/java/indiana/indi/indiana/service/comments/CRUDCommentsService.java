@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.comments;
 
 import indiana.indi.indiana.controller.payload.CommentPayload;
-import indiana.indi.indiana.entity.Comment;
+import indiana.indi.indiana.entity.comments.Comment;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;

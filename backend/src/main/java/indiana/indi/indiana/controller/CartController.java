@@ -2,10 +2,10 @@ package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
 import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.dto.CartDto;
-import indiana.indi.indiana.dto.OrderDto;
-import indiana.indi.indiana.dto.OrderStatusDto;
-import indiana.indi.indiana.dto.PaymentRequestDto;
+import indiana.indi.indiana.dto.cartAndPay.CartDto;
+import indiana.indi.indiana.dto.cartAndPay.OrderDto;
+import indiana.indi.indiana.dto.cartAndPay.OrderStatusDto;
+import indiana.indi.indiana.dto.cartAndPay.PaymentRequestDto;
 import indiana.indi.indiana.service.cart.CartForControllerService;
 import indiana.indi.indiana.service.order.LiqPayService;
 import indiana.indi.indiana.service.user.CustomUserDetails;

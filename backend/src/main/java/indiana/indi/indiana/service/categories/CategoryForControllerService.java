@@ -1,8 +1,8 @@
 package indiana.indi.indiana.service.categories;
 
-import indiana.indi.indiana.dto.CategoryDto;
-import indiana.indi.indiana.entity.User;
-import indiana.indi.indiana.mapper.CategoryMapper;
+import indiana.indi.indiana.dto.categories.CategoryDto;
+import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.mapper.categories.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

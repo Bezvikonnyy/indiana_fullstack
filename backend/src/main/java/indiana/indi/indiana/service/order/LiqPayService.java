@@ -102,7 +102,7 @@ public class LiqPayService {
         String json = new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
         LiqPayCallbackDto callbackDto = objectMapper.readValue(json, LiqPayCallbackDto.class);
 
-        Long orderId = Long.parseLong(callbackDto.order_id());
+        Long orderId = Long.parseLong(callbackDto.orderId());
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found."));
         Payment payment = paymentRepository.findByOrder(order)

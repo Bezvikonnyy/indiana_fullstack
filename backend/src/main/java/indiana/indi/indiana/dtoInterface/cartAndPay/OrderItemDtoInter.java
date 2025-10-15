@@ -7,5 +7,4 @@ public interface OrderItemDtoInter {
     Long getGameId();
     String getGameTitle();
     BigDecimal getPrice();
-    int getQuantity();
 }

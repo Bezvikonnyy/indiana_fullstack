@@ -4,5 +4,5 @@ import indiana.indi.indiana.entity.users.Role;
 
 import java.util.Set;
 
-public record EditUserPayload(int id, String username, String password, Set<Role> roles) {
+public record EditUserPayload(Long id, String username, String password, Role role) {
 }

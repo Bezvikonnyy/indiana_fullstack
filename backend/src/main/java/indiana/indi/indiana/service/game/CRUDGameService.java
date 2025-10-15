@@ -5,7 +5,7 @@ import indiana.indi.indiana.controller.payload.NewGamePayload;
 
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CRUDGameService {

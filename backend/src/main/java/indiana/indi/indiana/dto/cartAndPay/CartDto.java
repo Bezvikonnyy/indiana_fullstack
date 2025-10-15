@@ -1,7 +1,7 @@
 package indiana.indi.indiana.dto.cartAndPay;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
-public record CartDto(Long id, Long userId, List<CartItemDto> items, int totalItems, BigDecimal totalPrice) {
+public record CartDto(Long id, Long userId, Set<CartItemDto> items, int totalItems, BigDecimal totalPrice) {
 }

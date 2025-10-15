@@ -1,6 +1,5 @@
 package indiana.indi.indiana.entity.cartAndPay;
 
-import indiana.indi.indiana.entity.cartAndPay.Order;
 import indiana.indi.indiana.entity.games.Game;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

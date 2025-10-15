@@ -1,32 +1,27 @@
 package indiana.indi.indiana.mapper.cartAndPay;
 
 import indiana.indi.indiana.dto.cartAndPay.OrderDto;
-import indiana.indi.indiana.dto.cartAndPay.OrderItemDto;
-import indiana.indi.indiana.entity.cartAndPay.Order;
+import indiana.indi.indiana.dtoInterface.cartAndPay.OrderDtoInter;
+import indiana.indi.indiana.dtoInterface.cartAndPay.OrderItemDtoInter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class OrderMapper {
 
-    public OrderDto toDto(Order order) {
-        BigDecimal totalPrice = order.getItems().stream()
-                .map(item -> item.getGame().getPrice())
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    private final OrderItemMapper mapper;
+
+    public OrderDto toDto(OrderDtoInter orderDtoInter, List<OrderItemDtoInter> itemDtoInters) {
         return new OrderDto(
-                order.getId(),
-                order.getUser().getId(),
-                order.getItems().stream().map(item -> new OrderItemDto(
-                        item.getId(),
-                        item.getGame().getId(),
-                        item.getGame().getTitle(),
-                        item.getPrice(),
-                        item.getQuantity())).collect(Collectors.toList()),
-                totalPrice,
-                order.getStatus().name(),
-                order.getCreatedAt()
+                orderDtoInter.getId(),
+                orderDtoInter.getUserId(),
+                itemDtoInters.stream().map(mapper::toDto).toList(),
+                orderDtoInter.getTotalPrice(),
+                orderDtoInter.getStatus(),
+                orderDtoInter.getCreatedAt()
         );
     }
 }

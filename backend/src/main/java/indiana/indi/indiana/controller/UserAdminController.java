@@ -1,15 +1,12 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.dto.users.InviteCodeDto;
-import indiana.indi.indiana.dto.users.UserDto;
 import indiana.indi.indiana.dto.users.UserForAdminPanelDto;
-import indiana.indi.indiana.service.user.CustomUserDetails;
 import indiana.indi.indiana.service.user.admin.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -20,32 +17,38 @@ public class UserAdminController {
     private final AdminService adminService;
 
     @GetMapping("/users")
-    public List<UserForAdminPanelDto> getAdminPanel(@AuthenticationPrincipal CustomUserDetails userDetails)
-            throws AccessDeniedException {return adminService.getAllUsers(userDetails);
+    public Page<UserForAdminPanelDto> getAdminPanel(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "20") int size){
+        return adminService.getAllUsers(page, size);
     }
 
-    @PutMapping("/approve/{id}")
-    public UserDto approvedRequest(@AuthenticationPrincipal CustomUserDetails admin, @PathVariable Long id)
-            throws AccessDeniedException {return adminService.approveRequest( id,admin);
+    @PutMapping("/approve/{userId}")
+    public UserForAdminPanelDto approvedRequest(@PathVariable Long userId){
+        return adminService.approveRequest(userId);
     }
 
-    @DeleteMapping("/delete/request/{id}")
-    public void deleteRequest(@AuthenticationPrincipal CustomUserDetails admin, @PathVariable Long id)
-            throws AccessDeniedException {adminService.deleteRequest(id, admin);}
+    @DeleteMapping("/delete/request/{userId}")
+    public void deleteRequest(@PathVariable Long userId){
+        adminService.deleteRequest(userId);
+    }
 
     @PostMapping("/create_invite")
-    public InviteCodeDto createInviteCode(@AuthenticationPrincipal CustomUserDetails admin)
-            throws AccessDeniedException {return adminService.createInviteCode(admin);}
+    public InviteCodeDto createInviteCode(){
+        return adminService.createInviteCode();
+    }
 
     @GetMapping("/invite_code")
-    public List<InviteCodeDto> getInviteCodes(@AuthenticationPrincipal CustomUserDetails admin)
-            throws AccessDeniedException {return adminService.getAllInviteCode(admin);}
+    public List<InviteCodeDto> getInviteCodes(){
+        return adminService.getAllInviteCode();
+    }
 
-    @DeleteMapping("/delete/invite/{id}")
-    public void deleteInviteCode(@AuthenticationPrincipal CustomUserDetails admin, @PathVariable Long id)
-            throws AccessDeniedException {adminService.deleteInviteCode(admin,id);}
+    @DeleteMapping("/delete/invite/{inviteCodeId}")
+    public void deleteInviteCode(@PathVariable Long inviteCodeId){
+        adminService.deleteInviteCode(inviteCodeId);
+    }
 
-    @DeleteMapping("/delete/user/{id}")
-    public void deleteUser(@AuthenticationPrincipal CustomUserDetails admin, @PathVariable Long id)
-            throws AccessDeniedException {adminService.deleteUser(admin,id);}
+    @DeleteMapping("/delete/user/{userId}")
+    public void deleteUser(@PathVariable Long userId){
+        adminService.deleteUser(userId);
+    }
 }

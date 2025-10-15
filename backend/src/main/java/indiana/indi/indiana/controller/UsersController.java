@@ -3,8 +3,9 @@ package indiana.indi.indiana.controller;
 import indiana.indi.indiana.controller.payload.EditUserPayload;
 import indiana.indi.indiana.controller.payload.NewUserPayload;
 import indiana.indi.indiana.dto.games.CardItemDto;
+import indiana.indi.indiana.dto.users.ProfileDto;
 import indiana.indi.indiana.dto.users.UserDto;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import indiana.indi.indiana.service.user.UserForControllerServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class UsersController {
     private final UserForControllerServiceImpl service;
 
     @GetMapping("/profile")
-    public UserDto getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return service.getProfile(userDetails);
+    public ProfileDto getProfile(@AuthenticationPrincipal CustomUserDetails user) {
+        return service.getProfile(user.getId());
     }
 
     @PostMapping("/registration")
@@ -31,38 +32,38 @@ public class UsersController {
     }
 
     @PutMapping("/edit_profile")
-    public UserDto editProfile(@Valid @RequestBody EditUserPayload payload,
-                               @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return service.editProfile(payload, userDetails);
+    public ProfileDto editProfile(@Valid @RequestBody EditUserPayload payload,
+                               @AuthenticationPrincipal CustomUserDetails user) {
+        return service.editProfile(payload, user.getId());
     }
 
     @DeleteMapping("/delete_profile")
     public void deleteProfile(@AuthenticationPrincipal CustomUserDetails user) {
-        service.deleteUser(user);
+        service.deleteUser(user.getId());
     }
 
     @GetMapping("/purchased_game")
     public Set<CardItemDto> getPurchasedGame(@AuthenticationPrincipal CustomUserDetails user) {
-        return service.purchasedGame(user.getUser());
+        return service.purchasedGame(user.getId());
     }
 
     @GetMapping("/my_game")
     public List<CardItemDto> getMyGame(@AuthenticationPrincipal CustomUserDetails user) {
-        return service.myGame(user.getUser());
+        return service.myGame(user.getId());
     }
 
     @GetMapping("/my_favorite_games")
     public Set<CardItemDto> getMyFavoriteGames(@AuthenticationPrincipal CustomUserDetails user) {
-        return service.favoriteGames(user.getUser());
+        return service.favoriteGames(user.getId());
     }
 
     @PostMapping("/add_favorite/{gameId}")
-    public CardItemDto addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
-        return service.addFavorite(user.getUser(), gameId);
+    public void addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
+        service.addFavorite(user.getId(), gameId);
     }
 
     @DeleteMapping("/remove_favorite/{gameId}")
     public void removeFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
-        service.removeFavorite(user.getUser(), gameId);
+        service.removeFavorite(user.getId(), gameId);
     }
 }

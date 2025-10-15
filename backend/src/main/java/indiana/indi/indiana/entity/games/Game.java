@@ -1,7 +1,6 @@
 package indiana.indi.indiana.entity.games;
 
 import indiana.indi.indiana.entity.users.User;
-import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.comments.Comment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +9,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -43,14 +41,6 @@ public class Game {
     @NotNull
     private String gameFileUrl;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "game_category",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<Category> categories;
-
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
@@ -60,10 +50,4 @@ public class Game {
 
     @Column(name = "price")
     private BigDecimal price;
-
-    @ManyToMany(mappedBy = "purchasedGames")
-    private Set<User> buyers;
-
-    @ManyToMany(mappedBy = "favoriteGames")
-    private Set<User> favorites;
 }

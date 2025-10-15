@@ -1,20 +1,18 @@
 package indiana.indi.indiana.service.cart;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
-import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.entity.cartAndPay.Cart;
+import indiana.indi.indiana.dto.cartAndPay.CartDto;
 import indiana.indi.indiana.entity.cartAndPay.Order;
-import indiana.indi.indiana.entity.users.User;
 
 public interface CartService {
 
-    Cart getCart(Long cartId);
+    CartDto getCart(Long cartId);
 
-    Cart addCartItem(Long cartId, CartItemPayload payload);
+    CartDto addCartItem(CartItemPayload payload, Long userId);
 
-    Cart removeCartItem(Long cartId, CartItemPayload payload);
+    CartDto removeCartItem(CartItemPayload payload, Long cartId);
 
-    Cart cleanCart(Long id);
+    CartDto cleanCart(Long userId);
 
-    Order toOrder(User user, NewOrderPayload payload);
+    Order toOrder(Long userId);
 }

@@ -10,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -27,7 +25,7 @@ class CRUDUserDetailsServiceImplTest {
     PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    CRUDUserDetailsServiceImpl serviceImpl;
+    CRUDUserServiceImpl serviceImpl;
 
     @Test
     void createUser() {
@@ -35,17 +33,17 @@ class CRUDUserDetailsServiceImplTest {
         String username = "sergio";
         String password = "lovevika";
         String passwordCode = "passcod";
-        Set<Role> roles = Set.of(new Role(1, "USER"));
+        Role role = new Role(1, "USER");
         //when
         when(passwordEncoder.encode(password)).thenReturn(passwordCode);
 
         when(repository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User result = serviceImpl.createUser(username, password, roles);
+        User result = serviceImpl.createUser(username, password, role);
         //then
         assertEquals(username, result.getUsername());
         assertEquals(passwordCode, result.getPassword());
-        assertEquals(roles, result.getRoles());
+        assertEquals(role, result.getRole());
 
         verify(repository).save(any(User.class));
         verify(passwordEncoder).encode(password);

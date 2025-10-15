@@ -1,15 +1,10 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.CartItemPayload;
-import indiana.indi.indiana.controller.payload.NewOrderPayload;
-import indiana.indi.indiana.dto.cartAndPay.CartDto;
-import indiana.indi.indiana.dto.cartAndPay.OrderDto;
-import indiana.indi.indiana.dto.cartAndPay.OrderStatusDto;
-import indiana.indi.indiana.dto.cartAndPay.PaymentRequestDto;
+import indiana.indi.indiana.dto.cartAndPay.*;
 import indiana.indi.indiana.service.cart.CartForControllerService;
-import indiana.indi.indiana.service.order.LiqPayService;
-import indiana.indi.indiana.service.user.CustomUserDetails;
-import jakarta.transaction.Transactional;
+import indiana.indi.indiana.service.payment.LigPayStrategy.LiqPayService;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +26,13 @@ public class CartController {
     @PutMapping("/add")
     public CartDto addCartItem(@AuthenticationPrincipal CustomUserDetails user,
                                @RequestBody CartItemPayload payload) {
-        return service.addCartItem(user.getId(), payload);
+        return service.addCartItem(payload, user.getId());
     }
 
     @PutMapping("/remove")
     public CartDto removeCartItem(@AuthenticationPrincipal CustomUserDetails user,
                                   @RequestBody CartItemPayload payload) {
-        return service.removeCartItem(user.getId(), payload);
+        return service.removeCartItem(payload, user.getId());
     }
 
     @PutMapping("/clear")
@@ -46,18 +41,19 @@ public class CartController {
     }
 
     @PutMapping("/order")
-    public OrderDto toOrder(@AuthenticationPrincipal CustomUserDetails user,
-                            @RequestBody NewOrderPayload payload) {
-        return service.toOrder(user.getUser(), payload);
+    public OrderDto toOrder(@AuthenticationPrincipal CustomUserDetails user) {
+        return service.toOrder(user.getId());
     }
 
-    @Transactional
-    @PostMapping("/checkout")
-    public PaymentRequestDto checkout(@AuthenticationPrincipal CustomUserDetails user,
-                                      @RequestBody NewOrderPayload payload) throws Exception {
-        OrderDto orderDto = service.toOrder(user.getUser(), payload);
-        return liqPayService.createPayment(orderDto);
+    @GetMapping("/order/{orderId}")
+    public OrderDto paymentMethod(@PathVariable Long orderId) {
+        return service.paymentMethod(orderId);
     }
+
+//    @PostMapping("/checkout")
+//    public PaymentRequestDto checkout(@RequestBody PaymentMethodDto payment) throws Exception {
+//        return liqPayService.createPayment(payment);
+//    }
 
     @PostMapping("/liqpay/result")
     public void payment(@RequestParam("data") String data,

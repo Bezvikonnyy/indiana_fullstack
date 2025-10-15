@@ -10,5 +10,5 @@ public interface CRUDInviteCodeInterfaceService {
 
     void deleteInviteCode();
 
-    void deleteInviteCodeByCode(String code);
+    void deleteInviteCodeByCode(Long inviteCodeId);
 }

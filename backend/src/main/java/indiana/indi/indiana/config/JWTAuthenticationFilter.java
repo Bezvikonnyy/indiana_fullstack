@@ -1,6 +1,6 @@
 package indiana.indi.indiana.config;
 
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

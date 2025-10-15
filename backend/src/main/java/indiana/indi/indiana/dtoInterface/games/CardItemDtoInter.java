@@ -7,7 +7,6 @@ public interface CardItemDtoInter {
     String getTitle();
     String getImageUrl();
     BigDecimal getPrice();
-
     Boolean getIsFavorite();
     Boolean getIsInCart();
     Boolean getIsPurchased();

@@ -6,7 +6,7 @@ import indiana.indi.indiana.dto.games.GameFullDto;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.mapper.games.GameFullMapper;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

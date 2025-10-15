@@ -4,7 +4,7 @@ import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
 import indiana.indi.indiana.dto.games.GameFullDto;
 import indiana.indi.indiana.service.game.GameForControllerService;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

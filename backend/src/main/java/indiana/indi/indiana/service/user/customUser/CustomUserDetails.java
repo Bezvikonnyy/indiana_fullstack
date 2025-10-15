@@ -1,47 +1,57 @@
-package indiana.indi.indiana.service.user;
+package indiana.indi.indiana.service.user.customUser;
 
-import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.dtoInterface.users.AuthDtoInter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    private User user;
 
-    public CustomUserDetails(User user) {
-        this.user = user;
+    private final Long id;
+
+    private final String username;
+
+    private final String password;
+
+    private final String role;
+
+    public CustomUserDetails(AuthDtoInter authUser)
+    {
+        this.id = authUser.getId();
+        this.username = authUser.getUsername();
+        this.password = authUser.getPassword();
+        this.role = authUser.getRole();
     }
-
-    public User getUser() {
-        return user;
-    }
-
 
     public boolean isAdmin() {
         return getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getRole() {return role;}
+
     @Override
     public String getUsername(){
-        return user.getUsername();
+        return username;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getTitle()))
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override
@@ -62,9 +72,5 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Long getId() {
-        return user.getId();
     }
 }

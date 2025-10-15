@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class RegisterUserService {
 
     private final RoleRepository roleRepository;
 
-    private final CRUDUserDetailsService userDetailsService;
+    private final CRUDUserServiceImpl userDetailsService;
 
     private final RequestUsersRepository repoRequestUser;
 
@@ -51,14 +50,13 @@ public class RegisterUserService {
         return defaultRoleId;
     }
 
-    public User saveUserRole(int id, String username, String password) {
-        Role role = roleRepository.findById(id)
+    public User saveUserRole(int roleId, String username, String password) {
+        Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Нет такой роли"));
-        final Set<Role> roles = Set.of(role);
         return userDetailsService.createUser(
                 username,
                 password,
-                roles
+                role
         );
     }
 

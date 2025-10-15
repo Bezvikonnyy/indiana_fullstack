@@ -3,13 +3,15 @@ package indiana.indi.indiana.service.user;
 import indiana.indi.indiana.controller.payload.EditUserPayload;
 import indiana.indi.indiana.controller.payload.NewUserPayload;
 import indiana.indi.indiana.dto.games.CardItemDto;
+import indiana.indi.indiana.dto.users.ProfileDto;
 import indiana.indi.indiana.dto.users.UserDto;
-import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
 import indiana.indi.indiana.entity.users.User;
-import indiana.indi.indiana.mapper.games.GameMapper;
 import indiana.indi.indiana.mapper.users.UserMapper;
+import indiana.indi.indiana.mapperInterface.games.CardItemMapper;
+import indiana.indi.indiana.mapperInterface.users.ProfileMapperInterface;
+import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
-import indiana.indi.indiana.service.game.CRUDGameServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,24 +24,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserForControllerServiceImpl implements UserForControllerService {
 
-    private final CRUDUserDetailsServiceImpl userService;
-
-    private final CRUDGameServiceImpl gameService;
-
+    private final CRUDUserServiceImpl userService;
     private final RegisterUserService registerUserService;
-
-    private final UserMapper mapper;
-
-    private final GameMapper gameMapper;
-
     private final UserRepository userRepository;
+    private final GameRepository gameRepository;
+    private final UserMapper mapper;
+    private final ProfileMapperInterface profileMapper;
+    private final CardItemMapper itemMapper;
 
     @Override
-    public UserDto getProfile(CustomUserDetails userDetails) {
-        return mapper.toDto(userService.getUser(userDetails.getId()));
+    public ProfileDto getProfile(Long userId) {
+        return profileMapper.toDto(userId);
     }
 
     @Override
+    @Transactional
     public UserDto registerUser(NewUserPayload payload) {
         int id = registerUserService.searchRole(payload.roleId(), payload.inviteCode());
         User user = registerUserService.saveUserRole(id, payload.username(), payload.password());
@@ -48,53 +47,46 @@ public class UserForControllerServiceImpl implements UserForControllerService {
     }
 
     @Override
-    public UserDto editProfile(EditUserPayload payload, CustomUserDetails userDetails) {
-        User user = userDetails.getUser();
-        User editUser = userService.editUser(
-                user.getId(), payload.username(), payload.password(), userDetails.getUser().getRoles());
-        return mapper.toDto(editUser);
-    }
-
-    @Override
-    public void deleteUser(CustomUserDetails user) {
-        userService.deleteUser(user.getId());
-    }
-
-    @Override
-    public Set<CardItemDto> purchasedGame(User userAuth) {
-        User user = userService.getUserById(userAuth.getId());
-        return user.getPurchasedGames().stream().map(g -> gameMapper.toDto(g, user)).collect(Collectors.toSet());
+    @Transactional
+    public ProfileDto editProfile(EditUserPayload payload, Long userId) {
+        userService.editUserProfile(
+                userId, payload.username(), payload.password());
+        return profileMapper.toDto(userId);
     }
 
     @Override
     @Transactional
-    public List<CardItemDto> myGame(User userAuth) {
-        User user = userService.getUserById(userAuth.getId());
-        return user.getGames().stream().map(game -> gameMapper.toDto(game, user)).collect(Collectors.toList());
+    public void deleteUser(Long userId) {
+        userService.deleteUser(userId);
     }
 
     @Override
-    public Set<CardItemDto> favoriteGames(User userAuth) {
-        User user = userService.getUserById(userAuth.getId());
-        return user.getFavoriteGames().stream().map(g -> gameMapper.toDto(g, user)).collect(Collectors.toSet());
+    public Set<CardItemDto> purchasedGame(Long userId) {
+        Set<CardItemDtoInter> dtoInter = gameRepository.findBuyersCardItemById(userId);
+        return dtoInter.stream().map(itemMapper::toDto).collect(Collectors.toSet());
+    }
+
+    @Override
+    public List<CardItemDto> myGame(Long userId) {
+        List<CardItemDtoInter> dtoInter = gameRepository.findAuthorsCardItemById(userId);
+        return dtoInter.stream().map(itemMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<CardItemDto> favoriteGames(Long userId) {
+        Set<CardItemDtoInter> dtoInter = gameRepository.findFavoritesCardItemById(userId);
+        return dtoInter.stream().map(itemMapper::toDto).collect(Collectors.toSet());
     }
 
     @Override
     @Transactional
-    public CardItemDto addFavorite(User userAuth, Long id) {
-        User user = userService.getUserById(userAuth.getId());
-        Game game = gameService.getGameById(id);
-        user.getFavoriteGames().add(game);
-        userRepository.save(user);
-        return gameMapper.toDto(game, user);
+    public void addFavorite(Long userId, Long gameId) {
+        userRepository.addGameFavorite(gameId, userId);
     }
 
     @Override
     @Transactional
-    public void removeFavorite(User userAuth, Long id) {
-        User user = userService.getUserById(userAuth.getId());
-        Game game = gameService.getGameById(id);
-        user.getFavoriteGames().remove(game);
-        userRepository.save(user);
+    public void removeFavorite(Long userId, Long gameId) {
+        userRepository.removeGameFavorite(gameId, userId);
     }
 }

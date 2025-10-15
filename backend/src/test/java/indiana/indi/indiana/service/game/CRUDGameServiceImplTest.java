@@ -6,7 +6,7 @@ import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.service.categories.CategoryServiceImpl;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

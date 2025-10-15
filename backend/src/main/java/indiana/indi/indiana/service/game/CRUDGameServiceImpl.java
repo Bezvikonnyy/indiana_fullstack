@@ -7,7 +7,7 @@ import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.service.categories.CategoryServiceImpl;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package indiana.indi.indiana.entity.categories;
 
-import indiana.indi.indiana.entity.games.Game;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,8 +20,4 @@ public class Category {
 
     @Column(name = "title")
     private String title;
-
-    @ManyToMany(mappedBy = "categories")
-    private List<Game> games;
-
 }

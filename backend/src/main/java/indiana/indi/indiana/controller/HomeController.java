@@ -3,7 +3,7 @@ package indiana.indi.indiana.controller;
 import indiana.indi.indiana.dto.categories.CategoryDto;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.service.home.DefaultHomeService;
-import indiana.indi.indiana.service.user.CustomUserDetails;
+import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;

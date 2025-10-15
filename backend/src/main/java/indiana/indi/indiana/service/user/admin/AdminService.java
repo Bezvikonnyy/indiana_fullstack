@@ -1,27 +1,24 @@
 package indiana.indi.indiana.service.user.admin;
 
 import indiana.indi.indiana.dto.users.InviteCodeDto;
-import indiana.indi.indiana.dto.users.UserDto;
 import indiana.indi.indiana.dto.users.UserForAdminPanelDto;
+import indiana.indi.indiana.dtoInterface.users.UserForAdminPanelDtoInter;
 import indiana.indi.indiana.entity.users.InviteCode;
-import indiana.indi.indiana.entity.users.RequestUsers;
-import indiana.indi.indiana.entity.users.Role;
-import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.mapper.users.InviteCodeMapper;
 import indiana.indi.indiana.mapper.users.UserForAdminPanelMapper;
-import indiana.indi.indiana.mapper.users.UserMapper;
 import indiana.indi.indiana.repository.users.InviteCodeRepository;
 import indiana.indi.indiana.repository.users.RequestUsersRepository;
-import indiana.indi.indiana.repository.users.RoleRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
 import indiana.indi.indiana.service.invite.CRUDInviteCodeService;
-import indiana.indi.indiana.service.user.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -32,68 +29,59 @@ public class AdminService {
 
     private final InviteCodeRepository inviteRepository;
 
-    private final UserMapper mapper;
-
     private final InviteCodeMapper inviteCodeMapper;
 
     private final UserForAdminPanelMapper userMapper;
 
     private final RequestUsersRepository requestUsers;
 
-    private final RoleRepository roleRepository;
-
     private final CRUDInviteCodeService inviteCode;
 
-    private void checkAdmin(CustomUserDetails user) throws AccessDeniedException {
-        if(!user.isAdmin()){
-            throw new AccessDeniedException("Access denied!");
-        }
+    @PreAuthorize("hasRole('ADMIN')")
+    public Page<UserForAdminPanelDto> getAllUsers(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UserForAdminPanelDtoInter> users = userRepository.getAllUsers(pageable);
+        return users.map(userMapper::toDto);
     }
 
-    public List<UserForAdminPanelDto> getAllUsers(CustomUserDetails user) throws AccessDeniedException {
-        checkAdmin(user);
-        List<User> users = userRepository.findAll();
-        return users.stream().map(us -> {
-            RequestUsers request = requestUsers.findByUserId(us.getId()).orElse(null);
-            String bodyRequest = request != null ? request.getBodyRequest() : null;
-            return userMapper.toDto(us, bodyRequest);
-        }).toList();
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserForAdminPanelDto approveRequest(Long userId){
+        requestUsers.findByUserId(userId).ifPresent(requestUsers::delete);
+        userRepository.updateUserRole(userId, 2L);
+        UserForAdminPanelDtoInter user = userRepository.getUserForAdminPanel(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
+        return userMapper.toDto(user);
     }
 
-    public UserDto approveRequest(Long id, CustomUserDetails admin) throws AccessDeniedException {
-        checkAdmin(admin);
-        requestUsers.findByUserId(id).ifPresent(requestUsers::delete);
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found."));
-        Role role = roleRepository.findById(2).orElseThrow(() -> new EntityNotFoundException("Role not found."));
-        user.setRoles(new HashSet<>(List.of(role)));
-        userRepository.save(user);
-        return mapper.toDto(user);
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteRequest(Long userId){
+        requestUsers.deleteByUserId(userId);
     }
 
-    public void deleteRequest(Long id, CustomUserDetails admin) throws AccessDeniedException {
-        checkAdmin(admin);
-        requestUsers.findByUserId(id).ifPresent(requestUsers::delete);
-    }
-
-    public InviteCodeDto createInviteCode(CustomUserDetails admin) throws AccessDeniedException {
-        checkAdmin(admin);
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public InviteCodeDto createInviteCode(){
         return inviteCodeMapper.toDto(inviteCode.createInviteCode());
     }
 
-    public List<InviteCodeDto> getAllInviteCode(CustomUserDetails admin) throws AccessDeniedException {
-        checkAdmin(admin);
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<InviteCodeDto> getAllInviteCode(){
         List<InviteCode> inviteCodes = inviteRepository.findAll().stream().toList();
         return inviteCodes.stream().
                 map(inviteCodeMapper::toDto).toList();
     }
 
-    public void deleteInviteCode(CustomUserDetails admin, Long id) throws AccessDeniedException {
-        checkAdmin(admin);
-        inviteRepository.findById(id).ifPresent(inviteRepository::delete);
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteInviteCode(Long inviteId){
+        inviteRepository.deleteById(inviteId);
     }
 
-    public void deleteUser(CustomUserDetails admin, Long id) throws AccessDeniedException {
-        checkAdmin(admin);
-        userRepository.findById(id).ifPresent(userRepository::delete);
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteUser(Long userId){
+        userRepository.deleteUserById(userId);
     }
 }

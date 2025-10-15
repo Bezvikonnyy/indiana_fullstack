@@ -1,10 +1,10 @@
 package indiana.indi.indiana.service.cart;
 
-import indiana.indi.indiana.entity.cartAndPay.Cart;
+import indiana.indi.indiana.dto.cartAndPay.CartDto;
 
 public interface CRUDCartService {
 
-    Cart getCart(Long id);
+    CartDto getCart(Long id);
 
     void clearCart(Long id);
 }

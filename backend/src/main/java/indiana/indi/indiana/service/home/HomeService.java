@@ -10,6 +10,6 @@ public interface HomeService {
 
     List<Category> getAllCategories();
 
-    List<CategoryDto> getCategoriesGamesDto(User user);
+    List<CategoryDto> getCategoriesGamesDto(Long userId);
 
 }

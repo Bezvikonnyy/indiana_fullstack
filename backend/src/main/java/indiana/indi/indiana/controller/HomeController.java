@@ -21,7 +21,6 @@ public class HomeController {
 
     @GetMapping
     public List<CategoryDto> getCategoriesList(@AuthenticationPrincipal CustomUserDetails user){
-        User currentUser = (user != null) ? user.getUser() : null;
-        return homeService.getCategoriesGamesDto(currentUser);
+        return homeService.getCategoriesGamesDto(user.getId());
     }
 }

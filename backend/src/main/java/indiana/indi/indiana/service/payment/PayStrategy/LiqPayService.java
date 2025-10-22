@@ -1,4 +1,4 @@
-package indiana.indi.indiana.service.payment.LigPayStrategy;
+package indiana.indi.indiana.service.payment.PayStrategy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +22,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -33,12 +32,11 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class LiqPayService implements PaymentStrategy {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
     @Value("${liqpay.public-key}")
     private String publicKey;
     @Value("${liqpay.private-key}")
     private String privateKey;
+    private final JdbcTemplate jdbcTemplate;
     private final CRUDCartServiceImpl cartService;
     private final CRUDOrderServiceImpl orderService;
     private final ObjectMapper objectMapper;
@@ -103,7 +101,7 @@ public class LiqPayService implements PaymentStrategy {
         verifySignature(data,signature);
 
         String json = new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
-        LiqPayCallbackDto callbackDto = null;
+        LiqPayCallbackDto callbackDto;
         try {
             callbackDto = objectMapper.readValue(json, LiqPayCallbackDto.class);
         } catch (JsonProcessingException e) {
@@ -161,11 +159,5 @@ public class LiqPayService implements PaymentStrategy {
                                     signature.getBytes(StandardCharsets.UTF_8))) {
             throw new SecurityException("Invalid signature");
         }
-    }
-
-    public OrderStatusDto getOrderStatus(Long orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found."));
-        return new OrderStatusDto(order.getId(), order.getStatus().toString());
     }
 }

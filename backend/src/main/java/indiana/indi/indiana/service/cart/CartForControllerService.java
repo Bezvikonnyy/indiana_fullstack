@@ -3,11 +3,15 @@ package indiana.indi.indiana.service.cart;
 import indiana.indi.indiana.controller.payload.CartItemPayload;
 import indiana.indi.indiana.dto.cartAndPay.CartDto;
 import indiana.indi.indiana.dto.cartAndPay.OrderDto;
+import indiana.indi.indiana.dto.cartAndPay.OrderStatusDto;
+import indiana.indi.indiana.dto.cartAndPay.PaymentRequestDto;
 import indiana.indi.indiana.dtoInterface.cartAndPay.OrderDtoInter;
 import indiana.indi.indiana.dtoInterface.cartAndPay.OrderItemDtoInter;
 import indiana.indi.indiana.entity.cartAndPay.Order;
 import indiana.indi.indiana.mapper.cartAndPay.OrderMapper;
 import indiana.indi.indiana.repository.cartAndPay.OrderRepository;
+import indiana.indi.indiana.service.payment.PaymentStrategy;
+import indiana.indi.indiana.service.payment.PaymentStrategyFactory;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ import java.util.List;
 public class CartForControllerService {
 
     private final CartServiceImpl cartService;
+    private final PaymentStrategyFactory paymentStrategy;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
@@ -51,10 +56,19 @@ public class CartForControllerService {
         return orderMapper.toDto(orderDtoInter, itemDtoInters);
     }
 
-    public OrderDto paymentMethod(Long orderId) {
-        OrderDtoInter orderDtoInter = orderRepository.getOrderById(orderId)
+    public PaymentRequestDto createPayment(String paymentMethod, Long orderId){
+        PaymentStrategy strategy = paymentStrategy.getStrategy(paymentMethod);
+        return strategy.createPayment(orderId);
+    }
+
+    public void callbackPayment(String paymentMethod, String data, String signature){
+        PaymentStrategy strategy = paymentStrategy.getStrategy(paymentMethod);
+        strategy.processCallback(data, signature);
+    }
+
+    public OrderStatusDto getOrderStatus(Long orderId) {
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found."));
-        List<OrderItemDtoInter> itemDtoInters = orderRepository.getOrderItemByOrderId(orderId);
-        return orderMapper.toDto(orderDtoInter, itemDtoInters);
+        return new OrderStatusDto(order.getId(), order.getStatus().toString());
     }
 }

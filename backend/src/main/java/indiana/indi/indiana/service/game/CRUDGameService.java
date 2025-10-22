@@ -14,7 +14,7 @@ public interface CRUDGameService {
             NewGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gaveFile,
-            User author);
+            Long userId);
 
     Game getGameById(Long gameId);
 
@@ -23,8 +23,8 @@ public interface CRUDGameService {
             EditGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gameFile,
-            CustomUserDetails userDetails
+            Long userId
     );
 
-    void deleteGame(Long id,CustomUserDetails userDetails);
+    void deleteGame(Long id,Long userId);
 }

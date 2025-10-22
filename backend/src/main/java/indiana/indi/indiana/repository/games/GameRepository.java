@@ -3,7 +3,6 @@ package indiana.indi.indiana.repository.games;
 import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
 import indiana.indi.indiana.dtoInterface.games.GameForProfileDtoInter;
 import indiana.indi.indiana.entity.games.Game;
-import indiana.indi.indiana.entity.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,25 +17,31 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAllByTitleLikeIgnoreCase(String filter);
 
     @Query("""
-            SELECT 
-                g.id as id,
-                g.title as title,
-                g.imageUrl as imageUrl,
-                g.price as price,
-                CASE WHEN :user MEMBER OF g.favorites THEN true ELSE false END as isFavorite,
-                CASE WHEN :user IN (SELECT i.cart.user FROM CartItem i WHERE i.game = g) THEN true ELSE false END as isInCart,
-                CASE WHEN :user MEMBER OF g.buyers THEN true ELSE false END as isPurchased
-            FROM Game g
-                JOIN g.categories c
-                WHERE c.id = :categoryId
+            SELECT
+                    g.id as id,
+                    g.title as title,
+                    g.imageUrl as imageUrl,
+                    g.price as price,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                    ) THEN true ELSE false END as isFavorite,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                    ) THEN true ELSE false END as isInCart,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                    ) THEN true ELSE false END as isPurchased
+            FROM GameCategory gc
+                JOIN gc.game g
+                WHERE gc.category.id = :categoryId
                 """)
     List<CardItemDtoInter> findAllByCategoryWithUserStatus(
             @Param("categoryId") Long categoryId,
-            @Param("user") User user
+            @Param("userId") Long userId
     );
 
     @Query("""
-            SELECT 
+            SELECT
                 g.id as id,
                 g.title as title
             FROM Game g
@@ -47,37 +52,37 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query("""
             SELECT
                 g.id as id,
-                g.title as title 
-            FROM Game g
-            JOIN g.buyers u
-            WHERE u.id=:userId
+                g.title as title
+            FROM UserPurchasedGames up
+            JOIN up.game g
+            WHERE up.user.id=:userId
             """)
     Set<GameForProfileDtoInter> findBuyersGameById(@Param("userId") Long userId);
 
     @Query("""
-            SELECT 
+            SELECT
                 g.id as id,
                 g.title as title
-            FROM Game g
-            JOIN g.favorites f
-            WHERE f.id=:userId
+            FROM UserFavoriteGames uf
+            JOIN uf.game g
+            WHERE uf.user.id=:userId
             """)
     Set<GameForProfileDtoInter> findFavoritesGameById(@Param("userId") Long userId);
 
     @Query("""
-                SELECT 
+                SELECT
                     g.id as id,
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
                     CASE WHEN EXISTS (
-                        SELECT 1 FROM g.favorites f WHERE f.id = :userId
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
                     ) THEN true ELSE false END as isInCart,
                     CASE WHEN EXISTS (
-                        SELECT 1 FROM g.buyers b WHERE b.id = :userId
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
                     ) THEN true ELSE false END as isPurchased
                 FROM Game g
                 WHERE g.author.id = :userId
@@ -85,47 +90,44 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<CardItemDtoInter> findAuthorsCardItemById(@Param("userId") Long userId);
 
     @Query("""
-                SELECT 
+                SELECT
                     g.id as id,
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
                     CASE WHEN EXISTS (
-                        SELECT 1 FROM g.favorites f WHERE f.id = :userId
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
                     ) THEN true ELSE false END as isInCart,
                     CASE WHEN EXISTS (
-                        SELECT 1 FROM g.buyers b WHERE b.id = :userId
+                        SELECT 1 FROM UserPurchasedGames up2 WHERE up2.game = g AND up2.user.id = :userId
                     ) THEN true ELSE false END as isPurchased
-                FROM Game g
-                WHERE EXISTS (
-                    SELECT 1 FROM g.buyers b WHERE b.id = :userId
-                )
+                FROM UserPurchasedGames up
+                JOIN up.game g
+                WHERE up.user.id = :userId
             """)
     Set<CardItemDtoInter> findBuyersCardItemById(@Param("userId") Long userId);
 
     @Query("""
-                SELECT 
+                SELECT
                     g.id as id,
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
                     CASE WHEN EXISTS (
-                        SELECT 1 FROM g.favorites f WHERE f.id = :userId
+                        SELECT 1 FROM UserFavoriteGames uf2 WHERE uf2.game = g AND uf2.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
                     ) THEN true ELSE false END as isInCart,
                     CASE WHEN EXISTS (
-                        SELECT 1 FROM g.buyers b WHERE b.id = :userId
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
                     ) THEN true ELSE false END as isPurchased
-                FROM Game g
-                WHERE EXISTS (
-                    SELECT 1 FROM g.favorites f WHERE f.id = :userId
-                )
+                FROM UserFavoriteGames uf
+                JOIN uf.game g
+                WHERE uf.user.id =:userId
             """)
     Set<CardItemDtoInter> findFavoritesCardItemById(@Param("userId") Long userId);
-
 }

@@ -17,9 +17,7 @@ import java.util.List;
 public class DefaultHomeService implements HomeService {
 
     private final CategoryRepository categoryRepository;
-
     private final GameMapperInterface gameMapper;
-
     private final GameRepository gameRepository;
 
     @Override
@@ -29,11 +27,11 @@ public class DefaultHomeService implements HomeService {
 
     @Transactional
     @Override
-    public List<CategoryDto> getCategoriesGamesDto(User user) {
+    public List<CategoryDto> getCategoriesGamesDto(Long userId) {
         return getAllCategories().stream().map(c -> new CategoryDto(
                 c.getId(),
                 c.getTitle(),
-                gameRepository.findAllByCategoryWithUserStatus(c.getId(), user)
+                gameRepository.findAllByCategoryWithUserStatus(c.getId(), userId)
                         .stream().map(g -> gameMapper.toDto(g)).toList()
         )).toList();
     }

@@ -4,10 +4,12 @@ import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.manyToManyEntities.GameCategory;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.repository.games.GameRepository;
+import indiana.indi.indiana.repository.manyToMany.GameCategoryRepository;
+import indiana.indi.indiana.repository.users.UserRepository;
 import indiana.indi.indiana.service.categories.CategoryServiceImpl;
-import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,9 @@ import java.util.Objects;
 public class CRUDGameServiceImpl implements CRUDGameService {
 
     private final GameRepository gameRepository;
-
+    private final GameCategoryRepository gameCategoryRepository;
+    private final UserRepository userRepository;
     private final CategoryServiceImpl categoryService;
-
     private final FileService fileService;
 
     @Override
@@ -34,27 +36,29 @@ public class CRUDGameServiceImpl implements CRUDGameService {
             NewGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gameFile,
-            User author
+            Long authorId
     ) {
-        String imageFileUrl;
-        String gameFileUrl;
-
-        imageFileUrl = fileService.saveFile(imageFile, "imageFile");
-        gameFileUrl = fileService.saveFile(gameFile, "gameFile");
+        String imageFileUrl = fileService.saveFile(imageFile, "imageFile");
+        String gameFileUrl = fileService.saveFile(gameFile, "gameFile");
 
         List<Category> categories = categoryService.validCategoryByGame(payload.categoryId());
+        User author = userRepository.getReferenceById(authorId);
 
         Game game = Game.builder()
                 .title(payload.title())
                 .details(payload.details())
                 .imageUrl(imageFileUrl)
                 .gameFileUrl(gameFileUrl)
-                .categories(categories)
                 .author(author)
                 .price(payload.price())
                 .build();
 
-        return gameRepository.save(game);
+        gameRepository.save(game);
+
+        List<GameCategory> links = categories.stream()
+                .map(category -> new GameCategory(null, game, category)).toList();
+        gameCategoryRepository.saveAll(links);
+        return game;
     }
 
     @Override
@@ -66,11 +70,11 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     @Override
     @Transactional
     public Game editGame(
-            Long id,
+            Long gameId,
             EditGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gameFile,
-            CustomUserDetails userDetails
+            Long userId
     ) {
         Game existingGame = getGameById(id);
 
@@ -106,7 +110,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
 
     @Override
     @Transactional
-    public void deleteGame(Long id, CustomUserDetails userDetails) {
+    public void deleteGame(Long gameId, Long userId) {
         Game existingGame = getGameById(id);
 
         boolean isAdmin = userDetails.isAdmin();

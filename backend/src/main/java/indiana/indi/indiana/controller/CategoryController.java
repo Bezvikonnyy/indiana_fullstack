@@ -22,6 +22,6 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryDto> getAllCategories(@AuthenticationPrincipal CustomUserDetails user) {
-        return service.findAll(user.getUser());
+        return service.findAll(user.getId());
     }
 }

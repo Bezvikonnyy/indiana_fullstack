@@ -25,7 +25,7 @@ public class GameController {
     }
 
     @GetMapping("/{gameId}")
-    public GameFullDto getGame(@PathVariable("gameId") long gameId) {
+    public GameFullDto getGame(@PathVariable("gameId") Long gameId) {
         return service.getGame(gameId);
     }
 
@@ -36,7 +36,7 @@ public class GameController {
             @RequestParam("gameFile") MultipartFile gameFile,
             @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
-        return service.createGame(payload, imageFile, gameFile, currentUser.getUser());
+        return service.createGame(payload, imageFile, gameFile, currentUser.getId());
     }
 
     @PostMapping("/edit/{gameId}")
@@ -51,7 +51,7 @@ public class GameController {
                 payload,
                 imageFile,
                 gameFile,
-                userDetails
+                userDetails.getId()
         );
     }
 
@@ -60,6 +60,6 @@ public class GameController {
             @PathVariable("gameId") Long gameId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        service.deleteGame(gameId, userDetails);
+        service.deleteGame(gameId, userDetails.getId());
     }
 }

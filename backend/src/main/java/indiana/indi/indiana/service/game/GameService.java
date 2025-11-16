@@ -2,7 +2,6 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.repository.games.GameRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +19,5 @@ public class GameService {
         } else {
             return gameRepository.findAll();
         }
-    }
-
-    public Game getGame(Long id) {
-        return gameRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Game not found with id " + id));
     }
 }

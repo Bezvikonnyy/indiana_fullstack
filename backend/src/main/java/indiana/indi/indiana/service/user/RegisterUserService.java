@@ -1,12 +1,13 @@
 package indiana.indi.indiana.service.user;
 
 import indiana.indi.indiana.entity.users.InviteCode;
-import indiana.indi.indiana.entity.users.RequestUsers;
+import indiana.indi.indiana.entity.users.UserRequest;
 import indiana.indi.indiana.entity.users.Role;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.repository.users.InviteCodeRepository;
-import indiana.indi.indiana.repository.users.RequestUsersRepository;
 import indiana.indi.indiana.repository.users.RoleRepository;
+import indiana.indi.indiana.repository.users.UserRequestRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class RegisterUserService {
 
     private final CRUDUserServiceImpl userDetailsService;
 
-    private final RequestUsersRepository repoRequestUser;
+    private final UserRequestRepository repoRequestUser;
 
     public int searchRole(int roleId, String inviteCode) {
         int defaultRoleId = 1;
@@ -50,6 +51,7 @@ public class RegisterUserService {
         return defaultRoleId;
     }
 
+    @Transactional
     public User saveUserRole(int roleId, String username, String password) {
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Нет такой роли"));
@@ -62,7 +64,7 @@ public class RegisterUserService {
 
     public void requestAuthor(int roleId,User user) {
         if(roleId==2) {
-            RequestUsers reqUser = new RequestUsers();
+            UserRequest reqUser = new UserRequest();
             reqUser.setUser(user);
             reqUser.setBodyRequest("Заявка на роль автор от пользователя" + user.getUsername() + "!");
             repoRequestUser.save(reqUser);

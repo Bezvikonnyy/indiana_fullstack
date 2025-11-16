@@ -35,6 +35,9 @@ public class Order {
     @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     @Column(name = "total_amount",nullable = false)
     private BigDecimal totalAmount;
 
@@ -42,7 +45,12 @@ public class Order {
     private List<OrderItem> items;
 
     @PrePersist
-    private void prePersist() {
+    public void onPrePersist() {
         createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

@@ -1,7 +1,7 @@
 package indiana.indi.indiana.mapper.users;
 
 import indiana.indi.indiana.dto.users.RequestUserDto;
-import indiana.indi.indiana.entity.users.RequestUsers;
+import indiana.indi.indiana.entity.users.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RequestUserMapper {
 
-    public RequestUserDto toDto(RequestUsers request){
+    public RequestUserDto toDto(UserRequest request){
 
         return new RequestUserDto(
                 request.getId(),

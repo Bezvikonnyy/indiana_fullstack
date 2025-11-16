@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class RoleMapper {
 
     public RoleDto toDto(Role role){
-        return new RoleDto(role.getId(), role.getTitle());
+        return new RoleDto(role.getTitle());
     }
 }

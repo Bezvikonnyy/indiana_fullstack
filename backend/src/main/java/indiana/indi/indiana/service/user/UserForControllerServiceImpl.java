@@ -12,6 +12,8 @@ import indiana.indi.indiana.mapperInterface.games.CardItemMapper;
 import indiana.indi.indiana.mapperInterface.users.ProfileMapperInterface;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
+import indiana.indi.indiana.service.cart.CRUDCartServiceImpl;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class UserForControllerServiceImpl implements UserForControllerService {
 
     private final CRUDUserServiceImpl userService;
+    private final CRUDCartServiceImpl cartService;
     private final RegisterUserService registerUserService;
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
@@ -42,6 +45,7 @@ public class UserForControllerServiceImpl implements UserForControllerService {
     public UserDto registerUser(NewUserPayload payload) {
         int id = registerUserService.searchRole(payload.roleId(), payload.inviteCode());
         User user = registerUserService.saveUserRole(id, payload.username(), payload.password());
+        cartService.createCart(user.getId());
         registerUserService.requestAuthor(payload.roleId(), user);
         return mapper.toDto(user);
     }
@@ -80,13 +84,13 @@ public class UserForControllerServiceImpl implements UserForControllerService {
 
     @Override
     @Transactional
-    public void addFavorite(Long userId, Long gameId) {
-        userRepository.addGameFavorite(gameId, userId);
-    }
-
-    @Override
-    @Transactional
-    public void removeFavorite(Long userId, Long gameId) {
-        userRepository.removeGameFavorite(gameId, userId);
+    public CardItemDto toggleFavorite(Long userId, Long gameId) {
+        boolean exists = userRepository.existsFavoriteByUserIdAndGameId(userId, gameId);
+        if(!exists) {
+            userRepository.addGameFavorite(gameId, userId);
+        } else {userRepository.removeGameFavorite(gameId, userId);}
+        CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found."));
+        return itemMapper.toDto(cardInter);
     }
 }

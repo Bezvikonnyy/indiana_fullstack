@@ -11,28 +11,33 @@ CREATE TABLE users
     password   VARCHAR(255) NOT NULL,
     role_id    BIGINT       NOT NULL,
     created_at TIMESTAMP    NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP,
     CONSTRAINT fk_user_role FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
-CREATE TABLE request_users
+CREATE TABLE user_requests
 (
     id           SERIAL PRIMARY KEY,
-    body_request VARCHAR(500) NOT NULL,
-    user_id      BIGINT       NOT NULL UNIQUE,
-    CONSTRAINT fk_user_request FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    body_request VARCHAR(1000) NOT NULL,
+    user_id      BIGINT        NOT NULL UNIQUE,
+    CONSTRAINT fk_user_request FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    created_at   TIMESTAMP     NOT NULL DEFAULT now(),
+    updated_at   TIMESTAMP
 );
 
 CREATE TABLE games
 (
     id            SERIAL PRIMARY KEY,
-    title         VARCHAR(50)    NOT NULL,
+    title         VARCHAR(255)   NOT NULL,
     details       VARCHAR(2000)  NOT NULL,
     image_url     VARCHAR(255)   NOT NULL,
     game_file_url VARCHAR(255)   NOT NULL,
-    author_id     BIGINT,
-    price         numeric(10, 2) NOT NULL DEFAULT 0,
-    CONSTRAINT fk_games_author FOREIGN KEY (author_id) REFERENCES users (id)
+    price         NUMERIC(10, 2) NOT NULL DEFAULT 0,
+    author_id     BIGINT         REFERENCES users (id) ON DELETE SET NULL,
+    created_at    TIMESTAMP      NOT NULL DEFAULT now(),
+    updated_at    TIMESTAMP
 );
+
 
 CREATE TABLE categories
 (
@@ -53,18 +58,19 @@ CREATE TABLE comments
 (
     id         SERIAL PRIMARY KEY,
     text       VARCHAR(5000) NOT NULL,
-    game_id    BIGINT        NOT NULL,
     author_id  BIGINT REFERENCES users (id) ON DELETE CASCADE,
+    game_id    BIGINT        NOT NULL,
     created_at TIMESTAMP     NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP,
     CONSTRAINT fk_comment_game FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE
 );
 
-CREATE TABLE invite_code
+CREATE TABLE invite_codes
 (
     id         SERIAL PRIMARY KEY,
-    code       VARCHAR(500) NOT NULL UNIQUE,
+    code       VARCHAR(100) NOT NULL UNIQUE,
     used       BOOLEAN      NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP    NOT NULL,
+    created_at TIMESTAMP    NOT NULL DEFAULT now(),
     expires_at TIMESTAMP
 );
 
@@ -73,7 +79,8 @@ CREATE TABLE user_orders
     id           SERIAL PRIMARY KEY,
     user_id      BIGINT         NOT NULL REFERENCES users (id),
     status       VARCHAR(20)    NOT NULL,
-    created_at   TIMESTAMP      NOT NULL,
+    created_at   TIMESTAMP      NOT NULL DEFAULT now(),
+    updated_at   TIMESTAMP,
     total_amount numeric(10, 2) NOT NULL
 );
 
@@ -106,8 +113,8 @@ CREATE TABLE payments
     payment_method VARCHAR(20)    NOT NULL,
     transaction_id VARCHAR(100),
     status         VARCHAR(20)    NOT NULL,
-    created_at     TIMESTAMP      NOT NULL,
-    updated_at     TIMESTAMP      NOT NULL
+    created_at     TIMESTAMP      NOT NULL DEFAULT now(),
+    updated_at     TIMESTAMP
 );
 
 CREATE INDEX idx_payments_order_id ON payments (order_id);
@@ -143,6 +150,17 @@ CREATE TABLE user_favorite_games
     PRIMARY KEY (user_id, game_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_game FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE
+);
+
+CREATE TABLE news
+(
+    id         SERIAL PRIMARY KEY,
+    title      VARCHAR(100)  NOT NULL,
+    content    VARCHAR(2500) NOT NULL,
+    image_url  VARCHAR(255)  NOT NULL,
+    created_at TIMESTAMP     NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP,
+    author_id  BIGINT        REFERENCES users (id) ON DELETE SET NULL
 );
 
 INSERT INTO categories (title)

@@ -18,21 +18,34 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "username",unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "password",nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "author",fetch = FetchType.EAGER)
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
     private List<Game> games = new ArrayList<>();
+
+    @PrePersist
+    public void onPrePersist() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

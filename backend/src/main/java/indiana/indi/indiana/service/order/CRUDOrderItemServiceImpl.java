@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 public class CRUDOrderItemServiceImpl implements CRUDOrderItemService{
 
     private final OrderItemRepository orderItemRepository;
-
     private final OrderRepository orderRepository;
-
     private final GameRepository gameRepository;
 
     @Override

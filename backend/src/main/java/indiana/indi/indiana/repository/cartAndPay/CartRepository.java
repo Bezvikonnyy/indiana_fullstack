@@ -21,7 +21,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
             SELECT 
                 c.id as id,
                 c.user.id as userId,
-                c.items.size as totalItems
+                size(c.items) as totalItems
             FROM Cart c
             WHERE c.user.id =:userId
             """)

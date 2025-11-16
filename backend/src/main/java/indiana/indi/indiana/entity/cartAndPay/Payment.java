@@ -44,13 +44,12 @@ public class Payment {
     @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at",nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist
     public void onPrePersist() {
         createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate

@@ -33,10 +33,7 @@ public class JWTUtil {
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
         Long id = userDetails.getId();
-        String role = userDetails.getUser().getRoles().stream()
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("User must have at least one role"))
-                .getTitle();
+        String role = userDetails.getRole();
 
         return Jwts.builder()
                         .setSubject(userDetails.getUsername())

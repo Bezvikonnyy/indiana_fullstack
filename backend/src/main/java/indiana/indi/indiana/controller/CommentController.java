@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -19,12 +18,12 @@ public class CommentController {
     private final CommentForControllerService service;
 
     @GetMapping("/{commentId}")
-    public CommentDto getComment(@PathVariable("commentId") long commentId) {
+    public CommentDto getComment(@PathVariable("commentId") Long commentId) {
         return service.getComment(commentId);
     }
 
     @GetMapping("/{gameId}/comments")
-    public List<CommentDto> getComments(@PathVariable("gameId") long gameId) {
+    public List<CommentDto> getComments(@PathVariable("gameId") Long gameId) {
         return service.getComments(gameId);
     }
 
@@ -37,13 +36,13 @@ public class CommentController {
     @PutMapping("/edit_comment/{commentId}")
     public CommentDto editComment(@Valid @RequestBody CommentPayload payload,
                                   @PathVariable("commentId") long commentId,
-                                  @AuthenticationPrincipal CustomUserDetails author) throws AccessDeniedException {
+                                  @AuthenticationPrincipal CustomUserDetails author) {
         return service.editComment(commentId, payload, author.getId());
     }
 
     @DeleteMapping("/delete_comment/{commentId}")
     public void deleteComment(@PathVariable("commentId") long commentId,
-                              @AuthenticationPrincipal CustomUserDetails author) throws AccessDeniedException{
+                              @AuthenticationPrincipal CustomUserDetails author) {
         service.deleteComment(commentId, author.getId());
     }
 }

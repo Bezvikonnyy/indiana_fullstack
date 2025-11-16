@@ -1,7 +1,7 @@
 package indiana.indi.indiana.controller;
 
-import indiana.indi.indiana.dto.categories.CategoryDto;
-import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.dto.games.CardItemDto;
+import indiana.indi.indiana.dto.news.NewsDto;
 import indiana.indi.indiana.service.home.DefaultHomeService;
 import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +19,20 @@ public class HomeController {
 
     private final DefaultHomeService homeService;
 
-    @GetMapping
-    public List<CategoryDto> getCategoriesList(@AuthenticationPrincipal CustomUserDetails user){
-        return homeService.getCategoriesGamesDto(user.getId());
+    @GetMapping("/newGame")
+    public Set<CardItemDto> getNewGame(@AuthenticationPrincipal CustomUserDetails user){
+        Long userId = user != null ? user.getId() : null;
+        return homeService.gamesLatestArrivals(user.getId());
+    }
+
+    @GetMapping("/newNews")
+    public Set<NewsDto> getNewNews(){
+        return homeService.newsLatestArrivals();
+    }
+
+    @GetMapping("/gameDiscounts")
+    public Set<CardItemDto> getGamesDiscounts(@AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user != null ? user.getId() : null;
+        return homeService.gamesDiscounts(user.getId());
     }
 }

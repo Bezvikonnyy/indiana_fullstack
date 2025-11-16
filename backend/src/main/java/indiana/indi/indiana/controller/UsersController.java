@@ -31,39 +31,34 @@ public class UsersController {
         return service.registerUser(payload);
     }
 
-    @PutMapping("/edit_profile")
+    @PutMapping("/editProfile")
     public ProfileDto editProfile(@Valid @RequestBody EditUserPayload payload,
                                @AuthenticationPrincipal CustomUserDetails user) {
         return service.editProfile(payload, user.getId());
     }
 
-    @DeleteMapping("/delete_profile")
+    @DeleteMapping("/deleteProfile")
     public void deleteProfile(@AuthenticationPrincipal CustomUserDetails user) {
         service.deleteUser(user.getId());
     }
 
-    @GetMapping("/purchased_game")
+    @GetMapping("/purchasedGame")
     public Set<CardItemDto> getPurchasedGame(@AuthenticationPrincipal CustomUserDetails user) {
         return service.purchasedGame(user.getId());
     }
 
-    @GetMapping("/my_game")
+    @GetMapping("/myGame")
     public List<CardItemDto> getMyGame(@AuthenticationPrincipal CustomUserDetails user) {
         return service.myGame(user.getId());
     }
 
-    @GetMapping("/my_favorite_games")
+    @GetMapping("/myFavoriteGames")
     public Set<CardItemDto> getMyFavoriteGames(@AuthenticationPrincipal CustomUserDetails user) {
         return service.favoriteGames(user.getId());
     }
 
-    @PostMapping("/add_favorite/{gameId}")
-    public void addFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
-        service.addFavorite(user.getId(), gameId);
-    }
-
-    @DeleteMapping("/remove_favorite/{gameId}")
-    public void removeFavoriteGame(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
-        service.removeFavorite(user.getId(), gameId);
+    @PostMapping("/toggle/{gameId}")
+    public CardItemDto postToggleFavorite(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
+        return service.toggleFavorite(user.getId(), gameId);
     }
 }

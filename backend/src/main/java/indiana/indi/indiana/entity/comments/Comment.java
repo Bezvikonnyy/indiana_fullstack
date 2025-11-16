@@ -31,10 +31,23 @@ public class Comment {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onPrePersist() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

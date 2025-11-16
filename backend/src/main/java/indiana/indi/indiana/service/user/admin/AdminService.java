@@ -7,7 +7,7 @@ import indiana.indi.indiana.entity.users.InviteCode;
 import indiana.indi.indiana.mapper.users.InviteCodeMapper;
 import indiana.indi.indiana.mapper.users.UserForAdminPanelMapper;
 import indiana.indi.indiana.repository.users.InviteCodeRepository;
-import indiana.indi.indiana.repository.users.RequestUsersRepository;
+import indiana.indi.indiana.repository.users.UserRequestRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
 import indiana.indi.indiana.service.invite.CRUDInviteCodeService;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,7 +33,7 @@ public class AdminService {
 
     private final UserForAdminPanelMapper userMapper;
 
-    private final RequestUsersRepository requestUsers;
+    private final UserRequestRepository requestUsers;
 
     private final CRUDInviteCodeService inviteCode;
 

@@ -8,9 +8,9 @@
 }
 
 .auth-form-container {
-    position: relative; /* для позиционирования ссылки */
+    position: relative;
     background-color: white;
-    padding: 2rem 3rem 4rem 3rem; /* увеличенный padding снизу для ссылки */
+    padding: 2rem 3rem 4rem 3rem;
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     width: 320px;
@@ -63,7 +63,7 @@
 
 .auth-switch-link {
     position: absolute;
-    bottom: 1rem; /* отступ снизу от контейнера */
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;

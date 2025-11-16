@@ -15,7 +15,6 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     public List<Category> validCategoryByGame(List<Long> categoryId) {
-
         List<Category> categories = categoryRepository.findAllById(categoryId);
 
         if(categories.size() != categoryId.size()){

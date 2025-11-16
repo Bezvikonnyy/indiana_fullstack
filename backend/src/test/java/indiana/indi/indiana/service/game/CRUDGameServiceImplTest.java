@@ -1,6 +1,7 @@
 package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.NewGamePayload;
+import indiana.indi.indiana.dto.games.GameFullDto;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
@@ -50,7 +51,7 @@ class CRUDGameServiceImplTest {
         MultipartFile imageFile = mock(MultipartFile.class);
         MultipartFile gameFile = mock(MultipartFile.class);
 
-        List<Category> categories = List.of(new Category(1L, "Шутеры", List.of()));
+        List<Category> categories = List.of(new Category(1L, "Шутеры"));
 
         NewGamePayload payload = new NewGamePayload(title, details, List.of(1L), price);
         User author = new User();
@@ -60,13 +61,13 @@ class CRUDGameServiceImplTest {
         when(categoryService.validCategoryByGame(payload.categoryId())).thenReturn(categories);
         when(repository.save(any(Game.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Game result = gameService.createGame(payload, imageFile, gameFile, author);
+        GameFullDto result = gameService.createGame(payload, imageFile, gameFile, author.getId());
         //assert
-        assertEquals(title, result.getTitle());
-        assertEquals(details, result.getDetails());
-        assertEquals(imageUrl, result.getImageUrl());
-        assertEquals(gameUrl, result.getGameFileUrl());
-        assertEquals(author, result.getAuthor());
+        assertEquals(title, result.title());
+        assertEquals(details, result.details());
+        assertEquals(imageUrl, result.imageUrl());
+        assertEquals(gameUrl, result.gameFileUrl());
+        assertEquals(author.getId(), result.authorId());
 
         verify(fileService).saveFile(imageFile, "imageFile");
         verify(fileService).saveFile(gameFile, "gameFile");
@@ -103,7 +104,7 @@ class CRUDGameServiceImplTest {
         mockGame.setId(id);
         mockGame.setImageUrl(imageUrl);
         mockGame.setGameFileUrl(gameUrl);
-        mockGame.setCategories(new ArrayList<>());
+//        mockGame.setCategories(new ArrayList<>());
 
         // создаём пользователя-автора
         User author = new User();
@@ -118,7 +119,7 @@ class CRUDGameServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.of(mockGame));
 
         // act
-        gameService.deleteGame(id, userDetails);
+        gameService.deleteGame(id, userDetails.getId());
 
         // assert
         verify(fileService).deleteFileIfExists(imageUrl);

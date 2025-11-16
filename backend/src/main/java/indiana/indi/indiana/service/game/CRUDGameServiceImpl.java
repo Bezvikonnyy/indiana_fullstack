@@ -2,10 +2,12 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
+import indiana.indi.indiana.dto.games.GameFullDto;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.manyToManyEntities.GameCategory;
 import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.mapper.games.GameFullMapper;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.repository.manyToMany.GameCategoryRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
@@ -29,20 +31,21 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     private final UserRepository userRepository;
     private final CategoryServiceImpl categoryService;
     private final FileService fileService;
+    private final GameFullMapper mapper;
 
     @Override
     @Transactional
-    public Game createGame(
+    public GameFullDto createGame(
             NewGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gameFile,
-            Long authorId
+            Long userId
     ) {
         String imageFileUrl = fileService.saveFile(imageFile, "imageFile");
         String gameFileUrl = fileService.saveFile(gameFile, "gameFile");
 
         List<Category> categories = categoryService.validCategoryByGame(payload.categoryId());
-        User author = userRepository.getReferenceById(authorId);
+        User author = userRepository.getReferenceById(userId);
 
         Game game = Game.builder()
                 .title(payload.title())
@@ -58,42 +61,27 @@ public class CRUDGameServiceImpl implements CRUDGameService {
         List<GameCategory> links = categories.stream()
                 .map(category -> new GameCategory(null, game, category)).toList();
         gameCategoryRepository.saveAll(links);
-        return game;
-    }
-
-    @Override
-    public Game getGameById(Long gameId) {
-        return gameRepository.findById(gameId)
-                .orElseThrow(() -> new EntityNotFoundException("Game ID " + gameId + " not found."));
+        return mapper.toDto(game, categories);
     }
 
     @Override
     @Transactional
-    public Game editGame(
+    public GameFullDto editGame(
             Long gameId,
             EditGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gameFile,
             Long userId
     ) {
-        Game existingGame = getGameById(id);
-
-        boolean isAdmin = userDetails.isAdmin();
-        boolean isAuthor = Objects.equals(existingGame.getAuthor().getId(), userDetails.getId());
-
-        if (!isAuthor && !isAdmin) {
-            throw new AccessDeniedException("Access denied.");
-        }
-
+        Game existingGame = getGameById(gameId);
+        accessRight(userId, existingGame);
         List<Category> categories = categoryService.validCategoryByGame(payload.categoryId());
-
 
         if (imageFile != null && !imageFile.isEmpty()) {
             fileService.deleteFileIfExists(existingGame.getImageUrl());
             String newImageFileUrl = fileService.saveFile(imageFile, "imageFile");
             existingGame.setImageUrl(newImageFileUrl);
         }
-
         if (gameFile != null && !gameFile.isEmpty()) {
             fileService.deleteFileIfExists(existingGame.getGameFileUrl());
             String newGameFileUrl = fileService.saveFile(gameFile, "gameFile");
@@ -102,29 +90,43 @@ public class CRUDGameServiceImpl implements CRUDGameService {
 
         existingGame.setTitle(payload.title());
         existingGame.setDetails(payload.details());
-        existingGame.setCategories(categories);
         existingGame.setPrice(payload.price());
+        gameRepository.save(existingGame);
+        List<GameCategory> links = categories.stream()
+                .map(category -> new GameCategory(null, existingGame, category)).toList();
+        gameCategoryRepository.saveAll(links);
+        return mapper.toDto(existingGame, categories);
+    }
 
-        return gameRepository.save(existingGame);
+    public GameFullDto getGame(Long gameId) {
+        return mapper.toDto(getGameById(gameId), gameCategoryRepository.findByGameId(gameId));
     }
 
     @Override
     @Transactional
     public void deleteGame(Long gameId, Long userId) {
-        Game existingGame = getGameById(id);
-
-        boolean isAdmin = userDetails.isAdmin();
-        boolean isAuthor = Objects.equals(existingGame.getAuthor().getId(), userDetails.getId());
-
-        if (!isAuthor && !isAdmin) {
-            throw new AccessDeniedException("Access denied.");
-        }
-
-        existingGame.getCategories().clear();
+        Game existingGame = getGameById(gameId);
+        accessRight(userId, existingGame);
 
         fileService.deleteFileIfExists(existingGame.getImageUrl());
         fileService.deleteFileIfExists(existingGame.getGameFileUrl());
 
         gameRepository.delete(existingGame);
+    }
+
+    @Override
+    public Game getGameById(Long gameId) {
+        return gameRepository.findById(gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Game ID " + gameId + " not found."));
+    }
+
+    public void accessRight(Long userId, Game game) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
+        boolean isAdmin = user.getRole().toString().equals("ROLE_ADMIN");
+        boolean isAuthor = Objects.equals(game.getAuthor().getId(), userId);
+        if (!isAuthor && !isAdmin) {
+            throw new AccessDeniedException("Access denied.");
+        }
     }
 }

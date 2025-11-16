@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "invite_code")
+@Table(name = "invite_codes")
 public class InviteCode {
 
     @Id
@@ -20,17 +20,19 @@ public class InviteCode {
     private Long id;
 
     @Column(name = "code", unique = true, nullable = false)
-    @NotNull
     private String code;
 
-    @Column(name = "used")
-    @NotNull
+    @Column(name = "used", nullable = false)
     private boolean used;
 
-    @Column(name = "created_at")
-    @NotNull
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
+
+    @PrePersist
+    public void onPrePersist() {
+        createdAt = LocalDateTime.now();
+    }
 }

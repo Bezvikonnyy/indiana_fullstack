@@ -40,18 +40,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<EditUserDtoInter> findByIdEditUserDto(@Param("userId") Long userId);
 
     @Query("""
-            SELECT 
+            SELECT
                 u.id as id,
                 u.username as username,
                 u.password as password,
                 u.role.title as role
             FROM User u
-            WHERE u.id=:userId  
+            WHERE u.id=:userId
                 """)
     Optional<AdminEditUserDtoInter> findByIdAdminEditUserDto(Long userId);
 
     @Query("""
-            SELECT 
+            SELECT
                 u.id as id,
                 u.username as username,
                 u.role.title as role,
@@ -62,25 +62,25 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<ProfileDtoInter> getProfile(Long userId);
 
     @Query("""
-            SELECT 
+            SELECT
                 u.id as userId,
                 u.username as username,
                 u.role.title as role,
                 r.bodyRequest as requestUsers
             FROM User u
-            LEFT JOIN RequestUsers r ON r.user.id = u.id
+            LEFT JOIN UserRequest r ON r.user.id = u.id
             WHERE u.id = :userId
             """)
     Optional<UserForAdminPanelDtoInter> getUserForAdminPanel(@Param("userId") Long userId);
 
     @Query("""
-            SELECT 
+            SELECT
                 u.id as userId,
                 u.username as username,
                 u.role.title as role,
                 r.bodyRequest as requestUsers
             FROM User u
-            LEFT JOIN RequestUsers r ON r.user.id = u.id
+            LEFT JOIN UserRequest r ON r.user.id = u.id
             """)
     Page<UserForAdminPanelDtoInter> getAllUsers(Pageable pageable);
 
@@ -131,5 +131,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "DELETE FROM user_favorite_games WHERE user_id=:userId AND game_id=:gameId", nativeQuery = true)
     void removeGameFavorite(@Param("userId") Long userId, @Param("gameId") Long gameId);
 
-    boolean existsByIdAndPurchasedGamesId(Long userId, Long gameId);
+    @Query("""
+                SELECT CASE WHEN COUNT(uf) > 0 THEN true ELSE false END
+                FROM UserFavoriteGames uf
+                WHERE uf.user.id = :userId AND uf.game.id = :gameId
+            """)
+    boolean existsFavoriteByUserIdAndGameId(@Param("userId") Long userId, @Param("gameId") Long gameId);
+
+    @Query("""
+                SELECT CASE WHEN COUNT(up) > 0 THEN true ELSE false END
+                FROM UserPurchasedGames up
+                WHERE up.user.id = :userId AND up.game.id = :gameId
+            """)
+    boolean existsByUserIdAndGameId(@Param("userId") Long userId, @Param("gameId") Long gameId);
+
 }

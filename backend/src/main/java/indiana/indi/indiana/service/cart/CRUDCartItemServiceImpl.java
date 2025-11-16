@@ -28,7 +28,7 @@ public class CRUDCartItemServiceImpl implements CRUDCartItemService{
     @Transactional
     public void addCartItem(CartItemPayload payload, Long userId) {
         boolean isCartItem = cartRepository.existsByCartIdAndGameId(userId, payload.gameId());
-        boolean isPurchasedCartItem = userRepository.existsByIdAndPurchasedGamesId(userId, payload.gameId());
+        boolean isPurchasedCartItem = userRepository.existsByUserIdAndGameId(userId, payload.gameId());
 
         if(isCartItem) {
             throw new IllegalStateException("Game already in cart.");

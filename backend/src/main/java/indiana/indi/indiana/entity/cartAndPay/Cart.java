@@ -16,13 +16,12 @@ import java.util.List;
 @Table(name = "cart")
 public class Cart {
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @MapsId
-    private User user;
-
     @Id
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CartItem> items = new ArrayList<>();

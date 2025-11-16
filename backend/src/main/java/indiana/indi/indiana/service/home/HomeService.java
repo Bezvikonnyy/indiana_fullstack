@@ -1,15 +1,14 @@
 package indiana.indi.indiana.service.home;
 
-import indiana.indi.indiana.dto.categories.CategoryDto;
-import indiana.indi.indiana.entity.categories.Category;
-import indiana.indi.indiana.entity.users.User;
+import indiana.indi.indiana.dto.games.CardItemDto;
+import indiana.indi.indiana.dto.news.NewsDto;
 
-import java.util.List;
+import java.util.Set;
 
 public interface HomeService {
+    Set<CardItemDto> gamesLatestArrivals(Long userId);
 
-    List<Category> getAllCategories();
+    Set<NewsDto> newsLatestArrivals();
 
-    List<CategoryDto> getCategoriesGamesDto(Long userId);
-
+    Set<CardItemDto> gamesDiscounts(Long userId);
 }

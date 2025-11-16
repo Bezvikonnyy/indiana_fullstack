@@ -18,10 +18,10 @@
     transition: background 0.3s ease;
 }
 
-.accordion-btn:hover,
-.accordion-btn.active {
-    background: #1f4e1f;
-}
+/*.accordion-btn:hover,*/
+/*.accordion-btn.active {*/
+/*    background: #1f4e1f;*/
+/*}*/
 
 .user-requests-table {
     width: 100%;

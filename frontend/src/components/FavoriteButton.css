@@ -12,9 +12,9 @@
     color: gray;
 }
 
-.active {
-    color: red;
-}
+/*.active {*/
+/*    !*color: red;*!*/
+/*}*/
 
 /* лёгкое увеличение при наведении */
 .favorite-btn:hover {

@@ -30,8 +30,5 @@ public interface UserForControllerService {
     Set<CardItemDto> favoriteGames(Long userId);
 
     @Transactional
-    void addFavorite(Long userId, Long gameId);
-
-    @Transactional
-    void removeFavorite(Long userId, Long gameId);
+    CardItemDto toggleFavorite(Long userId, Long gameId);
 }

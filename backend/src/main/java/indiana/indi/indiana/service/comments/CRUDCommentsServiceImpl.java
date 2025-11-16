@@ -9,25 +9,22 @@ import indiana.indi.indiana.repository.users.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CRUDCommentsServiceImpl implements CRUDCommentsService{
+public class CRUDCommentsServiceImpl implements CRUDCommentsService {
 
     private final CommentRepository repository;
-
     private final UserRepository userRepository;
-
     private final GameRepository gameRepository;
-
     private final CommentService service;
 
     @Override
-    public Comment createComment(CommentPayload payload,Long authorId) {
+    public Comment createComment(CommentPayload payload, Long authorId) {
         Comment comment = new Comment();
         comment.setText(payload.text());
         comment.setCreatedAt(LocalDateTime.now());
@@ -39,8 +36,8 @@ public class CRUDCommentsServiceImpl implements CRUDCommentsService{
     }
 
     @Override
-    public Comment editComment(Long id, CommentPayload payload, Long currentUserId) throws AccessDeniedException {
-        Comment comment = service.findComment(id);
+    public Comment editComment(Long commentId, CommentPayload payload, Long currentUserId) {
+        Comment comment = service.findComment(commentId);
 
         if (!currentUserId.equals(comment.getAuthor().getId())) {
             throw new AccessDeniedException("You are not the author of this comment");
@@ -51,20 +48,21 @@ public class CRUDCommentsServiceImpl implements CRUDCommentsService{
     }
 
     @Override
-    public Comment getComment(Long id) {
-        return service.findComment(id);
+    public Comment getComment(Long commentId) {
+        return service.findComment(commentId);
     }
 
     @Override
-    public List<Comment> getComments(Long id) {
-        Game game = gameRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Game not found."));
+    public List<Comment> getComments(Long gameId) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found."));
         return game.getComments().stream().toList();
     }
 
     @Override
-    public void deleteComment(Long id, Long currentUserId) throws AccessDeniedException {
-        Comment comment = service.findComment(id);
-        if(!currentUserId.equals(comment.getAuthor().getId())) {
+    public void deleteComment(Long commentId, Long currentUserId) {
+        Comment comment = service.findComment(commentId);
+        if (!currentUserId.equals(comment.getAuthor().getId())) {
             throw new AccessDeniedException("You are not the author of this comment");
         }
         repository.delete(comment);

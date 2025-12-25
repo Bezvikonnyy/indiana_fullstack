@@ -22,5 +22,6 @@
 }
 
 .gameRecommendationHomePage {
-
+    display: flex;
+    justify-content: center;
 }

@@ -1,76 +1,76 @@
-.gameList-container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    font-family: Arial, sans-serif;
-}
+/*.gameList-container {*/
+/*    max-width: 1000px;*/
+/*    margin: 40px auto;*/
+/*    padding: 2rem;*/
+/*    background-color: #fff;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 8px 20px rgba(0,0,0,0.1);*/
+/*    font-family: Arial, sans-serif;*/
+/*}*/
 
-.gameList-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #2e7d32;
-    font-weight: 700;
-    text-align: center;
-}
+/*.gameList-title {*/
+/*    font-size: 2rem;*/
+/*    margin-bottom: 2rem;*/
+/*    color: #2e7d32;*/
+/*    font-weight: 700;*/
+/*    text-align: center;*/
+/*}*/
 
-.gameList-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-}
+/*.gameList-grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));*/
+/*    gap: 20px;*/
+/*}*/
 
-.gameList-card {
-    padding: 1rem;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    background-color: #fafafa;
-}
+/*.gameList-card {*/
+/*    padding: 1rem;*/
+/*    border-radius: 6px;*/
+/*    box-shadow: 0 4px 12px rgba(0,0,0,0.1);*/
+/*    text-align: center;*/
+/*    background-color: #fafafa;*/
+/*}*/
 
-.gameList-image {
-    width: 100%;
-    height: 180px;
-    object-fit: contain;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-}
+/*.gameList-image {*/
+/*    width: 100%;*/
+/*    height: 180px;*/
+/*    object-fit: contain;*/
+/*    border-radius: 6px;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
 
-.gameList-gameTitle {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-}
+/*.gameList-gameTitle {*/
+/*    font-size: 1.3rem;*/
+/*    margin-bottom: 0.5rem;*/
+/*    color: #333;*/
+/*}*/
 
-.gameList-price {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-    color: #000;
-}
+/*.gameList-price {*/
+/*    font-size: 1.1rem;*/
+/*    margin-bottom: 1rem;*/
+/*    font-weight: bold;*/
+/*    color: #000;*/
+/*}*/
 
-.gameList-button {
-    padding: 0.6rem 1.5rem;
-    background-color: #2e7d32;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
+/*.gameList-button {*/
+/*    padding: 0.6rem 1.5rem;*/
+/*    background-color: #2e7d32;*/
+/*    color: #fff;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    cursor: pointer;*/
+/*    font-weight: bold;*/
+/*    font-size: 1rem;*/
+/*    transition: background-color 0.3s ease;*/
+/*}*/
 
-.gameList-button:hover {
-    background-color: #1b5e20;
-}
+/*.gameList-button:hover {*/
+/*    background-color: #1b5e20;*/
+/*}*/
 
-.gameList-loading,
-.gameList-empty {
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 1.2rem;
-    color: #555;
-}
+/*.gameList-loading,*/
+/*.gameList-empty {*/
+/*    text-align: center;*/
+/*    margin-top: 2rem;*/
+/*    font-size: 1.2rem;*/
+/*    color: #555;*/
+/*}*/

@@ -1,0 +1,8 @@
+.purchased {
+    display: flex;
+    color: #555; /* серый, если не куплено */
+}
+
+.purchased.active {
+    color: #28a745; /* зелёный, если куплено */
+}

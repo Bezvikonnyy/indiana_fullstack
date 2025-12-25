@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ProfilePage.css';
+import {getProfile} from "../services/users/getProfile";
+import {postEditProfile} from "../services/users/postEditProfile";
 
 export const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
@@ -8,48 +10,38 @@ export const ProfilePage = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/user/profile', {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
+        const loadProfile = async () => {
+            try {
+                const data = await getProfile();
                 setProfile(data);
                 setUsername(data.username);
-            })
-            .catch(() => setMessage('Ошибка загрузки профиля'));
+            } catch (err) {
+                setMessage('Ошибка: ' + err.message);
+            }
+        };
+
+        void loadProfile();
     }, []);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const res = await fetch('http://localhost:8080/api/user/edit_profile', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password || null, // если пустой, бэкенд может проигнорировать
-            }),
-        });
-
-        if (res.ok) {
+        try {
+            await postEditProfile(username, password);
             setMessage('Профиль обновлён');
             setPassword('');
-        } else {
-            const err = await res.text();
-            setMessage('Ошибка: ' + err);
+        } catch (err) {
+            setMessage('Ошибка: ' + err.message);
         }
     };
+
 
     if (!profile) return <p className="center">Загрузка профиля...</p>;
 
     return (
         <div className="profile-container">
-            <h2>Профиль</h2>
+            <h2 className={"profile-form-h2"}>Профиль</h2>
 
             <form onSubmit={handleSubmit} className="profile-form">
                 <label>Имя пользователя:</label>

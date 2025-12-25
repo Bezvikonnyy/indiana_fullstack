@@ -58,7 +58,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/user/login",
                                 "/api/user/registration",
-                                "/api/home",
+                                "/api/home/**",
                                 "/api/game",
                                 "/api/game/*",
                                 "/css/**",
@@ -69,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
                         .requestMatchers("/api/user/edit_profile",
                                 "/api/user/delete_profile",
+                                "/api/user/favorite/toggle/*",
                                 "/api/comment/create_comment",
                                 "/api/comment/edit_comment/**",
                                 "/api/comment/delete_comment/**",

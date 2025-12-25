@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import UserRequests from '../components/UserRequests';
-import InviteCodes from '../components/InviteCodes';
+// import UserRequests from '../components/UserRequests';
+// import InviteCodes from '../components/InviteCodes';
 import './AdminPanelPage.css';
 
 export const AdminPanelPage = () => {

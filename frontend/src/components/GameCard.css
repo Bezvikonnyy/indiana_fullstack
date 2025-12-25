@@ -1,0 +1,60 @@
+.gameCard {
+    width: 200px;
+    background-color: #fff;    /* белый фон */
+    border-radius: 10px;       /* скругленные углы */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* мягкая тень */
+    overflow: hidden;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.gameCard:hover {
+    transform: translateY(-5px); /* приподнимаем карточку */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gameCardImage {
+    width: 100%;
+    height: 180px;        /* фиксированная высота картинки */
+    object-fit: cover;    /* обрезка, чтобы картинка вписывалась */
+}
+
+.gameCardTitle {
+    width: 100%;
+    padding-inline: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 10px 0;
+    color: #181515;
+
+    white-space: nowrap;        /* запрет переноса строки */
+    overflow: hidden;           /* скрыть лишний текст */
+    text-overflow: ellipsis;    /* добавить троеточие в конце */
+}
+
+
+.gameCardPrice {
+    margin-top: 0;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #181515;       /* синий цвет цены */
+}
+
+.gameCardButton{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.gameCardLink {
+    text-decoration: none;
+    color: inherit;
+}

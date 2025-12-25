@@ -1,6 +1,8 @@
 package indiana.indi.indiana.repository.games;
 
+import indiana.indi.indiana.dtoInterface.categories.CategoryForGameDtoInter;
 import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
+import indiana.indi.indiana.dtoInterface.games.GameDetailsDtoInter;
 import indiana.indi.indiana.dtoInterface.games.GameForProfileDtoInter;
 import indiana.indi.indiana.entity.games.Game;
 import org.springframework.data.domain.Page;
@@ -38,6 +40,51 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             WHERE g.id = :gameId
             """)
     Optional<CardItemDtoInter> getGameById(@Param("userId") Long userId, @Param("gameId") Long gameId);
+
+    @Query("""
+                SELECT 
+                    g.id as id,
+                    g.title as title,
+                    g.details as details,
+                    g.imageUrl as imageUrl,
+                    g.gameFileUrl as gameFileUrl,
+                    g.author.id as authorId,
+                    g.price as price,
+                    CASE 
+                        WHEN :userId IS NOT NULL AND EXISTS (
+                            SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                        ) THEN true 
+                        ELSE false 
+                    END as isFavorite,
+                    CASE 
+                        WHEN :userId IS NOT NULL AND EXISTS (
+                            SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                        ) THEN true 
+                        ELSE false 
+                    END as isInCart,
+                    CASE 
+                        WHEN :userId IS NOT NULL AND EXISTS (
+                            SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                        ) THEN true 
+                        ELSE false 
+                    END as isPurchased
+                FROM Game g
+                WHERE g.id = :gameId
+            """)
+    Optional<GameDetailsDtoInter> getGameDetailsById(
+            @Param("userId") Long userId,
+            @Param("gameId") Long gameId
+    );
+
+
+    @Query("""
+                SELECT c.id as id, c.title as title
+                FROM GameCategory gc
+                JOIN gc.category c
+                WHERE gc.game.id = :gameId
+            """)
+    Set<CategoryForGameDtoInter> getCategoriesForGameDetails(@Param("gameId") Long gameId);
+
 
     @Query("""
             SELECT

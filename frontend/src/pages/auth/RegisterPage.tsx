@@ -1,45 +1,18 @@
-import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import {AuthForm} from './AuthForm';
+import React from "react";
+import { AuthForm } from "./AuthForm";
+import { Link, useNavigate } from "react-router-dom";
+import {registerRequest} from "../../services/auth/registerRequest";
 
 export const RegisterPage = () => {
     const navigate = useNavigate();
 
     const handleRegister = async ({ username, password, roleId, inviteCode }) => {
-        const payload = {
-            username,
-            password,
-            roleId: parseInt(roleId),
-            inviteCode: inviteCode.trim(),
-        };
-
         try {
-            const response = await fetch('http://localhost:8080/api/user/registration', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-                alert('Регистрация прошла успешно! Теперь можно войти.');
-                navigate('/login');
-            } else {
-                let errorMessage = 'Неизвестная ошибка';
-                try {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        const errorData = await response.json();
-                        errorMessage = errorData.message || JSON.stringify(errorData);
-                    } else {
-                        errorMessage = await response.text();
-                    }
-                } catch {
-                    // Игнорируем ошибки парсинга
-                }
-                alert(`Ошибка при регистрации: ${errorMessage}`);
-            }
-        } catch (error) {
-            alert('Ошибка сети или сервера: ' + error.message);
+            await registerRequest(username, password, parseInt(roleId), inviteCode);
+            alert("Регистрация прошла успешно!");
+            navigate("/login"); // ✔️ перемещаем navigate сюда
+        } catch (e) {
+            alert("Ошибка при регистрации: " + e.message);
         }
     };
 
@@ -53,4 +26,4 @@ export const RegisterPage = () => {
             </div>
         </div>
     );
-}
+};

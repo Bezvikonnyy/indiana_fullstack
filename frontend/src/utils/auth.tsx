@@ -1,12 +1,13 @@
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from "jwt-decode";
 
 export function getUserFromToken() {
     const token = localStorage.getItem('token');
     if (!token) return null;
 
     try {
-        const payload = jwtDecode(token);
-        const role = payload.role?.startsWith('ROLE_') ? payload.role.replace('ROLE_', '') : payload.role;
+        const payload = jwtDecode<JwtPayload>(token);
+        const role = payload.role?.startsWith('ROLE_') ? payload.role.replace('ROLE_', '')
+            : payload.role;
         const id = payload.id;
         return { id, username: payload.sub, role };
     } catch (e) {

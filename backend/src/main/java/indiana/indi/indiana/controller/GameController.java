@@ -2,6 +2,7 @@ package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
+import indiana.indi.indiana.dto.games.GameDetailsDto;
 import indiana.indi.indiana.dto.games.GameFullDto;
 import indiana.indi.indiana.service.game.GameForControllerService;
 import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
@@ -19,14 +20,16 @@ import java.util.List;
 public class GameController {
     private final GameForControllerService service;
 
-    @GetMapping
-    public List<GameFullDto> findAllGames(@RequestParam(name = "filter", required = false) String filter) {
-        return service.getAllGames(filter);
-    }
+//    @GetMapping
+//    public List<GameFullDto> findAllGames(@RequestParam(name = "filter", required = false) String filter) {
+//        return service.getAllGames(filter);
+//    }
 
     @GetMapping("/{gameId}")
-    public GameFullDto getGame(@PathVariable("gameId") Long gameId) {
-        return service.getGame(gameId);
+    public GameDetailsDto getGame(@PathVariable("gameId") Long gameId,
+                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails != null ? userDetails.getId() : null;
+        return service.getGame(userId, gameId);
     }
 
     @PostMapping("/new_game")
@@ -36,7 +39,8 @@ public class GameController {
             @RequestParam("gameFile") MultipartFile gameFile,
             @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
-        return service.createGame(payload, imageFile, gameFile, currentUser.getId());
+        Long userId = currentUser != null ? currentUser.getId() : null;
+        return service.createGame(payload, imageFile, gameFile, userId);
     }
 
     @PostMapping("/edit/{gameId}")
@@ -46,12 +50,13 @@ public class GameController {
             @Valid EditGamePayload payload,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
             @RequestParam(value = "gameFile", required = false) MultipartFile gameFile){
+        Long userId = userDetails != null ? userDetails.getId() : null;
         return service.editGame(
                 gameId,
                 payload,
                 imageFile,
                 gameFile,
-                userDetails.getId()
+                userId
         );
     }
 
@@ -60,6 +65,7 @@ public class GameController {
             @PathVariable("gameId") Long gameId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        service.deleteGame(gameId, userDetails.getId());
+        Long userId = userDetails != null ? userDetails.getId() : null;
+        service.deleteGame(gameId, userId);
     }
 }

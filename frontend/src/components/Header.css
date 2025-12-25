@@ -118,13 +118,13 @@
     margin-right: 8px;
 }
 
-.cart-icon {
+.cart-icon-header {
     width: 28px;
     height: 28px;
     filter: brightness(0) invert(1); /* чтобы иконка была белой */
     transition: transform 0.2s ease;
 }
 
-.cart-icon:hover {
+.cart-icon-header:hover {
     transform: scale(1.1);
 }

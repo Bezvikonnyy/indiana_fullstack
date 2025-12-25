@@ -1,63 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import './GameForm.css';
+import {GameFullDto} from '../../types/GameFullDto';
+import {getAllCategory} from "../../services/categories/getAllCategory";
 
-export const GameForm = ({ initialData = {}, onSubmit, submitText }) => {
-    const [title, setTitle] = useState(initialData.title || '');
-    const [details, setDetails] = useState(initialData.details || '');
-    const [price, setPrice] = useState(initialData.price != null ? initialData.price.toString() : '');
+interface GameFormProps {
+    initialData?: Partial<GameFullDto>;
+    onSubmit: (formData: FormData) => void;
+    submitText?: string;
+}
+
+export const GameForm: FC<GameFormProps> = ({initialData, onSubmit, submitText}) => {
+    const [title, setTitle] = useState(initialData?.title || '');
+    const [details, setDetails] = useState(initialData?.details || '');
+    const [price, setPrice] = useState(initialData?.price != null ? initialData.price : 0);
     const [categories, setCategories] = useState([]);
-    const [selectedCategoryIds, setSelectedCategoryIds] = useState(initialData.categoryIds || []);
+    const [selectedCategory, setSelectedCategory] = useState(initialData?.categories || []);
     const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [gameFile, setGameFile] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/categories', {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-                setCategories(data);
-                // Если при редактировании нет выбранных категорий, то выставим первую
-                if (selectedCategoryIds.length === 0 && data.length > 0) {
-                    setSelectedCategoryIds([data[0].id]);
-                }
-            })
-            .catch(err => {
-                console.error('Ошибка при загрузке категорий:', err);
-            });
+        getAllCategory(setCategories, selectedCategory, setSelectedCategory);
     }, []);
 
-    // Обновляем поля, если initialData изменится (например, при загрузке из EditGamePage)
     useEffect(() => {
-        setTitle(initialData.title || '');
-        setDetails(initialData.details || '');
-        setPrice(initialData.price != null ? initialData.price.toString() : '');
-        setSelectedCategoryIds(initialData.categoryIds || []);
+        setTitle(initialData?.title || '');
+        setDetails(initialData?.details || '');
+        setPrice(initialData?.price != null ? initialData.price : 0);
+        setSelectedCategory(initialData?.categories || []);
     }, [initialData]);
 
-    const handleCategoryClick = (id) => {
-        setSelectedCategoryIds(prev =>
-            prev.includes(id)
-                ? prev.filter(cid => cid !== id)
-                : [...prev, id]
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(prev =>
+            prev.includes(category)
+                ? prev.filter(cid => cid !== category)
+                : [...prev, category]
         );
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (selectedCategoryIds.length === 0) {
+        if (selectedCategory.length === 0) {
             alert('Пожалуйста, выберите хотя бы одну категорию');
             return;
         }
-
-        if (price === '') {
+        if (price === 0) {
             alert('Пожалуйста, введите цену');
             return;
         }
-        if (isNaN(price) || Number(price) < 0) {
+        if (isNaN(price) || price < 0) {
             alert('Цена должна быть неотрицательным числом');
             return;
         }
@@ -66,47 +58,68 @@ export const GameForm = ({ initialData = {}, onSubmit, submitText }) => {
         formData.append('title', title);
         formData.append('details', details);
         formData.append('price', price.toString());
-        selectedCategoryIds.forEach(id => formData.append('categoryId', id));
+        selectedCategory.forEach(category => formData.append('categoryId', category.id.toString()));
 
-        // Файлы добавляем только если они загружены (чтобы не перезаписывать при редактировании без изменения)
         if (imageFile) formData.append('imageFile', imageFile);
         if (gameFile) formData.append('gameFile', gameFile);
 
         onSubmit(formData);
     };
 
+    const handleImageSelect = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setImageFile(file);
+        setImagePreview(URL.createObjectURL(file));
+    };
+
+
     return (
         <form className="game-form" onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Название игры"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                required
-            />
+            <div className="game-form-top-container">
+                <div
+                    className="input-game-image"
+                    onClick={() => document.getElementById("image-input").click()}
+                >
+                    {imagePreview ? (
+                        <img src={imagePreview} className="game-image-preview" alt="preview"/>
+                    ) : (
+                        "+ добавить фото"
+                    )}
+                </div>
 
-            <textarea
-                placeholder="Описание игры"
-                value={details}
-                onChange={e => setDetails(e.target.value)}
-                rows={4}
-                required
-            />
+                <input
+                    id="image-input"
+                    type="file"
+                    accept="image/*"
+                    style={{display: "none"}}
+                    onChange={handleImageSelect}
+                />
+                <div className="game-form-top-text-container">
+                    <input
+                        className="input-game-title"
+                        type="text"
+                        placeholder="Название игры"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        required
+                    />
 
-            <label>Категории (можно выбрать несколько):</label>
-            <div className="category-options">
-                {categories.map(cat => (
-                    <div
-                        key={cat.id}
-                        className={`category-option ${selectedCategoryIds.includes(cat.id) ? 'selected' : ''}`}
-                        onClick={() => handleCategoryClick(cat.id)}
-                    >
-                        {cat.title}
-                    </div>
-                ))}
+                    <textarea
+                        className="input-game-details"
+                        type="text"
+                        placeholder="Описание игры"
+                        value={details}
+                        onChange={e => setDetails(e.target.value)}
+                        required
+                    />
+                </div>
+
             </div>
 
             <input
+                className="input-game-price"
                 type="number"
                 placeholder="Цена"
                 min="0"
@@ -116,12 +129,19 @@ export const GameForm = ({ initialData = {}, onSubmit, submitText }) => {
                 required
             />
 
-            <label>Изображение (jpg, png):</label>
-            <input
-                type="file"
-                accept="image/*"
-                onChange={e => setImageFile(e.target.files[0])}
-            />
+            <label>Категории (можно выбрать несколько):</label>
+
+            <div className="category-options">
+                {categories.map(cat => (
+                    <div
+                        key={cat.id}
+                        className={`category-option ${selectedCategory.some(c => c.id === cat.id) ? 'selected' : ''}`}
+                        onClick={() => handleCategoryClick(cat)}
+                    >
+                        {cat.title}
+                    </div>
+                ))}
+            </div>
 
             <label>Файл игры (zip):</label>
             <input
@@ -130,7 +150,7 @@ export const GameForm = ({ initialData = {}, onSubmit, submitText }) => {
                 onChange={e => setGameFile(e.target.files[0])}
             />
 
-            <button type="submit">{submitText || 'Сохранить'}</button>
+            <button className="button-game-save" type="submit">{submitText || 'Сохранить'}</button>
         </form>
     );
 }

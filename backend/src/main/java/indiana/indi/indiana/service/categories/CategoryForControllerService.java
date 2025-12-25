@@ -1,11 +1,13 @@
 package indiana.indi.indiana.service.categories;
 
 import indiana.indi.indiana.dto.categories.CategoryDto;
+import indiana.indi.indiana.dto.categories.CategoryForGameDto;
 import indiana.indi.indiana.mapper.categories.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,5 +22,9 @@ public class CategoryForControllerService {
         return service.findAll().stream()
                 .map(cat -> mapper.toDto(cat, userId))
                 .collect(Collectors.toList());
+    }
+
+    public Set<CategoryForGameDto> findCategoryForGame(){
+        return service.findCategoryForGame();
     }
 }

@@ -1,5 +1,6 @@
 package indiana.indi.indiana.service.categories;
 
+import indiana.indi.indiana.dto.categories.CategoryForGameDto;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.repository.categories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,10 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll();
     }
 
+    public Set<CategoryForGameDto> findCategoryForGame(){
+        return categoryRepository.findAllCategoryForNewAndEditGame().stream()
+                .map(cat -> new CategoryForGameDto(cat.getId(), cat.getTitle())).collect(Collectors.toSet());
+    }
 
     @Override
     public Category findById(Long id) {

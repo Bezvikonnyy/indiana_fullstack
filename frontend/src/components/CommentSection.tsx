@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './CommentSection.css';
 import { getUserId } from '../utils/auth';
 
-function CommentSection({ gameId }) {
+export const CommentSection = ({ gameId }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [loading, setLoading] = useState(true);
@@ -139,5 +139,3 @@ function CommentSection({ gameId }) {
         </div>
     );
 }
-
-export default CommentSection;

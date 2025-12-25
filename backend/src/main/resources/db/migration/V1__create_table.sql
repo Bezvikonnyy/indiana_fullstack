@@ -47,9 +47,10 @@ CREATE TABLE categories
 
 CREATE TABLE game_category
 (
+    id          SERIAL PRIMARY KEY,
     game_id     BIGINT NOT NULL,
     category_id BIGINT NOT NULL,
-    PRIMARY KEY (game_id, category_id),
+    UNIQUE (game_id, category_id),
     FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
 );
@@ -136,18 +137,20 @@ ALTER TABLE cart
 
 CREATE TABLE user_purchased_games
 (
+    id      SERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
     game_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, game_id),
+    UNIQUE (user_id, game_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_game FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_favorite_games
 (
+    id      SERIAL PRIMARY KEY,
     user_id BIGINT NOT NULL,
     game_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, game_id),
+    UNIQUE (user_id, game_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_game FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE
 );

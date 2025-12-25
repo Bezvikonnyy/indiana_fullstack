@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GameList from '../../components/GameList';
+// import { GameList } from '../../components/GameList';
 
 export const CreatedGamesPage = () => {
     const [games, setGames] = useState([]);

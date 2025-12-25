@@ -22,7 +22,7 @@ public class HomeController {
     @GetMapping("/newGame")
     public Set<CardItemDto> getNewGame(@AuthenticationPrincipal CustomUserDetails user){
         Long userId = user != null ? user.getId() : null;
-        return homeService.gamesLatestArrivals(user.getId());
+        return homeService.gamesLatestArrivals(userId);
     }
 
     @GetMapping("/newNews")
@@ -33,6 +33,6 @@ public class HomeController {
     @GetMapping("/gameDiscounts")
     public Set<CardItemDto> getGamesDiscounts(@AuthenticationPrincipal CustomUserDetails user) {
         Long userId = user != null ? user.getId() : null;
-        return homeService.gamesDiscounts(user.getId());
+        return homeService.gamesDiscounts(userId);
     }
 }

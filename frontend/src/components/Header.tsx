@@ -3,27 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import hatIcon from '../assets/hat.png';
 import './Header.css';
 import { hasRole } from "../utils/auth";
-
-function CartIcon() {
-    return (
-        <svg
-            className="cart-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            width="24"
-            height="24"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 5h13M16 16a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-        </svg>
-    );
-}
+import {CartIcon} from "../assets/CartIcon";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -55,7 +35,7 @@ export const Header = () => {
 
     const handeFavorite = () => {
         setMenuOpen(false);
-        navigate('favorite')
+        navigate('/favorite')
     }
 
     const handleCreated = () => {
@@ -93,7 +73,7 @@ export const Header = () => {
                 {isLoggedIn ? (
                     <>
                         <button onClick={handleCart} className="cart-button" aria-label="Корзина">
-                            <CartIcon />
+                            <CartIcon className={"cart-icon-header"} />
                         </button>
 
                         <div className="menu-container" ref={menuRef}>

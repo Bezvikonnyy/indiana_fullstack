@@ -31,4 +31,7 @@ public interface UserForControllerService {
 
     @Transactional
     CardItemDto toggleFavorite(Long userId, Long gameId);
+
+    @Transactional
+    CardItemDto toggleInCart(Long userId, Long gameId);
 }

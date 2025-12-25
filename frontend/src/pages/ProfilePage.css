@@ -16,6 +16,11 @@
 
 .profile-form label {
     font-weight: bold;
+    color: black;
+}
+
+.profile-form-h2 {
+    color: black;
 }
 
 .profile-form input {
@@ -34,10 +39,6 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 1rem;
-}
-
-.profile-form button:hover {
-    background-color: #276127;
 }
 
 .message {

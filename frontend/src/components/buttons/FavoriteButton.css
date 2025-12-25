@@ -1,0 +1,23 @@
+.favorite {
+    background: transparent; /* чтобы кнопка была без фона */
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease; /* плавный переход цвета */
+    color: #555; /* исходный цвет иконки */
+}
+
+.favorite.active {
+    color: red; /* красное сердце, когда активна */
+}
+
+.favorite:not(.active) {
+    color: #555; /* серое сердце, когда неактивна */
+}
+
+.favorite:hover {
+    transform: scale(1.2); /* легкое увеличение при наведении */
+}

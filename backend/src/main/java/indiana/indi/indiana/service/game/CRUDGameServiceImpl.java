@@ -3,6 +3,7 @@ package indiana.indi.indiana.service.game;
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
 import indiana.indi.indiana.dto.games.GameFullDto;
+import indiana.indi.indiana.dtoInterface.games.GameDetailsDtoInter;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.manyToManyEntities.GameCategory;
@@ -98,8 +99,9 @@ public class CRUDGameServiceImpl implements CRUDGameService {
         return mapper.toDto(existingGame, categories);
     }
 
-    public GameFullDto getGame(Long gameId) {
-        return mapper.toDto(getGameById(gameId), gameCategoryRepository.findByGameId(gameId));
+    public GameDetailsDtoInter getGame(Long userId, Long gameId) {
+        return gameRepository.getGameDetailsById(userId, gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found!"));
     }
 
     @Override

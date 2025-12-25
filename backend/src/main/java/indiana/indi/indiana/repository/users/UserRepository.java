@@ -123,7 +123,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO user_favorite_games(user_id, game_id)VALUES(:userId, :gameId)", nativeQuery = true)
+    @Query(
+            value = "INSERT INTO user_favorite_games(user_id, game_id) " +
+                    "VALUES(:userId, :gameId) ON CONFLICT DO NOTHING", nativeQuery = true
+    )
     void addGameFavorite(@Param("userId") Long userId, @Param("gameId") Long gameId);
 
     @Modifying
@@ -137,6 +140,26 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 WHERE uf.user.id = :userId AND uf.game.id = :gameId
             """)
     boolean existsFavoriteByUserIdAndGameId(@Param("userId") Long userId, @Param("gameId") Long gameId);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "INSERT INTO cart_item(cart_id, game_id) VALUES(:cartId, :gameId) ON CONFLICT DO NOTHING",
+            nativeQuery = true
+    )
+    void addGameCart(@Param("cartId") Long cartId, @Param("gameId") Long gameId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM cart_item WHERE cart_id=:cartId AND game_id=:gameId", nativeQuery = true)
+    void removeGameCart(@Param("cartId") Long cartId, @Param("gameId") Long gameId);
+
+    @Query("""
+                SELECT CASE WHEN COUNT(ci) > 0 THEN true ELSE false END
+                FROM CartItem ci
+                WHERE ci.cart.id = :userId AND ci.game.id = :gameId
+            """)
+    boolean existsCartByUserIdAndGameId(@Param("userId") Long userId, @Param("gameId") Long gameId);
 
     @Query("""
                 SELECT CASE WHEN COUNT(up) > 0 THEN true ELSE false END

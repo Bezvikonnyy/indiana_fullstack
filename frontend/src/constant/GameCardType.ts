@@ -1,9 +1,9 @@
-export interface GameCard {
+export interface GameCardType {
     id: number;
     title: string;
     imageUrl: string;
     price: number;
     isFavorite: boolean;
-    inCart: boolean;
+    isInCart: boolean;
     isPurchased: boolean;
 }

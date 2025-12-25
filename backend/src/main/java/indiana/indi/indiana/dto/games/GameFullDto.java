@@ -13,5 +13,6 @@ public record GameFullDto(
         String gameFileUrl,
         Long authorId,
         List<CategoryForGameDto> categories,
-        BigDecimal price) {
+        BigDecimal price
+        ) {
 }

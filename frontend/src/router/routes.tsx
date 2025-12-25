@@ -1,10 +1,11 @@
 import {HomePage, LoginPage, RegisterPage, GameDetailsPage, ProfilePage, PaymentResultPage, CartPage, CreateGamePage,
     EditGamePage, AdminPanelPage, PurchasedGamesPage, CreatedGamesPage, FavoritePage} from '../pages';
-import {Navigate, Route} from "react-router-dom";
-import {PrivateRoute} from "./PrivateRoute";
+import { Navigate } from "react-router-dom";
+import { PrivateRoute } from "./PrivateRoute";
+import {JSX} from "react";
 
-export type Route = {path: string, element: ReactElement}
-export const routes: Route[] = [
+export type AppRoute = {path: string, element: JSX.Element}
+export const routes: AppRoute[] = [
     { path: "/home", element: <HomePage /> },
     { path:"/login", element: <LoginPage /> },
     { path:"/register", element:<RegisterPage /> },

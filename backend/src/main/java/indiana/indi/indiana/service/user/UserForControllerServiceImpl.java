@@ -87,8 +87,20 @@ public class UserForControllerServiceImpl implements UserForControllerService {
     public CardItemDto toggleFavorite(Long userId, Long gameId) {
         boolean exists = userRepository.existsFavoriteByUserIdAndGameId(userId, gameId);
         if(!exists) {
-            userRepository.addGameFavorite(gameId, userId);
-        } else {userRepository.removeGameFavorite(gameId, userId);}
+            userRepository.addGameFavorite(userId, gameId);
+        } else {userRepository.removeGameFavorite(userId, gameId);}
+        CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Game not found."));
+        return itemMapper.toDto(cardInter);
+    }
+
+    @Override
+    @Transactional
+    public CardItemDto toggleInCart(Long userId, Long gameId) {
+        boolean exists = userRepository.existsCartByUserIdAndGameId(userId, gameId);
+        if(!exists) {
+            userRepository.addGameCart(userId, gameId);
+        } else {userRepository.removeGameCart(userId, gameId);}
         CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game not found."));
         return itemMapper.toDto(cardInter);

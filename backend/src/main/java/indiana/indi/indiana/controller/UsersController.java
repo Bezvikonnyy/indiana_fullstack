@@ -57,8 +57,13 @@ public class UsersController {
         return service.favoriteGames(user.getId());
     }
 
-    @PostMapping("/toggle/{gameId}")
+    @PostMapping("/favorite/toggle/{gameId}")
     public CardItemDto postToggleFavorite(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
         return service.toggleFavorite(user.getId(), gameId);
+    }
+
+    @PostMapping("/inCart/toggle/{gameId}")
+    public CardItemDto postToggleInCart(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long gameId) {
+        return service.toggleInCart(user.getId(), gameId);
     }
 }

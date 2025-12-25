@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 public interface ProfileDtoInter {
     Long getId();
     String getUsername();
-    RoleDto getRole();
+    String getRole();
     LocalDateTime getCreatedAt();
 }

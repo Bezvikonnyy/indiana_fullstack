@@ -2,6 +2,7 @@ package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.dto.categories.CategoryDto;
 
+import indiana.indi.indiana.dto.categories.CategoryForGameDto;
 import indiana.indi.indiana.service.categories.CategoryForControllerService;
 import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class CategoryController {
     @GetMapping
     public List<CategoryDto> getAllCategories(@AuthenticationPrincipal CustomUserDetails user) {
         return service.findAll(user.getId());
+    }
+
+    @GetMapping("/forGame")
+    public Set<CategoryForGameDto> getCategoryForGame(){
+        return service.findCategoryForGame();
     }
 }

@@ -1,6 +1,7 @@
 package indiana.indi.indiana.mapperInterface.users;
 
 import indiana.indi.indiana.dto.users.ProfileDto;
+import indiana.indi.indiana.dto.users.RoleDto;
 import indiana.indi.indiana.dtoInterface.games.GameForProfileDtoInter;
 import indiana.indi.indiana.dtoInterface.users.ProfileDtoInter;
 import indiana.indi.indiana.mapperInterface.games.GameForProfileMapperInterface;
@@ -33,7 +34,7 @@ public class ProfileMapperInterface {
         return new ProfileDto(
                 profileInter.getId(),
                 profileInter.getUsername(),
-                profileInter.getRole(),
+                new RoleDto(profileInter.getRole()),
                 profileInter.getCreatedAt(),
                 authorsGame.stream().map(g -> mapper.toDto(g)).collect(Collectors.toList()),
                 purchasedGame.stream().map(g -> mapper.toDto(g)).collect(Collectors.toSet()),

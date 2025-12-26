@@ -1,18 +1,7 @@
-export const postFavoriteToggle = (gameId, active, setActive) => {
-    setActive(!active);
+import {request} from "../../api/httpClient";
 
-    fetch(`http://localhost:8080/api/user/favorite/toggle/${gameId}`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-            'Content-Type': 'application/json'
-        }
-
+export const postFavoriteToggle = async (gameId: number) => {
+    return request<{isFavorite: boolean}>(`/api/user/favorite/toggle/${gameId}`, {
+        method: 'POST'
     })
-        .then(res => res.json())
-        .then(data => setActive(data.isFavorite))
-        .catch(err => {
-            setActive(!active);
-            console.error('Ошибка при изменении избранного', err);
-        });
 }

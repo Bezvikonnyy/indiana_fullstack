@@ -11,8 +11,10 @@ interface FavoriteButtonProps {
 export const FavoriteButton: FC<FavoriteButtonProps> = ({ gameId, isFavorite }) => {
     const [active, setActive] = useState(isFavorite);
 
-    const handleClick = () => {
-        postFavoriteToggle(gameId, active, setActive);
+    const handleClick = async () => {
+        const res = await postFavoriteToggle(gameId);
+        if(res.success) { setActive(res.data.isFavorite)}
+        else {console.log(res.error.message)}
     }
 
     return (

@@ -8,7 +8,6 @@ import {CartButton} from "../../components/buttons/CartButton";
 import {DeleteGameButton} from "../../components/buttons/DeleteGameButton";
 import {EditGameButton} from "../../components/buttons/EditGameButton";
 import {DownloadGameButton} from "../../components/buttons/DownloadGameButton";
-import {mapGameFullDto} from "../../utils/mappers/mapGameFullDto";
 import {getGame} from "../../services/games/getGame";
 import {GameFullDto} from "../../types/GameFullDto";
 import {PurchasedStatus} from "../../components/buttons/PurchasedStatus";
@@ -16,18 +15,31 @@ import {PurchasedStatus} from "../../components/buttons/PurchasedStatus";
 export const GameDetailsPage = () => {
     const {id} = useParams();
     const [game, setGame] = useState<GameFullDto | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
     const currentUserId = getUserId();
 
-    useEffect(() => {
-        getGame(id)
-            .then(dto => setGame(mapGameFullDto(dto)))
-            .catch(err => {
-                console.error(err);
-                alert('Не удалось загрузить данные игры');
-            });
+    useEffect( () => {
+        const fetchGame = async () => {
+            setLoading(true);
+            const result = await getGame(id);
+
+            if (!result.success) {
+                setError(result.error.message);
+                setGame(null);
+            } else {
+                setGame(result.data);
+                setError(null);
+            }
+
+            setLoading(false);
+        };
+        void fetchGame();
     }, [id]);
 
-    if (!game) return <p className="loading-text">Загрузка...</p>;
+    if (loading) return <p className="loading-text">Загрузка...</p>;
+    if (error) return <p className="error-text">Ошибка: {error}</p>;
+    if (!game) return <p>Игра не найдена</p>;
 
     const isLoggedIn = !!localStorage.getItem('token');
     const isAuthor = game.authorId === currentUserId;

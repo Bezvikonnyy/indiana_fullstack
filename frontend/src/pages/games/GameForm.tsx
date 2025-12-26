@@ -20,7 +20,18 @@ export const GameForm: FC<GameFormProps> = ({initialData, onSubmit, submitText})
     const [gameFile, setGameFile] = useState(null);
 
     useEffect(() => {
-        getAllCategory(setCategories, selectedCategory, setSelectedCategory);
+        const fetchCategories = async () => {
+            const res = await getAllCategory();
+            if (!res.success) {
+                console.log(res);
+            } else {
+                setCategories(res.data);
+                if (selectedCategory.length === 0 && res.data.length > 0) {
+                    setSelectedCategory([res.data[0]]);
+                }
+            }
+        };
+        void fetchCategories();
     }, []);
 
     useEffect(() => {

@@ -1,18 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import { AuthForm } from "./AuthForm";
 import { Link, useNavigate } from "react-router-dom";
 import {registerRequest} from "../../services/auth/registerRequest";
 
 export const RegisterPage = () => {
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleRegister = async ({ username, password, roleId, inviteCode }) => {
-        try {
-            await registerRequest(username, password, parseInt(roleId), inviteCode);
+    const handleRegister = async (payload: PayloadAuth) => {
+        const result = await registerRequest(payload);
+        if (!result.success) {
+            setError(result.error.message);
+            return;
+        } else {
             alert("Регистрация прошла успешно!");
-            navigate("/login"); // ✔️ перемещаем navigate сюда
-        } catch (e) {
-            alert("Ошибка при регистрации: " + e.message);
+            navigate("/login");
         }
     };
 

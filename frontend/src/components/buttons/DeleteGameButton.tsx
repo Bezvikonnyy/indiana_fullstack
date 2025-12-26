@@ -13,11 +13,11 @@ export const DeleteGameButton: FC<DeleteGameButtonProps> = ({id}) => {
 
     const handleClick = async () => {
         if (!window.confirm('Удалить эту игру?')) return;
-
-        try {
-            await postDeleteGame(id, navigate)
-        } catch (err) {
-            alert('Ошибка сети: ' + err.message);
+        const res = await postDeleteGame(id);
+        if(!res.success) { alert(res.error.message)}
+        else {
+            alert('Игра удалена!');
+            navigate('/home');
         }
     };
 

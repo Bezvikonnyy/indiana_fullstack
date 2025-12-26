@@ -11,8 +11,10 @@ interface CartButtonProps {
 export const CartButton: FC<CartButtonProps> = ({ gameId, isInCart }) => {
     const [active, setActive] = useState(isInCart);
 
-    const handleClick = () => {
-        postInCartToggle(gameId, active, setActive);
+    const handleClick = async () => {
+        const res = await postInCartToggle(gameId);
+        if(res.success) { setActive(res.data.isInCart)}
+        else {console.log(res.error.message)}
     }
 
     return (

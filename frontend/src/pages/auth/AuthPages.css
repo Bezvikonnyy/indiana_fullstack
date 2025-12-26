@@ -80,3 +80,10 @@
 .auth-switch-link a:hover {
     text-decoration: underline;
 }
+
+.auth-error-message {
+    color: #d9534f;
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+}

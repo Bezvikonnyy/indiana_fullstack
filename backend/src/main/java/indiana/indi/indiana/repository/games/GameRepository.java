@@ -22,7 +22,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAllByTitleLikeIgnoreCase(String filter);
 
     @Query("""
-            SELECT 
+            SELECT
                 g.id as id,
                 g.title as title,
                 g.imageUrl as imageUrl,
@@ -42,7 +42,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     Optional<CardItemDtoInter> getGameById(@Param("userId") Long userId, @Param("gameId") Long gameId);
 
     @Query("""
-                SELECT 
+                SELECT
                     g.id as id,
                     g.title as title,
                     g.details as details,
@@ -50,23 +50,23 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.gameFileUrl as gameFileUrl,
                     g.author.id as authorId,
                     g.price as price,
-                    CASE 
+                    CASE
                         WHEN :userId IS NOT NULL AND EXISTS (
                             SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
-                        ) THEN true 
-                        ELSE false 
+                        ) THEN true
+                        ELSE false
                     END as isFavorite,
-                    CASE 
+                    CASE
                         WHEN :userId IS NOT NULL AND EXISTS (
                             SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
-                        ) THEN true 
-                        ELSE false 
+                        ) THEN true
+                        ELSE false
                     END as isInCart,
-                    CASE 
+                    CASE
                         WHEN :userId IS NOT NULL AND EXISTS (
                             SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
-                        ) THEN true 
-                        ELSE false 
+                        ) THEN true
+                        ELSE false
                     END as isPurchased
                 FROM Game g
                 WHERE g.id = :gameId
@@ -76,7 +76,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             @Param("gameId") Long gameId
     );
 
-
     @Query("""
                 SELECT c.id as id, c.title as title
                 FROM GameCategory gc
@@ -84,7 +83,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                 WHERE gc.game.id = :gameId
             """)
     Set<CategoryForGameDtoInter> getCategoriesForGameDetails(@Param("gameId") Long gameId);
-
 
     @Query("""
             SELECT
@@ -128,7 +126,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             WHERE up.user.id=:userId
             """)
     Set<GameForProfileDtoInter> findBuyersGameById(@Param("userId") Long userId);
-
 
     @Query("""
             SELECT
@@ -203,7 +200,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     Set<CardItemDtoInter> findFavoritesCardItemById(@Param("userId") Long userId);
 
     @Query("""
-            SELECT 
+            SELECT
                 g.id as id,
                 g.title as title,
                 g.imageUrl as imageUrl,

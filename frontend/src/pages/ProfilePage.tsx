@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './ProfilePage.css';
 import {getProfile} from "../services/users/getProfile";
 import {postEditProfile} from "../services/users/postEditProfile";
 
 export const ProfilePage = () => {
-    const [profile, setProfile] = useState(null);
+    const [profile, setProfile] = useState<ProfileDto>();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
     useEffect(() => {
         const loadProfile = async () => {
-            try {
-                const data = await getProfile();
-                setProfile(data);
-                setUsername(data.username);
-            } catch (err) {
-                setMessage('Ошибка: ' + err.message);
+            const res = await getProfile();
+            if (!res.success) {
+                console.log(res.error.message)
+            } else {
+                setProfile(res.data);
+                setUsername(res.data.username)
             }
         };
 
@@ -27,14 +27,27 @@ export const ProfilePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            await postEditProfile(username, password);
-            setMessage('Профиль обновлён');
-            setPassword('');
-        } catch (err) {
-            setMessage('Ошибка: ' + err.message);
+        const res = await postEditProfile(username, password);
+        if(!res.success) {
+            console.log(res.error.message)
+        } else {
+            setMessage('Профиль обновлен!');
+            setProfile(res.data);
         }
     };
+
+    const roleLabel = (() => {
+        switch (profile?.role.title) {
+            case 'ROLE_ADMIN':
+                return 'Администратор';
+            case 'ROLE_AUTHOR':
+                return 'Автор';
+            case 'ROLE_USER':
+                return 'Пользователь';
+            default:
+                return 'Неизвестно';
+        }
+    })();
 
 
     if (!profile) return <p className="center">Загрузка профиля...</p>;
@@ -59,6 +72,14 @@ export const ProfilePage = () => {
                     onChange={e => setPassword(e.target.value)}
                     placeholder="Оставьте пустым, если не менять"
                 />
+
+                <label>Роль:</label>
+                <div>
+                    <p className="profile-info-role">{roleLabel}</p>
+                </div>
+
+                <label>Дата создания профиля:</label>
+                <p className="profile-info-create">{new Date(profile.createdAt).toLocaleDateString()}</p>
 
                 <button type="submit">Сохранить</button>
             </form>

@@ -1,0 +1,3 @@
+interface RoleForProfileDto {
+    title: string;
+}

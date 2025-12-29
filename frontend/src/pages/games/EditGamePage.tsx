@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams, useNavigate, data} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import {GameForm} from './GameForm';
 import './GameForm.css';
 import {editGame} from "../../services/games/editGame";
@@ -28,11 +28,17 @@ export const EditGamePage = () => {
 
             setLoading(false);
         };
-        fetchGame();
+        void fetchGame();
     }, [id]);
 
-    const handleSubmit = (formData) => {
-        editGame(formData, navigate, id)
+    const handleSubmit = async (formData) => {
+        const res = await editGame(formData, id);
+        if (res.success) {
+            alert('Игра обновлена');
+            navigate(`/games/${id}`);
+        } else {
+            alert(res.error.message);
+        }
     };
 
     if (!initialData) return <p style={{textAlign: 'center'}}>Загрузка...</p>;

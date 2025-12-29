@@ -19,11 +19,27 @@ export const HomePage = () => {
 
 
     useEffect(() => {
-        getNewGames(setGame);
+        const fetchNewGames = async () => {
+            const res = await getNewGames();
+            if(!res.success) {
+                console.log(res.error.message)
+            } else {
+                setGame(res.data)
+            }
+        }
+        void fetchNewGames();
     }, [])
 
     useEffect(() => {
-        getGameDiscount(setGame);
+        const fetchGameDiscount = async () => {
+            const res = await getGameDiscount();
+            if(!res.success) {
+                console.log(res.error.message);
+            } else {
+                setGame(res.data)
+            }
+        }
+        void fetchGameDiscount();
     }, [])
 
     return (

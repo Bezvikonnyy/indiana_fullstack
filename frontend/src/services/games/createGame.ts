@@ -1,6 +1,6 @@
 import {request} from "../../api/httpClient";
 
-export const createGame = async (formData) => {
+export const createGame = async (formData: FormData) => {
     return request<void>(`/api/game/new_game`, {
         method: 'POST',
         body: formData,

@@ -93,6 +93,7 @@ public class CRUDGameServiceImpl implements CRUDGameService {
         existingGame.setDetails(payload.details());
         existingGame.setPrice(payload.price());
         gameRepository.save(existingGame);
+        gameCategoryRepository.deleteGameCategoriesByGameId(existingGame.getId());
         List<GameCategory> links = categories.stream()
                 .map(category -> new GameCategory(null, existingGame, category)).toList();
         gameCategoryRepository.saveAll(links);

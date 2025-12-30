@@ -1,4 +1,4 @@
-import {HomePage, LoginPage, RegisterPage, GameDetailsPage, ProfilePage, PaymentResultPage, CartPage, CreateGamePage,
+import {HomePage, LoginPage, RegisterPage, GameDetailsPage, ProfilePage, CartPage, CreateGamePage,
     EditGamePage, AdminPanelPage, PurchasedGamesPage, CreatedGamesPage, FavoritePage} from '../pages';
 import { Navigate } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
@@ -11,7 +11,6 @@ export const routes: AppRoute[] = [
     { path:"/register", element:<RegisterPage /> },
     { path:"/games/:id", element:<GameDetailsPage /> },
     { path:"/profile", element:<ProfilePage /> },
-    { path:"/order/:orderId/result", element:<PaymentResultPage /> },
     { path:"/cart", element:<PrivateRoute roles={['USER', 'AUTHOR', 'ADMIN']}><CartPage /></PrivateRoute> },
     { path:"/games/create", element:<PrivateRoute roles={['AUTHOR', 'ADMIN']}><CreateGamePage /></PrivateRoute> },
     { path:"/games/edit/:id", element:<PrivateRoute roles={['AUTHOR', 'ADMIN']}><EditGamePage /></PrivateRoute> },

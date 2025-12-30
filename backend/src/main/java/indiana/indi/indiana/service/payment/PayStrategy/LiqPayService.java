@@ -56,26 +56,26 @@ public class LiqPayService implements PaymentStrategy {
                 .build();
         paymentRepository.save(payment);
 
-        String data = generateData(order, payment.getId());
+        String data = generateData(order);
         String signature = generateSignature(data);
 
         return new PaymentRequestDto(data, signature);
     }
 
-    private String generateData(Order order, Long paymentId) {
+    private String generateData(Order order) {
         try {
             StringDataDto params = new StringDataDto(
-                    "3",
                     publicKey,
+                    3,
                     "pay",
                     order.getTotalAmount().toPlainString(),
-                    paymentId.toString(),
                     "UAH",
                     "Оплата " + order.getItems().size() + " игр",
                     order.getId().toString(),
-                    "1",
-                    "https://95bccf693889.ngrok-free.app/api/cart/liqpay/result",
-                    "http://localhost:3000/order/" + order.getId() + "/result");
+                    1,
+                    "https://973bde2cc963.ngrok-free.app/api/cart/callback/LIQPAY",
+                    "http://localhost:5173/cart"
+            );
 
             String json = objectMapper.writeValueAsString(params);
             return Base64.getEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
@@ -110,14 +110,13 @@ public class LiqPayService implements PaymentStrategy {
 
         Long orderId = Long.parseLong(callbackDto.orderId());
         OrderDto order = orderService.getOrder(orderId);
-        Long paymentId = Long.parseLong(callbackDto.paymentId());
-        Payment payment = paymentRepository.findById(paymentId)
+        Payment payment = paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Payment not found."));
 
         if (payment.getStatus() == PaymentStatus.PENDING) {
             switch (callbackDto.status()) {
                 case "sandbox", "success" -> {
-                    paymentRepository.updatePayment(paymentId, PaymentStatus.SUCCESS);
+                    paymentRepository.updatePayment(payment.getId(), PaymentStatus.SUCCESS);
                     orderService.updateOrder(orderId, OrderStatus.PAID);
                     cartService.clearCart(order.userId());
 
@@ -125,11 +124,11 @@ public class LiqPayService implements PaymentStrategy {
                 }
 
                 case "failure", "reversed" -> {
-                    paymentRepository.updatePayment(paymentId, PaymentStatus.CANCELLED);
+                    paymentRepository.updatePayment(payment.getId(), PaymentStatus.CANCELLED);
                     orderRepository.updateOrder(orderId, OrderStatus.CANCELLED);
                 }
 
-                default -> paymentRepository.updatePayment(paymentId, PaymentStatus.PENDING);
+                default -> paymentRepository.updatePayment(payment.getId(), PaymentStatus.PENDING);
             }
         }
     }

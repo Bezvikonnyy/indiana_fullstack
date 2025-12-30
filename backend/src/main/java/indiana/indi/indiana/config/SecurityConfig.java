@@ -64,7 +64,7 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/uploads/**",
-                                "/api/cart/liqpay/result")
+                                "/api/cart/callback/*")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
                         .requestMatchers("/api/user/edit_profile",

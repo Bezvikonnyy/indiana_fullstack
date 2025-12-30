@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 public class CartItemMapper {
 
     public CartItemDto toDto(CartItemDtoInter dtoInter){
-        return new CartItemDto(dtoInter.getId(), dtoInter.getGameId(), dtoInter.getGameTitle(), dtoInter.getPrice());
+        return new CartItemDto(
+                dtoInter.getId(),
+                dtoInter.getGameId(),
+                dtoInter.getGameTitle(),
+                dtoInter.getPrice(),
+                dtoInter.getImageUrl());
     }
 }

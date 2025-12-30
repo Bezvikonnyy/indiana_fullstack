@@ -7,4 +7,6 @@ public interface CartItemDtoInter {
     Long getGameId();
     String getGameTitle();
     BigDecimal getPrice();
+
+    String getImageUrl();
 }

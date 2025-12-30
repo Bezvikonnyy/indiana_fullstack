@@ -17,7 +17,8 @@ public class CartController {
 
     @GetMapping("/my")
     public CartDto getCart(@AuthenticationPrincipal CustomUserDetails user) {
-        return service.getCart(user.getId());
+        Long userId = user != null ? user.getId() : null;
+        return service.getCart(userId);
     }
 
     @PutMapping("/add")

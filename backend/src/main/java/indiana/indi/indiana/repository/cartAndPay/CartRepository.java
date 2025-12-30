@@ -18,7 +18,7 @@ import java.util.Set;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     @Query("""
-            SELECT 
+            SELECT
                 c.id as id,
                 c.user.id as userId,
                 size(c.items) as totalItems
@@ -30,11 +30,12 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     @Query("""
             SELECT
                  i.id as id,
-                 i.game.id as gemeId,
+                 i.game.id as gameId,
                  i.game.title as gameTitle,
-                 i.game.price as price
-            FROM CartItem i 
-            WHERE i.cart.user.id =: userId
+                 i.game.price as price,
+                 i.game.imageUrl as imageUrl
+            FROM CartItem i
+            WHERE i.cart.user.id =:userId
             """)
     Set<CartItemDtoInter> getCartItemsByUserId(@Param("userId") Long userId);
 

@@ -29,5 +29,5 @@ jwt:
   expiration: 3600000
 
 liqpay:
-  public-key: "sandbox_i3313929016"
-  private-key: "sandbox_CLG6EiScGm6QdaTAj09wfSstQoDd71JEK76leYIU"
+  public-key: "sandbox_i25378317080"
+  private-key: "sandbox_ZcXwKkEdk1pXevrBeYLdmDhGuTHVgnbCrSmNwHzN"

@@ -1,33 +1,36 @@
-import React, { useEffect, useState } from 'react';
-// import GameList from '../../components/GameList';
+import './PurchasedGamePage.css';
+import React, {useEffect, useState} from 'react';
+import {getPurchasedGames} from "../../services/users/getPurchasedGames";
+import {GameCard} from "../../components/GameCard";
 
 export const PurchasedGamesPage = () => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        fetch("http://localhost:8080/api/user/purchased_game", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then(res => {
-                if (!res.ok) throw new Error("Ошибка загрузки игр");
-                return res.json();
-            })
-            .then(data => {
-                setGames(data);
+        const fetchPurchasedGame = async () => {
+            const res = await getPurchasedGames();
+            if (!res.success) {
                 setLoading(false);
-            })
-            .catch(err => {
-                console.error("Ошибка при загрузке купленных игр:", err);
-                alert("Не удалось загрузить список игр");
+                console.log(res.error.message);
+            } else {
+                setGames(res.data);
                 setLoading(false);
-            });
+            }
+        }
+        void fetchPurchasedGame();
     }, []);
 
     if (loading) return <p className="gameList-loading">Загрузка...</p>;
 
-    return <GameList games={games} title="Мои игры" showDownload={true} />;
+    return (
+        <div className="purchasedGamePage">
+            <h2 className={"profile-form-h2"}>Мои покупки</h2>
+            <div className="purchasedGameList">
+                {games.map(game => (
+                    <GameCard key={game.id} game={game}/>
+                ))}
+            </div>
+        </div>
+    );
 }

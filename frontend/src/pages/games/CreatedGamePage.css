@@ -1,7 +1,7 @@
-.favoriteGamePage{
+.createdGamePage{
 }
 
-.favoriteGameList{
+.createdGameList{
     display: flex;
     justify-content: center;
 }

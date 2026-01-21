@@ -1,35 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './FavoritePage.css';
+import {getMyFavoriteGame} from "../../services/users/getMyFavoriteGame";
+import {GameCard} from "../../components/GameCard";
 
 export const FavoritePage = () => {
     const [favoriteGames, setFavoriteGames] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-        fetch('http://localhost:8080/api/user/my_favorite_games', {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-            .then(res => res.json())
-            .then(data => setFavoriteGames(data))
-            .catch(err => console.error('Ошибка при загрузке избранного:', err));
-    }, []);
-
-    const removeFavorite = async (gameId) => {
-        const token = localStorage.getItem('token');
-        if (!token) return alert('Сначала войдите в аккаунт');
-
-        try {
-            await fetch(`http://localhost:8080/api/user/remove_favorite/${gameId}`, {
-                method: 'DELETE',
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setFavoriteGames(prev => prev.filter(game => game.id !== gameId));
-        } catch (err) {
-            console.error('Ошибка при удалении из избранного:', err);
+        const fetchPurchasedGame = async () => {
+            const res = await getMyFavoriteGame();
+            if (!res.success) {
+                setLoading(false);
+                console.log(res.error.message);
+            } else {
+                setFavoriteGames(res.data);
+                setLoading(false);
+            }
         }
-    };
+        void fetchPurchasedGame();
+    }, []);
 
     if (favoriteGames.length === 0) {
         return (
@@ -39,30 +30,14 @@ export const FavoritePage = () => {
         );
     }
 
+    if (loading) return <p className="gameList-loading">Загрузка...</p>;
+
     return (
-        <div className="favorite-page">
-            <h2>Избранные игры</h2>
-            <div className="favorite-games-row">
+        <div className="favoriteGamePage">
+            <h2 className={"profile-form-h2"}>Избранное</h2>
+            <div className="favoriteGameList">
                 {favoriteGames.map(game => (
-                    <div key={game.id} className="game-card">
-                        <Link
-                            to={`/games/${game.id}`}
-                            style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
-                        >
-                            <img
-                                src={game.imageUrl}
-                                alt={game.title}
-                                className="game-image"
-                            />
-                            <p className="game-title">{game.title}</p>
-                        </Link>
-                        <span
-                            className="favorite-btn active"
-                            onClick={() => removeFavorite(game.id)}
-                        >
-                            ♥
-                        </span>
-                    </div>
+                    <GameCard key={game.id} game={game}/>
                 ))}
             </div>
         </div>

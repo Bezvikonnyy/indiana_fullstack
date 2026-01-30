@@ -32,12 +32,12 @@ public class UserAdminController {
         adminService.deleteRequest(userId);
     }
 
-    @PostMapping("/create_invite")
+    @PostMapping("/createInvite")
     public InviteCodeDto createInviteCode(){
         return adminService.createInviteCode();
     }
 
-    @GetMapping("/invite_code")
+    @GetMapping("/inviteCode")
     public List<InviteCodeDto> getInviteCodes(){
         return adminService.getAllInviteCode();
     }

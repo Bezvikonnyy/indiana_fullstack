@@ -73,7 +73,7 @@ public class LiqPayService implements PaymentStrategy {
                     "Оплата " + order.getItems().size() + " игр",
                     order.getId().toString(),
                     1,
-                    "https://5278310d501e.ngrok-free.app/api/cart/callback/LIQPAY",
+                    "https://f429e6c7cfcf.ngrok-free.app/api/cart/callback/LIQPAY",
                     "http://localhost:5173/cart"
             );
 

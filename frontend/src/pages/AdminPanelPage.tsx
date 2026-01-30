@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-// import UserRequests from '../components/UserRequests';
-// import InviteCodes from '../components/InviteCodes';
+import {UserRequests} from '../components/UserRequests';
+import {InviteCodes} from '../components/InviteCodes';
 import './AdminPanelPage.css';
 
 export const AdminPanelPage = () => {
@@ -12,7 +12,7 @@ export const AdminPanelPage = () => {
 
     return (
         <div className="admin-panel">
-            <h2>Админ Панель</h2>
+            <h2 className="admin-panel-hover">Админ Панель</h2>
 
             <button
                 className={`accordion-btn ${activeSection === 'users' ? 'active' : ''}`}

@@ -1,8 +1,8 @@
 package indiana.indi.indiana.dtoInterface.users;
 
 public interface UserForAdminPanelDtoInter {
-    Long getId();
+    Long getUserId();
     String getUsername();
-    RoleDtoInter getRole();
+    String getRole();
     String getRequestUsers();
 }

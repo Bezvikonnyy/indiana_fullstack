@@ -12,9 +12,9 @@ public class UserForAdminPanelMapper {
 
     public UserForAdminPanelDto toDto(UserForAdminPanelDtoInter dtoInter){
         return new UserForAdminPanelDto(
-                dtoInter.getId(),
+                dtoInter.getUserId(),
                 dtoInter.getUsername(),
-                new RoleDto(dtoInter.getRole().getTitle()),
+                dtoInter.getRole(),
                 dtoInter.getRequestUsers()
         );
     }

@@ -4,6 +4,12 @@
     padding: 20px;
 }
 
+.admin-panel-hover{
+    color: #555555;
+    display: flex;
+    justify-content: center;
+}
+
 .accordion-btn {
     display: block;
     width: 100%;
@@ -18,32 +24,22 @@
     transition: background 0.3s ease;
 }
 
-/*.accordion-btn:hover,*/
-/*.accordion-btn.active {*/
-/*    background: #1f4e1f;*/
-/*}*/
-
 .user-requests-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    color: #555555;
 }
 
 .user-requests-table th,
 .user-requests-table td {
-    border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-}
-
-.user-requests-table th {
-    background-color: #f2f2f2;
 }
 
 .user-requests-table button {
     margin-right: 5px;
     padding: 5px 10px;
-    background-color: #2d7a2d;
     color: white;
     border: none;
     cursor: pointer;
@@ -51,7 +47,7 @@
 }
 
 .user-requests-table button:hover {
-    background-color: #1f4e1f;
+    background-color: #6e1f1f;
 }
 
 .invite-codes-list {
@@ -62,8 +58,8 @@
 
 .invite-codes-list li {
     padding: 8px;
-    border: 1px solid #ccc;
     margin-bottom: 5px;
+    color: #555555;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -110,5 +106,9 @@
 }
 
 .user-requests-table .reject-btn:hover {
+    background-color: #6e1f1f;
+}
+
+.button-delete-user{
     background-color: #6e1f1f;
 }

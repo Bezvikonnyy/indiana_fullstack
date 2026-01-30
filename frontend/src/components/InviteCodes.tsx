@@ -1,51 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import {useEffect, useState} from "react";
+import {getInviteCode} from "../services/admins/getInviteCode";
+import {postCreateCode} from "../services/admins/postCreateCode";
+import {postDeleteCode} from "../services/admins/postDeleteCode";
 
-function InviteCodes() {
-    const [codes, setCodes] = useState([]);
-    const token = localStorage.getItem('token');
+export const InviteCodes = () => {
+    const [codes, setCodes] = useState<InviteCodeDto[]>([]);
 
-    const fetchCodes = () => {
-        fetch('http://localhost:8080/api/admin/invite_code', {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(res => res.json())
-            .then(setCodes)
-            .catch(console.error);
+    const fetchCodes = async () => {
+        const res = await getInviteCode();
+        if (!res.success) {
+            console.log(res.error.message);
+        } else {
+            setCodes(res.data);
+        }
     };
 
     useEffect(() => {
-        fetchCodes();
+        void fetchCodes();
     }, []);
 
-    const createCode = () => {
-        fetch('http://localhost:8080/api/admin/create_invite', {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(res => {
-                if (!res.ok) throw new Error('Ошибка создания кода');
-                return res.json();
-            })
-            .then(() => fetchCodes())
-            .catch(err => alert(err.message));
+    const createCode = async () => {
+        const res = await postCreateCode();
+        if (!res.success) {
+            console.log(res.error.message);
+        }
+        void await fetchCodes();
     };
 
-    const deleteCode = (id) => {
+    const deleteCode = async (inviteCodeId: number) => {
         if (!window.confirm('Удалить инвайт код?')) return;
-        fetch(`http://localhost:8080/api/admin/delete/invite/${id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(res => {
-                if (!res.ok) throw new Error('Ошибка удаления кода');
-                fetchCodes();
-            })
-            .catch(err => alert(err.message));
+        const res = await postDeleteCode(inviteCodeId);
+        if (!res.success) {
+            console.log(res.error.message);
+        }
+        void await fetchCodes();
     };
 
     return (
         <div className="invite-codes">
-            <h3>Активные инвайт коды</h3>
+            <h3 className="admin-panel-hover">Активные инвайт коды</h3>
             <button onClick={createCode}>Создать новый код</button>
             {codes.length === 0 ? (
                 <p>Кодов нет</p>
@@ -62,5 +55,3 @@ function InviteCodes() {
         </div>
     );
 }
-
-export default InviteCodes;

@@ -10,7 +10,7 @@ export const DownloadGameButton: FC<DownloadGameButtonProps> = ({ fileUrl }) => 
     const handleDownload = () => {
         const link = document.createElement("a");
         link.href = `http://localhost:8080${fileUrl}`;
-        link.download = ""; // можно указать имя файла, если нужно
+        link.download = "";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

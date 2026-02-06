@@ -58,7 +58,8 @@ public class CRUDNewsService {
 
     public NewsDto getNews(Long newsId) {
         News news = newsRepository.findById(newsId).orElseThrow(() -> new EntityNotFoundException("News not found."));
-        return new NewsDto(news.getTitle(),
+        return new NewsDto(
+                news.getTitle(),
                 news.getContent(),
                 news.getImageUrl(),
                 news.getCreatedAt(),

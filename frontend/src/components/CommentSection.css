@@ -1,9 +1,8 @@
-/* CommentSection.css */
 .comment-section {
     margin-top: 2rem;
     text-align: left;
     padding: 1rem;
-    border-top: 1px solid #ccc;
+    color: #555555;
 }
 
 .comment-form textarea {
@@ -30,7 +29,6 @@
 }
 
 .comment-list li {
-    border-bottom: 1px solid #ddd;
     padding: 0.5rem 0;
 }
 

@@ -9,6 +9,8 @@ public class NewsMapper {
 
     public NewsDto toDto(NewsDtoInter dtoInter){
         return new NewsDto(
+                dtoInter.getId(),
+                dtoInter.getAuthorId(),
                 dtoInter.getTitle(),
                 dtoInter.getContent(),
                 dtoInter.getImageUrl(),

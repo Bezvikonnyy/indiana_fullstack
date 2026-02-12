@@ -21,6 +21,22 @@
     color: #1976d2;
 }
 
+.gameShowCaseHomePage{
+    display: flex;
+    max-width: 1100px;
+    margin-inline: auto;
+    margin-bottom: 20px;
+
+}
+
+.gameNewsShowCaseHomePage{
+    display: flex;
+    max-width: 1100px;
+    margin-inline: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
 .gameRecommendationHomePage {
     display: flex;
     justify-content: center;

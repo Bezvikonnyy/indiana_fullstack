@@ -23,7 +23,7 @@ public class CRUDNewsService {
     private final UserRepository userRepository;
 
     public NewsDto createNews(String title, String content, MultipartFile imageFile, Long userId) {
-        String imageFileUrl = fileService.saveFile(imageFile, "imageFile");
+        String imageFileUrl = fileService.saveFile(imageFile, "newsImageFile");
         User author = userRepository.getReferenceById(userId);
         News news = new News();
         news.setTitle(title);
@@ -31,7 +31,10 @@ public class CRUDNewsService {
         news.setImageUrl(imageFileUrl);
         news.setAuthor(author);
         newsRepository.save(news);
-        return new NewsDto(news.getTitle(),
+        return new NewsDto(
+                news.getId(),
+                news.getAuthor().getId(),
+                news.getTitle(),
                 news.getContent(),
                 news.getImageUrl(),
                 news.getCreatedAt(),
@@ -43,13 +46,16 @@ public class CRUDNewsService {
         accessRight(userId, news);
         if (imageFile != null && !imageFile.isEmpty()) {
             fileService.deleteFileIfExists(news.getImageUrl());
-            String newImageFileUrl = fileService.saveFile(imageFile, "imageFile");
+            String newImageFileUrl = fileService.saveFile(imageFile, "newsImageFile");
             news.setImageUrl(newImageFileUrl);
         }
         news.setTitle(title);
         news.setContent(content);
         newsRepository.save(news);
-        return new NewsDto(news.getTitle(),
+        return new NewsDto(
+                news.getId(),
+                news.getAuthor().getId(),
+                news.getTitle(),
                 news.getContent(),
                 news.getImageUrl(),
                 news.getCreatedAt(),
@@ -59,6 +65,8 @@ public class CRUDNewsService {
     public NewsDto getNews(Long newsId) {
         News news = newsRepository.findById(newsId).orElseThrow(() -> new EntityNotFoundException("News not found."));
         return new NewsDto(
+                news.getId(),
+                news.getAuthor().getId(),
                 news.getTitle(),
                 news.getContent(),
                 news.getImageUrl(),

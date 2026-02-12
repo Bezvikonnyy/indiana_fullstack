@@ -59,6 +59,8 @@ public class SecurityConfig {
                                 "/api/user/login",
                                 "/api/user/registration",
                                 "/api/home/**",
+                                "/api/news/",
+                                "/api/news/*",
                                 "/api/game",
                                 "/api/game/*",
                                 "/css/**",
@@ -80,7 +82,14 @@ public class SecurityConfig {
                         .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/admin/**")
                         .hasAnyAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/game/delete/*", "/api/game/edit/**", "/api/game/new_game")
+                        .requestMatchers(
+                                "/api/game/delete/*",
+                                "/api/game/edit/**",
+                                "/api/game/new_game",
+                                "/api/news/newNews",
+                                "/api/news/edit/**",
+                                "/api/news/delete/**"
+                        )
                         .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )

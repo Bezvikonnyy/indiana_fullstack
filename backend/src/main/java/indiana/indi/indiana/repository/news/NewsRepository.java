@@ -12,6 +12,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     @Query("""
             SELECT 
                 n.id as id,
+                n.author.id as authorId,
                 n.title as title,
                 n.content as content,
                 n.imageUrl as imageUrl,
@@ -20,4 +21,17 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             FROM News n
             """)
     Page<NewsDtoInter> getNewsByHome(Pageable pageable);
+
+    @Query("""
+            SELECT 
+                n.id as id,
+                n.author.id as authorId,
+                n.title as title,
+                n.content as content,
+                n.imageUrl as imageUrl,
+                n.createdAt as createdAt,
+                n.updatedAt as updatedAt
+            FROM News n
+            """)
+    Page<NewsDtoInter> getNewsByNews(Pageable pageable);
 }

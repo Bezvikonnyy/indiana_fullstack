@@ -1,0 +1,22 @@
+.edit-news-button {
+    background: transparent; /* чтобы кнопка была без фона */
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease; /* плавный переход цвета */
+    color: #555; /* исходный цвет иконки */
+}
+
+.edit-news-button:hover {
+    color: #dcdc36; /* цвет иконки при наведении */
+    transform: scale(1.2);
+}
+
+.edit-news-button svg {
+    width: 24px;
+    height: 24px;
+    transition: inherit; /* иконка тоже плавно меняет цвет */
+}

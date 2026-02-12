@@ -1,0 +1,54 @@
+/* Контейнер всей страницы */
+.all-news {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Заголовок */
+.all-news__title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #555555;
+}
+
+/* Сетка новостей */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 8px;
+}
+
+.pagination button {
+
+    border: 1px solid #ccc;
+    background: #2d7a2d;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #eee;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.pagination button.active {
+    background-color: #4caf50;
+    color: white;
+    border-color: #4caf50;
+}

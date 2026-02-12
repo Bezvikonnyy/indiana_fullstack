@@ -1,20 +1,23 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.dto.news.NewsDto;
-import indiana.indi.indiana.service.news.CRUDNewsService;
+import indiana.indi.indiana.service.news.NewsForControllerService;
 import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/news")
 public class NewsController {
 
-    private final CRUDNewsService service;
+    private final NewsForControllerService service;
 
     @GetMapping("/{newsId}")
     public NewsDto getNews(@PathVariable("newsId") Long newsId,
@@ -40,7 +43,7 @@ public class NewsController {
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
             @AuthenticationPrincipal CustomUserDetails userDetails){
         Long userId = userDetails != null ? userDetails.getId() : null;
-        return service.updatedNews(
+        return service.editNews(
                 newsId,
                 title,
                 content,
@@ -56,5 +59,10 @@ public class NewsController {
     ) {
         Long userId = userDetails != null ? userDetails.getId() : null;
         service.deleteNews(newsId, userId);
+    }
+
+    @GetMapping("/allNews")
+    public Page<NewsDto> getAllNews(@RequestParam(defaultValue = "0") Integer page){
+        return service.getAllNews(page);
     }
 }

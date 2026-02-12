@@ -66,7 +66,7 @@ export const HomePage = () => {
                 <NavLink to="">Новинки</NavLink>
                 <NavLink to="">Акции</NavLink>
                 <NavLink to="">Популярные</NavLink>
-                <NavLink to="">Новости</NavLink>
+                <NavLink to="/allNews">Новости</NavLink>
                 {isAuthor && (
                     <NavLink to="/games/create">Добавить игру</NavLink>
                 )}

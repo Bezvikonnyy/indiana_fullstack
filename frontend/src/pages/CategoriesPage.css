@@ -1,0 +1,88 @@
+/* Общий контейнер страницы */
+.categories-page {
+    padding: 40px 20px;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1F454B 0%, #16383E 100%);
+    color: #E0E0E0;
+}
+
+/* Категория */
+.categories-page__category {
+    margin-bottom: 50px;
+}
+
+/* Заголовок категории */
+.categories-page__category-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #A0E0C0;
+    margin-bottom: 16px;
+    border-left: 4px solid #A0E0C0;
+    padding-left: 10px;
+}
+
+/* Лента игр */
+.categories-page__games-list {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+}
+
+/* Горизонтальный скролл для ленты */
+.categories-page__games-list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.categories-page__games-list::-webkit-scrollbar-thumb {
+    background-color: rgba(160,224,192,0.4);
+    border-radius: 4px;
+}
+
+.categories-page__games-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Пагинация */
+.categories-page__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.categories-page__pagination-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #264B52;
+    color: #E0E0E0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.categories-page__pagination-btn:disabled {
+    background-color: rgba(38,75,82,0.5);
+    cursor: not-allowed;
+}
+
+.categories-page__pagination-btn:hover:not(:disabled) {
+    background-color: #1F454B;
+    transform: translateY(-2px);
+}
+
+.categories-page__pagination-info {
+    font-size: 16px;
+    color: #A0E0C0;
+}
+
+/* Loading */
+.categories-page__loading {
+    text-align: center;
+    font-size: 22px;
+    color: #A0E0C0;
+    padding: 80px 0;
+}

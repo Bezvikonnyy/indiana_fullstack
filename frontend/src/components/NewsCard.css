@@ -1,15 +1,16 @@
 .news-card {
     display: flex;
     flex-direction: column;
-    background: #1a1a1a;
+    background: linear-gradient(135deg, #1F454B 0%, #264B52 100%); /* тёмно-бирюзовый градиент */
     border-radius: 18px;
     overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .news-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(160, 224, 192, 0.2); /* мягкая бирюзовая подсветка */
 }
 
 .news-card__image-wrapper {
@@ -23,11 +24,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, filter 0.3s ease;
+    filter: brightness(0.9);
 }
 
 .news-card:hover .news-card__image {
     transform: scale(1.05);
+    filter: brightness(1); /* чуть ярче при hover */
 }
 
 .news-card__body {
@@ -39,7 +42,7 @@
 
 .news-card__meta {
     font-size: 13px;
-    color: #888;
+    color: #B0F0D0; /* светлый бирюзовый для даты/мета */
 }
 
 .news-card__title {
@@ -50,17 +53,17 @@
 
 .news-card__title a {
     text-decoration: none;
-    color: #ffffff;
+    color: #E0E0E0; /* светлый текст */
     transition: color 0.2s ease;
 }
 
 .news-card__title a:hover {
-    color: #4da3ff;
+    color: #A0E0C0; /* акцентная бирюзовая ссылка */
 }
 
 .news-card__excerpt {
     font-size: 14px;
-    color: #b5b5b5;
+    color: #C0C0C0; /* светло-серый текст для контраста */
     line-height: 1.5;
 }
 
@@ -68,7 +71,7 @@
     margin-top: auto;
     font-size: 14px;
     font-weight: 500;
-    color: #4da3ff;
+    color: #A0E0C0; /* акцент для ссылки "Подробнее" */
     text-decoration: none;
     transition: opacity 0.2s ease;
 }

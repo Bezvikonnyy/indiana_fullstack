@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease; /* плавный переход цвета */
-    color: #555; /* исходный цвет иконки */
+    color: white; /* исходный цвет иконки */
 }
 
 .favorite.active {
@@ -15,7 +15,7 @@
 }
 
 .favorite:not(.active) {
-    color: #555; /* серое сердце, когда неактивна */
+    color: white; /* серое сердце, когда неактивна */
 }
 
 .favorite:hover {

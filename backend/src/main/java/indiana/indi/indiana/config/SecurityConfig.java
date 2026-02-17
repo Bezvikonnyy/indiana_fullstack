@@ -59,6 +59,7 @@ public class SecurityConfig {
                                 "/api/user/login",
                                 "/api/user/registration",
                                 "/api/home/**",
+                                "/api/categories/*",
                                 "/api/news/allNews",
                                 "/api/news/",
                                 "/api/news/*",
@@ -79,8 +80,6 @@ public class SecurityConfig {
                                 "/api/cart/**"
                                 )
                         .hasAnyAuthority("ROLE_USER", "ROLE_AUTHOR", "ROLE_ADMIN")
-                        .requestMatchers("/api/categories/**")
-                        .hasAnyAuthority("ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/admin/**")
                         .hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers(

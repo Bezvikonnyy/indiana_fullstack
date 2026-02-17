@@ -3,23 +3,26 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #a8d5a3 0%, #dcedc8 100%);
     font-family: Arial, sans-serif;
+    /* фон страницы */
+    background: linear-gradient(135deg, #2C5A60 0%, #16383E 100%);
 }
 
 .auth-form-container {
     position: relative;
-    background-color: white;
+    /* делаем форму чуть темнее, но контрастной */
+    background: linear-gradient(135deg, #1F454B 0%, #0F2B30 100%);
     padding: 2rem 3rem 4rem 3rem;
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     width: 320px;
     text-align: center;
+    color: #E0E0E0; /* светлый текст для контраста */
 }
 
 .auth-form-title {
     margin-bottom: 1.5rem;
-    color: #2e7d32;
+    color: #A0E0C0; /* мягкий зелёно-бирюзовый акцент */
     font-weight: bold;
     font-size: 1.8rem;
 }
@@ -35,14 +38,17 @@
     padding: 0.75rem;
     font-size: 1rem;
     border-radius: 4px;
-    border: 1px solid #ccc;
-    outline-color: #56ab2f;
-    transition: border-color 0.3s;
+    border: 1px solid #4A7C7F; /* более мягкий бирюзовый */
+    background-color: #1B383D; /* темный фон для полей */
+    color: #E0E0E0;
+    outline-color: #56ab2f; /* можно оставить как лёгкий акцент */
+    transition: border-color 0.3s, background-color 0.3s;
 }
 
 .auth-input:focus,
 .auth-select:focus {
     border-color: #56ab2f;
+    background-color: #1F454B;
 }
 
 .auth-button {
@@ -50,15 +56,15 @@
     font-size: 1.1rem;
     border-radius: 4px;
     border: none;
-    background-color: #2e7d32;
-    color: white;
+    background-color: #56ab2f; /* контрастная зелень */
+    color: #FFFFFF;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
 }
 
 .auth-button:hover {
-    background-color: #256627;
+    background-color: #3F8A27;
 }
 
 .auth-switch-link {
@@ -68,7 +74,7 @@
     transform: translateX(-50%);
     margin: 0;
     font-size: 0.9rem;
-    color: #2e7d32;
+    color: #A0E0C0;
     font-weight: bold;
 }
 
@@ -82,7 +88,7 @@
 }
 
 .auth-error-message {
-    color: #d9534f;
+    color: #FF6B6B; /* красный для ошибок, читается на темном фоне */
     margin-top: 8px;
     font-size: 14px;
     text-align: center;

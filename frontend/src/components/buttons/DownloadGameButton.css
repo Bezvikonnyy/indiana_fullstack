@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease; /* плавный переход цвета */
-    color: #555; /* исходный цвет иконки */
+    color: white; /* исходный цвет иконки */
 }
 
 .download-game-button:hover {

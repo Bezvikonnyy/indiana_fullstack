@@ -1,7 +1,10 @@
 package indiana.indi.indiana.repository.categories;
 
+import indiana.indi.indiana.dtoInterface.categories.CategoryDtoInter;
 import indiana.indi.indiana.dtoInterface.categories.CategoryForGameDtoInter;
 import indiana.indi.indiana.entity.categories.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,4 +24,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Set<CategoryForGameDtoInter> findAllCategoryForNewAndEditGame();
 
     List<Category> findAllByOrderByTitleAsc();
+
+    @Query("""
+            SELECT
+                c.id as id,
+                c.title as title
+            FROM Category c
+            """)
+    Page<CategoryDtoInter> findCategoriesForPage(Pageable pageable);
 }

@@ -1,6 +1,12 @@
 .homePage {
+    background: linear-gradient(135deg, #1F454B 0%, #16383E 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #E0E0E0;
+    padding: 20px 0;
 }
 
+/* Контейнер ссылок */
 .linkContainerHomePage {
     display: flex;
     width: 100%;
@@ -11,25 +17,26 @@
 }
 
 .linkContainerHomePage a {
-    color: #555555;
+    color: #A0E0C0;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
 }
 
 .linkContainerHomePage a:hover {
-    color: #1976d2;
+    color: #76C7B0;
 }
 
-.gameShowCaseHomePage{
+/* Showcase игр */
+.gameShowCaseHomePage {
     display: flex;
     max-width: 1100px;
     margin-inline: auto;
     margin-bottom: 20px;
-
 }
 
-.gameNewsShowCaseHomePage{
+/* Showcase новостей */
+.gameNewsShowCaseHomePage {
     display: flex;
     max-width: 1100px;
     margin-inline: auto;
@@ -37,6 +44,7 @@
     margin-top: 20px;
 }
 
+/* Рекомендации игр */
 .gameRecommendationHomePage {
     display: flex;
     justify-content: center;

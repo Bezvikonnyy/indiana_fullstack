@@ -17,6 +17,8 @@
     height: 100%;
     object-fit: cover;
     transition: opacity 0.3s ease;
+    /* добавим лёгкую тёмную маску для гармонии с фоном */
+    filter: brightness(0.85);
 }
 
 .showcase-overlay {
@@ -27,11 +29,11 @@
     padding: 30px;
     background: linear-gradient(
             to top,
-            rgba(0, 0, 0, 0.8),
-            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.7),
+            rgba(0, 0, 0, 0.3),
             transparent
     );
-    color: white;
+    color: #E0E0E0; /* светлый текст для контраста */
 }
 
 .showcase-overlay h2 {
@@ -43,6 +45,7 @@
     margin-top: 10px;
     font-size: 18px;
     opacity: 0.9;
+    color: #A0E0C0; /* бирюзовый акцент для цены */
 }
 
 .showcase-side {
@@ -50,7 +53,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    overflow: hidden;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 .showcase-thumb {
@@ -61,14 +65,15 @@
     padding: 8px;
     border-radius: 12px;
     transition: background 0.2s ease;
+    background-color: rgba(15, 43, 48, 0.4); /* лёгкий тёмный фон для миниатюр */
 }
 
 .showcase-thumb:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(15, 43, 48, 0.6);
 }
 
 .showcase-thumb.active {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(15, 43, 48, 0.75);
 }
 
 .showcase-thumb img {
@@ -79,6 +84,6 @@
 }
 
 .showcase-thumb span {
-    color: #555555;
+    color: #E0E0E0; /* светлый текст для миниатюр */
     font-size: 14px;
 }

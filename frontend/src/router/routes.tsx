@@ -1,4 +1,4 @@
-import {HomePage, AllNews, LoginPage, RegisterPage, GameDetailsPage, NewsPage, ProfilePage, CartPage, CreateGamePage,
+import {HomePage, AllNews, CategoriesPage, LoginPage, RegisterPage, GameDetailsPage, NewsPage, ProfilePage, CartPage, CreateGamePage,
     EditGamePage, CreateNewsPage, EditNewsPage, AdminPanelPage, PurchasedGamesPage, CreatedGamesPage, FavoritePage} from '../pages';
 import { Navigate } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
@@ -8,6 +8,7 @@ export type AppRoute = {path: string, element: JSX.Element}
 export const routes: AppRoute[] = [
     { path: "/home", element: <HomePage /> },
     { path: "/allNews", element: <AllNews /> },
+    { path: "/categories", element: <CategoriesPage /> },
     { path:"/login", element: <LoginPage /> },
     { path:"/register", element:<RegisterPage /> },
     { path:"/games/:id", element:<GameDetailsPage /> },

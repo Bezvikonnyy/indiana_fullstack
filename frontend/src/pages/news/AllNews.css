@@ -4,6 +4,7 @@
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
+    color: #E0E0E0; /* светлый текст для всей страницы */
 }
 
 /* Заголовок */
@@ -11,7 +12,7 @@
     font-size: 2rem;
     margin-bottom: 30px;
     text-align: center;
-    color: #555555;
+    color: #A0E0C0; /* бирюзовый акцент */
 }
 
 /* Сетка новостей */
@@ -30,16 +31,19 @@
 }
 
 .pagination button {
-
-    border: 1px solid #ccc;
-    background: #2d7a2d;
+    border: 1px solid rgba(160, 224, 192, 0.5); /* мягкий бирюзовый контур */
+    background: #1F454B; /* тёмно-бирюзовый фон кнопки */
+    color: #E0E0E0; /* светлый текст */
     cursor: pointer;
     border-radius: 4px;
+    padding: 6px 12px;
     transition: all 0.2s;
 }
 
 .pagination button:hover:not(:disabled) {
-    background-color: #eee;
+    background-color: #264B52; /* чуть светлее при hover */
+    border-color: #A0E0C0; /* акцентная рамка */
+    color: #A0E0C0; /* текст тоже акцентный */
 }
 
 .pagination button:disabled {
@@ -48,7 +52,7 @@
 }
 
 .pagination button.active {
-    background-color: #4caf50;
-    color: white;
-    border-color: #4caf50;
+    background-color: #A0E0C0; /* основной акцент для активной страницы */
+    color: #1F454B; /* контрастный тёмный текст */
+    border-color: #A0E0C0;
 }

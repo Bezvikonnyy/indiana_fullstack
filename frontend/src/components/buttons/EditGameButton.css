@@ -7,11 +7,11 @@
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease; /* плавный переход цвета */
-    color: #555; /* исходный цвет иконки */
+    color: white; /* исходный цвет иконки */
 }
 
 .edit-game-button:hover {
-    color: #dcdc36; /* цвет иконки при наведении */
+    color: #D9B600; /* цвет иконки при наведении */
     transform: scale(1.2);
 }
 

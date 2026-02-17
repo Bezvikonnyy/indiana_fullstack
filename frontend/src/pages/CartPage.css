@@ -2,10 +2,11 @@
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background: #fdfdfd;
+    background: linear-gradient(135deg, #1F454B 0%, #264B52 100%);
     border-radius: 12px;
-    color: black;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: #E0E0E0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    font-family: Arial, sans-serif;
 }
 
 .cart-items {
@@ -18,10 +19,10 @@
 .cart-item {
     display: flex;
     align-items: center;
-    background: #fff;
+    background: rgba(31,69,75,0.5);
     border-radius: 10px;
     padding: 10px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .cart-item-image {
@@ -39,32 +40,34 @@
 .cart-info h3 {
     margin: 0 0 5px;
     font-size: 18px;
+    color: #A0E0C0;
 }
 
 .cart-info p {
     margin: 0;
-    color: #555;
+    color: #E0E0E0;
 }
 
 .btn-remove {
-    background: #ff4d4d;
-    color: white;
+    background: #B85C5C;
+    color: #E0E0E0;
     border: none;
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background 0.2s;
 }
 
 .btn-remove:hover {
-    background: #cc0000;
+    background: #9A3F3F;
 }
 
 .cart-summary {
     margin-top: 20px;
     padding: 15px;
-    background: #f3f3f3;
+    background: rgba(31,69,75,0.4);
     border-radius: 10px;
+    color: #E0E0E0;
 }
 
 .cart-summary p {
@@ -73,30 +76,30 @@
 }
 
 .btn-clear {
-    background: #ff9f43;
-    color: white;
+    background: #B85C5C;
+    color: #E0E0E0;
     border: none;
     padding: 10px 15px;
     border-radius: 6px;
     cursor: pointer;
     margin-right: 10px;
-    transition: 0.2s;
+    transition: background 0.2s;
 }
 
 .btn-clear:hover {
-    background: #e67e22;
+    background: #9A3F3F;
 }
 
 .btn-order {
-    background: #28a745;
-    color: white;
+    background: #A0E0C0;
+    color: #1F454B;
     border: none;
     padding: 10px 15px;
     border-radius: 6px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background 0.2s;
 }
 
 .btn-order:hover {
-    background: #218838;
+    background: #B0F0D0;
 }

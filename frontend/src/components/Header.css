@@ -5,7 +5,7 @@
     justify-content: flex-end;
     padding: 0 20px;
     height: 4rem;
-    background-color: #2e7d32;
+    background: linear-gradient(135deg, #1F454B 0%, #0F2B30 100%);
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
@@ -59,7 +59,7 @@
 }
 
 .button {
-    background-color: #4caf50;
+    background: linear-gradient(135deg, #1F454B 0%, #0F2B30 100%);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -70,11 +70,11 @@
 }
 
 .secondary-button {
-    background-color: #81c784;
+    background: linear-gradient(135deg, #1F454B 0%, #0F2B30 100%);
 }
 
 .burger-button {
-    background-color: #4caf50;
+    background: linear-gradient(135deg, #1F454B 0%, #0F2B30 100%);
     color: white;
     border: none;
     padding: 6px 12px;

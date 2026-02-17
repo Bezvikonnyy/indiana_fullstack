@@ -62,7 +62,7 @@ export const HomePage = () => {
     return (
         <div className="homePage">
             <div className="linkContainerHomePage">
-                <NavLink to="">Все игры</NavLink>
+                <NavLink to="/categories">Категории</NavLink>
                 <NavLink to="">Новинки</NavLink>
                 <NavLink to="">Акции</NavLink>
                 <NavLink to="">Популярные</NavLink>

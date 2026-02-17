@@ -2,26 +2,46 @@
     margin-top: 2rem;
     text-align: left;
     padding: 1rem;
-    color: #555555;
+    color: #E0E0E0; /* светлый текст */
 }
 
+/* Форма комментария */
 .comment-form textarea {
     width: 100%;
     padding: 0.5rem;
     resize: vertical;
     margin-bottom: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid rgba(160,224,192,0.5);
+    background-color: rgba(31,69,75,0.3);
+    color: #E0E0E0;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
+.comment-form textarea:focus {
+    border-color: #A0E0C0;
+    background-color: rgba(31,69,75,0.5);
+}
+
+/* Кнопка отправки комментария */
 .comment-form button {
-    background-color: #2e7d32;
-    color: white;
+    background-color: #A0E0C0; /* бирюзовый акцент */
+    color: #1F454B; /* контрастный текст */
     border: none;
     padding: 0.5rem 1rem;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
+.comment-form button:hover {
+    background-color: #B0F0D0;
+    transform: translateY(-1px);
+}
+
+/* Список комментариев */
 .comment-list {
     list-style: none;
     padding: 0;
@@ -32,6 +52,7 @@
     padding: 0.5rem 0;
 }
 
+/* Действия над комментариями (редактировать/удалить) */
 .comment-actions {
     margin-top: 0.3rem;
 }
@@ -40,7 +61,12 @@
     margin-right: 0.5rem;
     background: none;
     border: none;
-    color: #2e7d32;
+    color: #A0E0C0; /* бирюзовый акцент */
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.comment-actions button:hover {
+    color: #B0F0D0;
 }

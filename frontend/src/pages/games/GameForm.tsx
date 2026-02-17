@@ -16,7 +16,7 @@ export const GameForm: FC<GameFormProps> = ({initialData, onSubmit, submitText})
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(initialData?.categories || []);
     const [imageFile, setImageFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageUrl || null);
     const [gameFile, setGameFile] = useState(null);
 
     useEffect(() => {
@@ -94,7 +94,7 @@ export const GameForm: FC<GameFormProps> = ({initialData, onSubmit, submitText})
                     onClick={() => document.getElementById("image-input").click()}
                 >
                     {imagePreview ? (
-                        <img src={imagePreview} className="game-image-preview" alt="preview"/>
+                        <img src={`http://localhost:8080${imagePreview}`} className="game-image-preview" alt="preview"/>
                     ) : (
                         "+ добавить фото"
                     )}

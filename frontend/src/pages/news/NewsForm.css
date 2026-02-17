@@ -5,10 +5,11 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background: linear-gradient(135deg, #1F454B 0%, #264B52 100%);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    color: #E0E0E0;
 }
 
 /* Верхняя часть формы с фото и текстом */
@@ -17,33 +18,35 @@
     gap: 15px;
 }
 
-.hover-create-news {
-    display: flex;
-    justify-content: center;
-    color: #555555;
-}
-
+.hover-create-news,
 .hover-edit-news {
     display: flex;
     justify-content: center;
-    color: #555555;
+    color: #A0E0C0; /* бирюзовый акцент */
 }
 
 /* Блок для загрузки/превью фото */
 .input-news-image {
     width: 500px;
     height: 500px;
-    border: 1px dashed #aaa;
-    border-radius: 5px;
+    border: 2px dashed rgba(160,224,192,0.5);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
     font-size: 14px;
-    color: #555;
+    color: #B0F0D0;
     text-align: center;
     padding: 5px;
+    background-color: rgba(31,69,75,0.3);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.input-news-image:hover {
+    border-color: #A0E0C0;
+    background-color: rgba(31,69,75,0.5);
 }
 
 /* Превью выбранного изображения */
@@ -51,7 +54,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 /* Контейнер для полей ввода текста */
@@ -59,24 +62,28 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 /* Поля ввода */
 .input-news-title,
 .input-news-content {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 6px;
+    border: 1px solid rgba(160,224,192,0.5);
     box-sizing: border-box;
     outline: none;
+    background-color: rgba(31,69,75,0.3);
+    color: #E0E0E0;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
 .input-news-title:focus,
 .input-news-content:focus {
-    border-color: #28a745;
+    border-color: #A0E0C0;
+    background-color: rgba(31,69,75,0.5);
 }
 
 /* Кнопка отправки формы */
@@ -85,16 +92,17 @@
     font-size: 16px;
     width: 300px;
     margin-inline: auto;
-    background-color: #28a745;
-    color: white;
+    background-color: #A0E0C0; /* бирюзовый акцент */
+    color: #1F454B; /* контрастный текст */
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 .button-news-save:hover {
-    background-color: #218838;
+    background-color: #B0F0D0;
+    transform: translateY(-2px);
 }
 
 /* Страница отображения новости */
@@ -105,6 +113,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    color: #E0E0E0;
 }
 
 /* Блок с изображением и заголовком */
@@ -113,7 +122,7 @@
     width: 100%;
     max-height: 400px;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
 .news-image-container img.news-image {
@@ -126,16 +135,16 @@
     position: absolute;
     bottom: 10px;
     left: 20px;
-    color: white;
+    color: #A0E0C0;
     font-size: 28px;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
 }
 
 /* Текст новости */
 .news-content {
     font-size: 16px;
     line-height: 1.6;
-    color: #333;
+    color: #C0C0C0;
 }
 
 .news-page-buttons {

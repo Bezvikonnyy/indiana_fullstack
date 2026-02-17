@@ -1,0 +1,56 @@
+.category-page {
+    padding: 20px;
+    background: linear-gradient(135deg, #1F454B 0%, #16383E 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #E0E0E0;
+}
+
+.category-title {
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    color: #A0E0C0; /* мягкий бирюзовый акцент */
+    margin-bottom: 20px;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #264B52; /* тёмно-бирюзовый основной */
+    color: #E0E0E0;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pagination button:disabled {
+    background-color: #16383E;
+    cursor: default;
+    opacity: 0.6;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #1F6169;
+}
+
+.pagination span {
+    font-weight: 500;
+    color: #A0E0C0;
+}

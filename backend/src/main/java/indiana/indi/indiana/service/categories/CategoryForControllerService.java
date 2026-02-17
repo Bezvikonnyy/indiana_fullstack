@@ -1,11 +1,11 @@
 package indiana.indi.indiana.service.categories;
 
-import indiana.indi.indiana.dto.categories.CategoriesPageDto;
-import indiana.indi.indiana.dto.categories.CategoryDto;
-import indiana.indi.indiana.dto.categories.CategoryForGameDto;
-import indiana.indi.indiana.dto.categories.CategoryWithGamesDto;
+import indiana.indi.indiana.dto.categories.*;
+import indiana.indi.indiana.dto.games.CardItemDto;
 import indiana.indi.indiana.dto.games.GameWithCategoryDto;
+import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
 import indiana.indi.indiana.mapper.categories.CategoryMapper;
+import indiana.indi.indiana.mapperInterface.games.CardItemMapper;
 import indiana.indi.indiana.mapperInterface.games.GameWithCategoryMapper;
 import indiana.indi.indiana.repository.categories.CategoryRepository;
 import indiana.indi.indiana.repository.games.GameRepository;
@@ -29,6 +29,7 @@ public class CategoryForControllerService {
     private final CategoryServiceImpl service;
     private final CategoryMapper mapper;
     private final GameWithCategoryMapper gameMapper;
+    private final CardItemMapper cardMapper;
 
     public CategoriesPageDto getCategoriesPage(int page, int size, Long userId) {
 
@@ -59,6 +60,21 @@ public class CategoryForControllerService {
                 categoriesPage.getNumber(),
                 categoriesPage.getTotalPages(),
                 categoriesPage.getTotalElements()
+        );
+    }
+
+    public CategoryPageDto getCategoryPage(Long categoryId, int page, int size, Long userId) {
+        Page<CardItemDtoInter> games = gameRepository.findByCategoryId(userId, categoryId, PageRequest.of(page, size));
+
+        List<CardItemDto> cardItems = games.stream()
+                .map(cardMapper::toDto)
+                .toList();
+
+        return new CategoryPageDto(
+                cardItems,
+                games.getNumber(),
+                games.getTotalPages(),
+                games.getTotalElements()
         );
     }
 

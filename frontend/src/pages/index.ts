@@ -6,4 +6,5 @@ export * from "./CartPage";
 export * from "./HomePage";
 export * from "./ProfilePage";
 export * from "./CategoriesPage";
+export * from "./CategoryPage";
 

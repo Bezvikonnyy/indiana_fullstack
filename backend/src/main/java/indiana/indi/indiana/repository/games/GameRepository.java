@@ -245,4 +245,28 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             @Param("categoryIds") List<Long> categoryIds
     );
 
+    @Query("""
+                SELECT
+                    g.id as id,
+                    g.title as title,
+                    g.imageUrl as imageUrl,
+                    g.price as price,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                    ) THEN true ELSE false END as isFavorite,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                    ) THEN true ELSE false END as isInCart,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                    ) THEN true ELSE false END as isPurchased
+                FROM GameCategory gc
+                JOIN gc.game g
+                WHERE gc.category.id = :categoryId
+            """)
+    Page<CardItemDtoInter> findByCategoryId(
+            @Param("userId") Long userId,
+            @Param("categoryId") Long categoryId,
+            Pageable pageable
+    );
 }

@@ -23,7 +23,7 @@ export const GameCard: FC<GameCardProps> = ({game}) => {
             {isLoggedIn && (
                 <div className="gameCardButton">
                     <FavoriteButton gameId={game.id} isFavorite={game.isFavorite}/>
-                    <CartButton gameId={game.id} isInCart={game.isInCart}/>
+                    {!game.isPurchased && <CartButton gameId={game.id} isInCart={game.isInCart}/>}
                     <PurchasedStatus isPurchased={game.isPurchased}/>
                 </div>
             )}

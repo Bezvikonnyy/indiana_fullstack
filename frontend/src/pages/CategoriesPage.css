@@ -22,6 +22,17 @@
     padding-left: 10px;
 }
 
+/* Ссылки внутри заголовков категорий */
+.categories-page__category-title a {
+    color: inherit;           /* берём цвет заголовка */
+    text-decoration: none;    /* убираем подчеркивание */
+    font-weight: inherit;     /* сохраняем жирность */
+}
+
+.categories-page__category-title a:hover {
+    color: #82C7B7;           /* легкий эффект при наведении */
+}
+
 /* Лента игр */
 .categories-page__games-list {
     display: flex;

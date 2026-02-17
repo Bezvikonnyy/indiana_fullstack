@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import { getCategoriesPage } from "../services/categories/getCategoriesPage";
 import { CategoriesForPage } from "../types/CategoriesForPage";
 import { GameCard } from "../components/GameCard";
@@ -29,7 +29,11 @@ export const CategoriesPage = () => {
         <div className="categories-page">
             {data.categories.map(category => (
                 <div key={category.id} className="categories-page__category">
-                    <h2 className="categories-page__category-title">{category.title}</h2>
+                    <h2 className="categories-page__category-title">
+                        <Link to={`/category/${category.id}`} state={{ categoryTitle: category.title }}>
+                            {category.title}
+                        </Link>
+                    </h2>
 
                     <div className="categories-page__games-list">
                         {category.games.map(game => (

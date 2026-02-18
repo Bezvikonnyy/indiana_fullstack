@@ -2,14 +2,13 @@ package indiana.indi.indiana.dto.games;
 
 import java.math.BigDecimal;
 
-public record CardItemDto(
+public record GameInfoDto(
         Long id,
         String title,
         String imageUrl,
         BigDecimal price,
         BigDecimal finalPrice,
-        Integer discountPercent,
-        boolean isFavorite,
-        boolean isInCart,
-        boolean isPurchased) {
-}
+        Long purchasesCount,
+        double averageRating,
+        Long ratingsCount
+) {}

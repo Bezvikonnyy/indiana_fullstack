@@ -19,6 +19,8 @@ public class GameMapperInterface {
                 projection.getTitle(),
                 projection.getImageUrl(),
                 projection.getPrice(),
+                projection.getFinalPrice(),
+                projection.getDiscountPercent(),
                 projection.getIsFavorite(),
                 projection.getIsInCart(),
                 projection.getIsPurchased());

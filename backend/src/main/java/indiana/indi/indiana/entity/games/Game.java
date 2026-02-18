@@ -53,6 +53,15 @@ public class Game {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "purchases_count", nullable = false)
+    private Long purchasesCount = 0L;
+
+    @Column(name = "ratings_count", nullable = false)
+    private Long ratingsCount = 0L;
+
+    @Column(name = "average_rating", nullable = false)
+    private Double averageRating = 0.0;
+
     @PrePersist
     public void onPrePersist() {
         createdAt = LocalDateTime.now();

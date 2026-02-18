@@ -13,6 +13,8 @@ public class CardItemMapper {
                 dtoInter.getTitle(),
                 dtoInter.getImageUrl(),
                 dtoInter.getPrice(),
+                dtoInter.getFinalPrice(),
+                dtoInter.getDiscountPercent(),
                 dtoInter.getIsFavorite(),
                 dtoInter.getIsInCart(),
                 dtoInter.getIsPurchased()

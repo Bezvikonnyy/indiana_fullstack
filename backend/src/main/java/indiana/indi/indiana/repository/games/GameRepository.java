@@ -1,10 +1,7 @@
 package indiana.indi.indiana.repository.games;
 
 import indiana.indi.indiana.dtoInterface.categories.CategoryForGameDtoInter;
-import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
-import indiana.indi.indiana.dtoInterface.games.GameDetailsDtoInter;
-import indiana.indi.indiana.dtoInterface.games.GameForProfileDtoInter;
-import indiana.indi.indiana.dtoInterface.games.GameWithCategoryDtoInter;
+import indiana.indi.indiana.dtoInterface.games.*;
 import indiana.indi.indiana.entity.games.Game;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,6 +19,21 @@ import java.util.Set;
 public interface GameRepository extends JpaRepository<Game, Long> {
 
     List<Game> findAllByTitleLikeIgnoreCase(String filter);
+
+    @Query("""
+                SELECT g.id AS id,
+                       g.title AS title,
+                       g.imageUrl AS imageUrl,
+                       g.price AS price,
+                       g.purchasesCount AS purchasesCount,
+                       COALESCE(AVG(r.rating), 0) AS averageRating,
+                       COUNT(r.id) AS ratingsCount
+                FROM Game g
+                LEFT JOIN GameRating r ON r.game.id = g.id
+                GROUP BY g.id
+            """)
+    List<GameInfoProjection> findAllWithRatings();
+
 
     @Query("""
             SELECT
@@ -269,4 +282,68 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             @Param("categoryId") Long categoryId,
             Pageable pageable
     );
+
+    @Query("""
+                SELECT
+                    g.id as id,
+                    g.title as title,
+                    g.imageUrl as imageUrl,
+                    g.price as price,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                    ) THEN true ELSE false END as isFavorite,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                    ) THEN true ELSE false END as isInCart,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                    ) THEN true ELSE false END as isPurchased
+                FROM Game g
+                ORDER BY g.createdAt DESC
+            """)
+    Page<CardItemDtoInter> findLatestGames(@Param("userId") Long userId, Pageable pageable);
+
+    @Query("""
+                SELECT
+                    g.id as id,
+                    g.title as title,
+                    g.imageUrl as imageUrl,
+                    g.price as price,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                    ) THEN true ELSE false END as isFavorite,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                    ) THEN true ELSE false END as isInCart,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                    ) THEN true ELSE false END as isPurchased
+                FROM Game g
+                ORDER BY g.purchasesCount DESC
+            """)
+    Page<CardItemDtoInter> findPopularGames(@Param("userId") Long userId, Pageable pageable);
+
+    @Query("""
+    SELECT
+        g.id as id,
+        g.title as title,
+        g.imageUrl as imageUrl,
+        g.price as price,
+        CASE WHEN EXISTS (
+            SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+        ) THEN true ELSE false END as isFavorite,
+        CASE WHEN EXISTS (
+            SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+        ) THEN true ELSE false END as isInCart,
+        CASE WHEN EXISTS (
+            SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+        ) THEN true ELSE false END as isPurchased
+    FROM GameDiscount d
+    JOIN d.game g
+    WHERE d.active = true AND :now BETWEEN d.startDate AND d.endDate
+""")
+    Page<CardItemDtoInter> findDiscountedGames(
+            @Param("userId") Long userId,
+            @Param("now") LocalDateTime now, Pageable pageable);
+
 }

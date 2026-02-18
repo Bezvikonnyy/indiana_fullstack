@@ -3,35 +3,41 @@ package indiana.indi.indiana.entity.manyToManyEntities;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_purchased_games", uniqueConstraints = {
+@Builder
+@Entity
+@Table(name = "game_ratings", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "game_id"})
 })
-public class UserPurchasedGames {
+public class GameRating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @Column(name = "price_at_moment", nullable = false)
-    private BigDecimal priceAtMoment;
+    @Column(name = "rating", nullable = false)
+    private Integer rating; // 1–5
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void onPrePersist() {
+        createdAt = LocalDateTime.now();
+    }
 }

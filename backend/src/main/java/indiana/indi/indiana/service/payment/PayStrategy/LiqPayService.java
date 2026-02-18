@@ -6,11 +6,18 @@ import indiana.indi.indiana.dto.cartAndPay.*;
 import indiana.indi.indiana.dtoInterface.cartAndPay.OrderItemDtoInter;
 import indiana.indi.indiana.entity.cartAndPay.Order;
 import indiana.indi.indiana.entity.cartAndPay.Payment;
+import indiana.indi.indiana.entity.games.Game;
+import indiana.indi.indiana.entity.games.GameDiscount;
+import indiana.indi.indiana.entity.manyToManyEntities.UserPurchasedGames;
 import indiana.indi.indiana.enums.OrderStatus;
 import indiana.indi.indiana.enums.PaymentMethod;
 import indiana.indi.indiana.enums.PaymentStatus;
 import indiana.indi.indiana.repository.cartAndPay.OrderRepository;
 import indiana.indi.indiana.repository.cartAndPay.PaymentRepository;
+import indiana.indi.indiana.repository.games.GameDiscountRepository;
+import indiana.indi.indiana.repository.games.GameRepository;
+import indiana.indi.indiana.repository.manyToMany.UserPurchasedGamesRepository;
+import indiana.indi.indiana.repository.users.UserRepository;
 import indiana.indi.indiana.service.cart.CRUDCartServiceImpl;
 import indiana.indi.indiana.service.order.CRUDOrderServiceImpl;
 import indiana.indi.indiana.service.payment.PaymentStrategy;
@@ -18,8 +25,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +51,10 @@ public class LiqPayService implements PaymentStrategy {
     private final ObjectMapper objectMapper;
     private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
+    private final GameRepository gameRepository;
+    private final GameDiscountRepository gameDiscountRepository;
+    private final UserRepository userRepository;
+    private final UserPurchasedGamesRepository purchasedGamesRepository;
 
     @Transactional
     @Override
@@ -133,17 +146,49 @@ public class LiqPayService implements PaymentStrategy {
         }
     }
 
+    private BigDecimal calculateFinalPrice(Game game) {
+        // Получаем активную скидку, если есть
+        GameDiscount discount = gameDiscountRepository.findActiveDiscountByGame(
+                game.getId(), LocalDateTime.now()
+        );
+
+        if (discount != null) {
+            // Цена со скидкой
+            return game.getPrice()
+                    .subtract(game.getPrice()
+                            .multiply(BigDecimal.valueOf(discount.getDiscountPercent()))
+                            .divide(BigDecimal.valueOf(100)));
+        }
+
+        // Если скидки нет — обычная цена
+        return game.getPrice();
+    }
+
     @Transactional
     private void purchasedGame(Long orderId, Long userId) {
         List<OrderItemDtoInter> orderItems = orderRepository.getOrderItemByOrderId(orderId);
-        List<Long> gameIds = orderItems.stream().map(OrderItemDtoInter::getGameId).toList();
 
-        String sql = "INSERT INTO user_purchased_games(user_id, game_id) VALUES (?, ?)";
-        List<Object[]> batchArgs = gameIds.stream()
-                .map(gameId -> new Object[]{userId, gameId})
-                .toList();
-        jdbcTemplate.batchUpdate(sql, batchArgs);
+        for (OrderItemDtoInter item : orderItems) {
+            Game game = gameRepository.findById(item.getGameId())
+                    .orElseThrow(() -> new EntityNotFoundException("Game not found"));
+
+            // Рассчитать финальную цену с учётом активной скидки
+            BigDecimal finalPrice = calculateFinalPrice(game);
+
+            // Сохранить покупку
+            UserPurchasedGames purchase = new UserPurchasedGames();
+            purchase.setUser(userRepository.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("User not found")));
+            purchase.setGame(game);
+            purchase.setPriceAtMoment(finalPrice);
+            purchasedGamesRepository.save(purchase);
+
+            // Увеличить счётчик покупок
+            game.setPurchasesCount(game.getPurchasesCount() + 1);
+            gameRepository.save(game);
+        }
     }
+
 
     private void verifySignature(String data, String signature) {
         if(data == null || data.isBlank()) {

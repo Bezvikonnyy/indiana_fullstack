@@ -57,18 +57,22 @@ export const GameDetailsPage = () => {
                     />
                     {isLoggedIn && (
                         <div className="game-buttons-game-details">
-                            <div>
-                                <DownloadGameButton fileUrl={game.gameFileUrl}/>
-                            </div>
+                            {(game.isPurchased) && (
+                                <>
+                                    <DownloadGameButton fileUrl={game.gameFileUrl}/>
+                                </>
+                            )}
                             {(isAuthor || isAdmin) && (
                                 <>
                                     <EditGameButton id={id}/>
                                     <DeleteGameButton id={id}/>
                                 </>
                             )}
-                            <div>
-                                <CartButton gameId={game.id} isInCart={game.isInCart}/>
-                            </div>
+                            {(!game.isPurchased) && (
+                                <>
+                                    <CartButton gameId={game.id} isInCart={game.isInCart}/>
+                                </>
+                            )}
                             <div>
                                 <FavoriteButton gameId={game.id} isFavorite={game.isFavorite}/>
                             </div>

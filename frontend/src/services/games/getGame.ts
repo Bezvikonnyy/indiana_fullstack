@@ -1,6 +1,6 @@
-import {GameFullDto} from "../../types/GameFullDto";
 import {request} from "../../api/httpClient";
+import {GameDetailsDto} from "../../types/games/GameDetailsDto";
 
 export const getGame = async (id) => {
-    return request<GameFullDto>(`/api/game/${id}`);
+    return request<GameDetailsDto>(`/api/game/${id}`);
 }

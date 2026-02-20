@@ -2,13 +2,14 @@ package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
-import indiana.indi.indiana.dto.games.GameFullDto;
+import indiana.indi.indiana.dto.games.GameDetailsDto;
 import indiana.indi.indiana.dtoInterface.games.GameDetailsDtoInter;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.manyToManyEntities.GameCategory;
 import indiana.indi.indiana.entity.users.User;
-import indiana.indi.indiana.mapper.games.GameFullMapper;
+import indiana.indi.indiana.mapper.games.GameDetailsMapper;
+import indiana.indi.indiana.repository.categories.CategoryRepository;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.repository.manyToMany.GameCategoryRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,13 +32,14 @@ public class CRUDGameServiceImpl implements CRUDGameService {
     private final GameRepository gameRepository;
     private final GameCategoryRepository gameCategoryRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final CategoryServiceImpl categoryService;
     private final FileService fileService;
-    private final GameFullMapper mapper;
+    private final GameDetailsMapper mapper;
 
     @Override
     @Transactional
-    public GameFullDto createGame(
+    public GameDetailsDto createGame(
             NewGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gameFile,
@@ -62,12 +65,16 @@ public class CRUDGameServiceImpl implements CRUDGameService {
         List<GameCategory> links = categories.stream()
                 .map(category -> new GameCategory(null, game, category)).toList();
         gameCategoryRepository.saveAll(links);
-        return mapper.toDto(game, categories);
+        GameDetailsDtoInter newGame = gameRepository
+                .getGameDetailsById(author.getId(), game.getId(), LocalDateTime.now())
+                .orElseThrow(() -> new EntityNotFoundException("Game not found!"));
+
+        return mapper.toDto(newGame, categoryRepository.getCategoriesForGameDetails(newGame.getId()));
     }
 
     @Override
     @Transactional
-    public GameFullDto editGame(
+    public GameDetailsDto editGame(
             Long gameId,
             EditGamePayload payload,
             MultipartFile imageFile,
@@ -97,11 +104,14 @@ public class CRUDGameServiceImpl implements CRUDGameService {
         List<GameCategory> links = categories.stream()
                 .map(category -> new GameCategory(null, existingGame, category)).toList();
         gameCategoryRepository.saveAll(links);
-        return mapper.toDto(existingGame, categories);
+        GameDetailsDtoInter editGame = gameRepository
+                .getGameDetailsById(userId, existingGame.getId(), LocalDateTime.now())
+                .orElseThrow(() -> new EntityNotFoundException("Game not found!"));
+        return mapper.toDto(editGame, categoryRepository.getCategoriesForGameDetails(editGame.getId()));
     }
 
     public GameDetailsDtoInter getGame(Long userId, Long gameId) {
-        return gameRepository.getGameDetailsById(userId, gameId)
+        return gameRepository.getGameDetailsById(userId, gameId, LocalDateTime.now())
                 .orElseThrow(() -> new EntityNotFoundException("Game not found!"));
     }
 

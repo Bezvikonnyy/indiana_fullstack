@@ -1,0 +1,24 @@
+.game-rating {
+    display: flex;
+    gap: 4px;
+}
+
+.star-button {
+    background: transparent; /* чтобы кнопка была без фона */
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease; /* плавный переход цвета */
+    color: white; /* исходный цвет иконки */
+}
+
+.star-button.active {
+    color: #FFD700; /* золотой для выбранной звезды */
+}
+
+.star-button:hover {
+    color: #FFC107;
+}

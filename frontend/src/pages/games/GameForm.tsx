@@ -1,10 +1,10 @@
 import React, {useState, useEffect, FC} from 'react';
 import './GameForm.css';
-import {GameFullDto} from '../../types/GameFullDto';
+import {CardItemDto} from '../../types/games/CardItemDto';
 import {getAllCategory} from "../../services/categories/getAllCategory";
 
 interface GameFormProps {
-    initialData?: Partial<GameFullDto>;
+    initialData?: Partial<CardItemDto>;
     onSubmit: (formData: FormData) => void;
     submitText?: string;
 }

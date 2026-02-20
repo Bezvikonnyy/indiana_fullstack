@@ -1,7 +1,7 @@
 package indiana.indi.indiana.service.news;
 
 import indiana.indi.indiana.dto.news.NewsDto;
-import indiana.indi.indiana.mapperInterface.news.NewsMapper;
+import indiana.indi.indiana.mapper.news.NewsMapper;
 import indiana.indi.indiana.repository.news.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

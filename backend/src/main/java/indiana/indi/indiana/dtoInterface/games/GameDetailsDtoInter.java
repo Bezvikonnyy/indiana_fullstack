@@ -10,6 +10,8 @@ public interface GameDetailsDtoInter {
     String getGameFileUrl();
     Long getAuthorId();
     BigDecimal getPrice();
+    Integer getDiscountPercent();
+    Integer getRating();
     Boolean getIsFavorite();
     Boolean getIsInCart();
     Boolean getIsPurchased();

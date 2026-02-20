@@ -10,8 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/news")
@@ -20,9 +18,7 @@ public class NewsController {
     private final NewsForControllerService service;
 
     @GetMapping("/{newsId}")
-    public NewsDto getNews(@PathVariable("newsId") Long newsId,
-                           @AuthenticationPrincipal CustomUserDetails userDetails){
-        Long userId = userDetails != null ? userDetails.getId() : null;
+    public NewsDto getNews(@PathVariable("newsId") Long newsId){
         return service.getNews(newsId);
     }
 

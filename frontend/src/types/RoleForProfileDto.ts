@@ -1,3 +1,0 @@
-interface RoleForProfileDto {
-    title: string;
-}

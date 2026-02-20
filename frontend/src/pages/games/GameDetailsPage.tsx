@@ -9,17 +9,18 @@ import {DeleteGameButton} from "../../components/buttons/DeleteGameButton";
 import {EditGameButton} from "../../components/buttons/EditGameButton";
 import {DownloadGameButton} from "../../components/buttons/DownloadGameButton";
 import {getGame} from "../../services/games/getGame";
-import {GameFullDto} from "../../types/GameFullDto";
 import {PurchasedStatus} from "../../components/buttons/PurchasedStatus";
+import {GameDetailsDto} from "../../types/games/GameDetailsDto";
+import {GameRatingButton} from "../../components/buttons/GameRatingButton";
 
 export const GameDetailsPage = () => {
     const {id} = useParams();
-    const [game, setGame] = useState<GameFullDto | null>(null);
+    const [game, setGame] = useState<GameDetailsDto | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const currentUserId = getUserId();
 
-    useEffect( () => {
+    useEffect(() => {
         const fetchGame = async () => {
             setLoading(true);
             const result = await getGame(id);
@@ -57,30 +58,39 @@ export const GameDetailsPage = () => {
                     />
                     {isLoggedIn && (
                         <div className="game-buttons-game-details">
-                            {(game.isPurchased) && (
-                                <>
+                            {/* Ряд 1: Рейтинг */}
+                            {game.isPurchased && (
+                                <div className="game-rating-row">
+                                    <GameRatingButton
+                                        gameId={game.id}
+                                        initialRating={game.rating || 0}
+                                    />
+                                </div>
+                            )}
+
+                            {/* Ряд 2: Остальные кнопки */}
+                            <div className="other-game-buttons-row">
+                                {game.isPurchased && (
                                     <DownloadGameButton fileUrl={game.gameFileUrl}/>
-                                </>
-                            )}
-                            {(isAuthor || isAdmin) && (
-                                <>
-                                    <EditGameButton id={id}/>
-                                    <DeleteGameButton id={id}/>
-                                </>
-                            )}
-                            {(!game.isPurchased) && (
-                                <>
+                                )}
+
+                                {(isAuthor || isAdmin) && (
+                                    <>
+                                        <EditGameButton id={id}/>
+                                        <DeleteGameButton id={id}/>
+                                    </>
+                                )}
+
+                                {!game.isPurchased && (
                                     <CartButton gameId={game.id} isInCart={game.isInCart}/>
-                                </>
-                            )}
-                            <div>
+                                )}
+
                                 <FavoriteButton gameId={game.id} isFavorite={game.isFavorite}/>
-                            </div>
-                            <div>
                                 <PurchasedStatus isPurchased={game.isPurchased}/>
                             </div>
                         </div>
                     )}
+
 
                 </div>
                 <div className="right-container-game-details">

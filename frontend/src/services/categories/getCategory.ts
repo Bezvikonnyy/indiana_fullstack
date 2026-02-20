@@ -1,5 +1,5 @@
 import { request } from "../../api/httpClient";
-import { CategoryPageDto } from "../../types/CategoryPageDto";
+import { CategoryPageDto } from "../../types/categories/CategoryPageDto";
 
 export const getCategory = async (categoryId: number, page: number, size: number) => {
     return request<CategoryPageDto>(

@@ -63,9 +63,9 @@ export const HomePage = () => {
         <div className="homePage">
             <div className="linkContainerHomePage">
                 <NavLink to="/categories">Категории</NavLink>
-                <NavLink to="">Новинки</NavLink>
-                <NavLink to="">Акции</NavLink>
-                <NavLink to="">Популярные</NavLink>
+                <NavLink to="/latest">Новинки</NavLink>
+                <NavLink to="/discount">Акции</NavLink>
+                <NavLink to="/popular">Популярные</NavLink>
                 <NavLink to="/allNews">Новости</NavLink>
                 {isAuthor && (
                     <NavLink to="/games/create">Добавить игру</NavLink>

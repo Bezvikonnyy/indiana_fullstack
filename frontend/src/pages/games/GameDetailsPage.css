@@ -103,3 +103,35 @@
     font-size: 1.5rem;
     color: #A0E0C0; /* акцентный цвет */
 }
+
+.other-game-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Контейнер кнопок */
+.game-buttons-game-details {
+    display: flex;
+    flex-direction: column; /* ряды сверху вниз */
+    align-items: center;
+    gap: 12px; /* расстояние между рядами */
+    width: 100%;
+}
+
+/* Ряд с рейтингом */
+.game-rating-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Ряд с остальными кнопками */
+.other-game-buttons-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+

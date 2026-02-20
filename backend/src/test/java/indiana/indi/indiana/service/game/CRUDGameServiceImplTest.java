@@ -1,7 +1,6 @@
 package indiana.indi.indiana.service.game;
 
 import indiana.indi.indiana.controller.payload.NewGamePayload;
-import indiana.indi.indiana.dto.games.GameFullDto;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.entity.games.Game;
 import indiana.indi.indiana.entity.users.User;
@@ -16,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

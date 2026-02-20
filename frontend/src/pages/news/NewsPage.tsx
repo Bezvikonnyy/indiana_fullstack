@@ -5,6 +5,7 @@ import './NewsForm.css';
 import {getUserId, hasRole} from "../../utils/auth";
 import {EditNewsButton} from "../../components/buttons/newsButtons/EditNewsButton";
 import {DeleteNewsButton} from "../../components/buttons/newsButtons/DeleteNewsButton";
+import {NewsDto} from "../../types/news/NewsDto";
 
 export const NewsPage: React.FC = () => {
     const {id} = useParams();

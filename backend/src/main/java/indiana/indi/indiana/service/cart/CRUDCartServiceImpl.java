@@ -5,7 +5,7 @@ import indiana.indi.indiana.dtoInterface.cartAndPay.CartDtoInter;
 import indiana.indi.indiana.dtoInterface.cartAndPay.CartItemDtoInter;
 import indiana.indi.indiana.entity.cartAndPay.Cart;
 import indiana.indi.indiana.entity.users.User;
-import indiana.indi.indiana.mapperInterface.cartAndPay.CartMapper;
+import indiana.indi.indiana.mapper.cartAndPay.CartMapper;
 import indiana.indi.indiana.repository.cartAndPay.CartRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
 import jakarta.persistence.EntityNotFoundException;

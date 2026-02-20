@@ -3,15 +3,13 @@ package indiana.indi.indiana.service.game;
 import indiana.indi.indiana.controller.payload.EditGamePayload;
 import indiana.indi.indiana.controller.payload.NewGamePayload;
 
-import indiana.indi.indiana.dto.games.GameFullDto;
+import indiana.indi.indiana.dto.games.GameDetailsDto;
 import indiana.indi.indiana.entity.games.Game;
-import indiana.indi.indiana.entity.users.User;
-import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CRUDGameService {
 
-    GameFullDto createGame(
+    GameDetailsDto createGame(
             NewGamePayload payload,
             MultipartFile imageFile,
             MultipartFile gaveFile,
@@ -19,7 +17,7 @@ public interface CRUDGameService {
 
     Game getGameById(Long gameId);
 
-    GameFullDto editGame(
+    GameDetailsDto editGame(
             Long id,
             EditGamePayload payload,
             MultipartFile imageFile,

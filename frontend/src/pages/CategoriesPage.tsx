@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {Link, useSearchParams} from "react-router-dom";
 import { getCategoriesPage } from "../services/categories/getCategoriesPage";
-import { CategoriesForPage } from "../types/CategoriesForPage";
+import { CategoriesForPage } from "../types/categories/CategoriesForPage";
 import { GameCard } from "../components/GameCard";
 import "./CategoriesPage.css";
 

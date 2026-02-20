@@ -5,3 +5,6 @@ export * from "./FavoritePage";
 export * from "./GameDetailsPage";
 export * from "./GameForm";
 export * from "./PurchasedGamesPage";
+export * from "./LatestGamesPage";
+export * from "./DiscountGamesPage";
+export * from "./PopularGamesPage";

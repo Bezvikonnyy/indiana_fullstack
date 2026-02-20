@@ -1,13 +1,13 @@
 import React, {FC} from "react";
 import './GameCard.css'
-import {GameCardType} from "../constant/GameCardType";
 import {FavoriteButton} from "./buttons/FavoriteButton";
 import {CartButton} from "./buttons/CartButton";
 import {PurchasedStatus} from "./buttons/PurchasedStatus";
 import {NavLink} from "react-router-dom";
+import {CardItemDto} from "../types/games/CardItemDto";
 
 export interface GameCardProps {
-    game: GameCardType;
+    game: CardItemDto;
 }
 
 export const GameCard: FC<GameCardProps> = ({game}) => {

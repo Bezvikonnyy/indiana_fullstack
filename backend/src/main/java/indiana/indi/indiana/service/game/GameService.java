@@ -1,23 +1,25 @@
 package indiana.indi.indiana.service.game;
 
-import indiana.indi.indiana.entity.games.Game;
-import indiana.indi.indiana.repository.games.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
 public class GameService {
 
-    private final GameRepository gameRepository;
+    public BigDecimal finalPrice(BigDecimal price, Integer discount) {
+        BigDecimal discountPercent =
+                discount != null
+                        ? BigDecimal.valueOf(discount) : BigDecimal.ZERO;
 
-    public List<Game> findAllGames(String filter) {
-        if(filter != null && !filter.isBlank()){
-            return gameRepository.findAllByTitleLikeIgnoreCase("%" + filter + "%");
+        BigDecimal finalPrice;
+        if (discountPercent.compareTo(BigDecimal.ZERO) == 0) {
+            finalPrice = price;
         } else {
-            return gameRepository.findAll();
+            finalPrice = price.multiply(BigDecimal.ONE.subtract(discountPercent.divide(BigDecimal.valueOf(100))));
         }
+        return finalPrice;
     }
 }

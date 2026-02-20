@@ -7,8 +7,10 @@ public record CardItemDto(
         String title,
         String imageUrl,
         BigDecimal price,
-        BigDecimal finalPrice,
         Integer discountPercent,
+        BigDecimal finalPrice,
+        Integer rating,
+        Long categoryId,
         boolean isFavorite,
         boolean isInCart,
         boolean isPurchased) {

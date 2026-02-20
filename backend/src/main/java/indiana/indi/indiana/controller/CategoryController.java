@@ -1,7 +1,7 @@
 package indiana.indi.indiana.controller;
 
 import indiana.indi.indiana.dto.categories.CategoriesPageDto;
-import indiana.indi.indiana.dto.categories.CategoryForGameDto;
+import indiana.indi.indiana.dto.categories.CategoryDto;
 import indiana.indi.indiana.dto.categories.CategoryPageDto;
 import indiana.indi.indiana.service.categories.CategoryForControllerService;
 import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
     @GetMapping("/forGame")
-    public Set<CategoryForGameDto> getCategoryForGame(){
+    public Set<CategoryDto> getCategoryForGame(){
         return service.findCategoryForGame();
     }
 }

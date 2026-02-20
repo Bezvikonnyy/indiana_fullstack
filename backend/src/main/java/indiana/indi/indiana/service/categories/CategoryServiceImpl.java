@@ -1,6 +1,6 @@
 package indiana.indi.indiana.service.categories;
 
-import indiana.indi.indiana.dto.categories.CategoryForGameDto;
+import indiana.indi.indiana.dto.categories.CategoryDto;
 import indiana.indi.indiana.entity.categories.Category;
 import indiana.indi.indiana.repository.categories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,9 +36,9 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Set<CategoryForGameDto> findCategoryForGame(){
+    public Set<CategoryDto> findCategoryForGame(){
         return categoryRepository.findAllCategoryForNewAndEditGame().stream()
-                .map(cat -> new CategoryForGameDto(cat.getId(), cat.getTitle())).collect(Collectors.toSet());
+                .map(cat -> new CategoryDto(cat.getId(), cat.getTitle())).collect(Collectors.toSet());
     }
 
     @Override

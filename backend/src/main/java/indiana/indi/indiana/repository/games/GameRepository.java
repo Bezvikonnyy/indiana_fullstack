@@ -1,6 +1,5 @@
 package indiana.indi.indiana.repository.games;
 
-import indiana.indi.indiana.dtoInterface.categories.CategoryForGameDtoInter;
 import indiana.indi.indiana.dtoInterface.games.*;
 import indiana.indi.indiana.entity.games.Game;
 import org.springframework.data.domain.Page;
@@ -18,42 +17,31 @@ import java.util.Set;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    List<Game> findAllByTitleLikeIgnoreCase(String filter);
-
-    @Query("""
-                SELECT g.id AS id,
-                       g.title AS title,
-                       g.imageUrl AS imageUrl,
-                       g.price AS price,
-                       g.purchasesCount AS purchasesCount,
-                       COALESCE(AVG(r.rating), 0) AS averageRating,
-                       COUNT(r.id) AS ratingsCount
-                FROM Game g
-                LEFT JOIN GameRating r ON r.game.id = g.id
-                GROUP BY g.id
-            """)
-    List<GameInfoProjection> findAllWithRatings();
-
-
     @Query("""
             SELECT
                 g.id as id,
                 g.title as title,
                 g.imageUrl as imageUrl,
-                    g.price as price,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
-                    ) THEN true ELSE false END as isFavorite,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
-                    ) THEN true ELSE false END as isInCart,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
-                    ) THEN true ELSE false END as isPurchased
+                g.price as price,
+                d.discountPercent as discountPercent,
+                g.averageRating as rating,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                ) THEN true ELSE false END as isFavorite,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                ) THEN true ELSE false END as isInCart,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                ) THEN true ELSE false END as isPurchased
             FROM Game g
+            LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
             WHERE g.id = :gameId
             """)
-    Optional<CardItemDtoInter> getGameById(@Param("userId") Long userId, @Param("gameId") Long gameId);
+    Optional<CardItemDtoInter> getGameById(@Param("userId") Long userId,
+                                           @Param("gameId") Long gameId,
+                                           @Param("now") LocalDateTime now);
+
 
     @Query("""
                 SELECT
@@ -64,92 +52,24 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.gameFileUrl as gameFileUrl,
                     g.author.id as authorId,
                     g.price as price,
-                    CASE
-                        WHEN :userId IS NOT NULL AND EXISTS (
-                            SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
-                        ) THEN true
-                        ELSE false
-                    END as isFavorite,
-                    CASE
-                        WHEN :userId IS NOT NULL AND EXISTS (
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
+                    CASE WHEN :userId IS NOT NULL AND EXISTS (
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                    ) THEN true ELSE false END as isFavorite,
+                    CASE WHEN :userId IS NOT NULL AND EXISTS (
                             SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
-                        ) THEN true
-                        ELSE false
-                    END as isInCart,
-                    CASE
-                        WHEN :userId IS NOT NULL AND EXISTS (
+                    ) THEN true ELSE false END as isInCart,
+                    CASE WHEN :userId IS NOT NULL AND EXISTS (
                             SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
-                        ) THEN true
-                        ELSE false
-                    END as isPurchased
+                    ) THEN true ELSE false END as isPurchased
                 FROM Game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 WHERE g.id = :gameId
             """)
-    Optional<GameDetailsDtoInter> getGameDetailsById(
-            @Param("userId") Long userId,
-            @Param("gameId") Long gameId
-    );
-
-    @Query("""
-                SELECT c.id as id, c.title as title
-                FROM GameCategory gc
-                JOIN gc.category c
-                WHERE gc.game.id = :gameId
-            """)
-    Set<CategoryForGameDtoInter> getCategoriesForGameDetails(@Param("gameId") Long gameId);
-
-    @Query("""
-            SELECT
-                    g.id as id,
-                    g.title as title,
-                    g.imageUrl as imageUrl,
-                    g.price as price,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game.id = g.id AND uf.user.id = :userId
-                    ) THEN true ELSE false END as isFavorite,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM CartItem ci WHERE ci.game.id = g.id AND ci.cart.user.id = :userId
-                    ) THEN true ELSE false END as isInCart,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM UserPurchasedGames up WHERE up.game.id = g.id AND up.user.id = :userId
-                    ) THEN true ELSE false END as isPurchased
-            FROM GameCategory gc
-                JOIN gc.game g
-                WHERE gc.category.id = :categoryId
-                """)
-    List<CardItemDtoInter> findAllByCategoryWithUserStatus(
-            @Param("categoryId") Long categoryId,
-            @Param("userId") Long userId
-    );
-
-    @Query("""
-            SELECT
-                g.id as id,
-                g.title as title
-            FROM Game g
-            WHERE g.author.id =:userId
-            """)
-    List<GameForProfileDtoInter> findAuthorsGameById(@Param("userId") Long userId);
-
-    @Query("""
-            SELECT
-                g.id as id,
-                g.title as title
-            FROM UserPurchasedGames up
-            JOIN up.game g
-            WHERE up.user.id=:userId
-            """)
-    Set<GameForProfileDtoInter> findBuyersGameById(@Param("userId") Long userId);
-
-    @Query("""
-            SELECT
-                g.id as id,
-                g.title as title
-            FROM UserFavoriteGames uf
-            JOIN uf.game g
-            WHERE uf.user.id=:userId
-            """)
-    Set<GameForProfileDtoInter> findFavoritesGameById(@Param("userId") Long userId);
+    Optional<GameDetailsDtoInter> getGameDetailsById(@Param("userId") Long userId,
+                                                     @Param("gameId") Long gameId,
+                                                     @Param("now") LocalDateTime now);
 
     @Query("""
                 SELECT
@@ -157,6 +77,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -167,9 +89,11 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                         SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
                     ) THEN true ELSE false END as isPurchased
                 FROM Game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 WHERE g.author.id = :userId
             """)
-    List<CardItemDtoInter> findAuthorsCardItemById(@Param("userId") Long userId);
+    List<CardItemDtoInter> findAuthorsCardItemById(@Param("userId") Long userId,
+                                                   @Param("now") LocalDateTime now);
 
     @Query("""
                 SELECT
@@ -177,6 +101,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -188,9 +114,11 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     ) THEN true ELSE false END as isPurchased
                 FROM UserPurchasedGames up
                 JOIN up.game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 WHERE up.user.id = :userId
             """)
-    Set<CardItemDtoInter> findBuyersCardItemById(@Param("userId") Long userId);
+    Set<CardItemDtoInter> findBuyersCardItemById(@Param("userId") Long userId,
+                                                 @Param("now") LocalDateTime now);
 
     @Query("""
                 SELECT
@@ -198,6 +126,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf2 WHERE uf2.game = g AND uf2.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -209,28 +139,11 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     ) THEN true ELSE false END as isPurchased
                 FROM UserFavoriteGames uf
                 JOIN uf.game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 WHERE uf.user.id =:userId
             """)
-    Set<CardItemDtoInter> findFavoritesCardItemById(@Param("userId") Long userId);
-
-    @Query("""
-            SELECT
-                g.id as id,
-                g.title as title,
-                g.imageUrl as imageUrl,
-                g.price as price,
-                CASE WHEN EXISTS (
-                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
-                    ) THEN true ELSE false END as isFavorite,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
-                    ) THEN true ELSE false END as isInCart,
-                    CASE WHEN EXISTS (
-                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
-                    ) THEN true ELSE false END as isPurchased
-            FROM Game g
-            """)
-    Page<CardItemDtoInter> getGameByHome(@Param("userId") Long userId, Pageable pageable);
+    Set<CardItemDtoInter> findFavoritesCardItemById(@Param("userId") Long userId,
+                                                    @Param("now") LocalDateTime now);
 
     @Query("""
                 SELECT
@@ -238,6 +151,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -250,13 +165,13 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     gc.category.id as categoryId
                 FROM GameCategory gc
                 JOIN gc.game g
-            WHERE gc.category.id IN :categoryIds
-            ORDER BY g.createdAt DESC
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
+                WHERE gc.category.id IN :categoryIds
+                ORDER BY g.createdAt DESC
             """)
-    List<GameWithCategoryDtoInter> findGamesByCategory(
-            @Param("userId") Long userId,
-            @Param("categoryIds") List<Long> categoryIds
-    );
+    List<CardItemDtoInter> findGamesByCategory(@Param("userId") Long userId,
+                                               @Param("categoryIds") List<Long> categoryIds,
+                                               @Param("now") LocalDateTime now);
 
     @Query("""
                 SELECT
@@ -264,6 +179,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -275,13 +192,13 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     ) THEN true ELSE false END as isPurchased
                 FROM GameCategory gc
                 JOIN gc.game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 WHERE gc.category.id = :categoryId
             """)
-    Page<CardItemDtoInter> findByCategoryId(
-            @Param("userId") Long userId,
-            @Param("categoryId") Long categoryId,
-            Pageable pageable
-    );
+    Page<CardItemDtoInter> findByCategoryId(@Param("userId") Long userId,
+                                            @Param("categoryId") Long categoryId,
+                                            @Param("now") LocalDateTime now,
+                                            Pageable pageable);
 
     @Query("""
                 SELECT
@@ -289,6 +206,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -299,9 +218,11 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                         SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
                     ) THEN true ELSE false END as isPurchased
                 FROM Game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 ORDER BY g.createdAt DESC
             """)
-    Page<CardItemDtoInter> findLatestGames(@Param("userId") Long userId, Pageable pageable);
+    Page<CardItemDtoInter> findLatestGames(@Param("userId") Long userId,
+                                           @Param("now") LocalDateTime now, Pageable pageable);
 
     @Query("""
                 SELECT
@@ -309,6 +230,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                     g.title as title,
                     g.imageUrl as imageUrl,
                     g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
                     CASE WHEN EXISTS (
                         SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
                     ) THEN true ELSE false END as isFavorite,
@@ -319,31 +242,34 @@ public interface GameRepository extends JpaRepository<Game, Long> {
                         SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
                     ) THEN true ELSE false END as isPurchased
                 FROM Game g
+                LEFT JOIN GameDiscount d ON d.game = g AND d.active = true AND :now BETWEEN d.startDate AND d.endDate
                 ORDER BY g.purchasesCount DESC
             """)
-    Page<CardItemDtoInter> findPopularGames(@Param("userId") Long userId, Pageable pageable);
+    Page<CardItemDtoInter> findPopularGames(@Param("userId") Long userId,
+                                            @Param("now") LocalDateTime now, Pageable pageable);
 
     @Query("""
-    SELECT
-        g.id as id,
-        g.title as title,
-        g.imageUrl as imageUrl,
-        g.price as price,
-        CASE WHEN EXISTS (
-            SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
-        ) THEN true ELSE false END as isFavorite,
-        CASE WHEN EXISTS (
-            SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
-        ) THEN true ELSE false END as isInCart,
-        CASE WHEN EXISTS (
-            SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
-        ) THEN true ELSE false END as isPurchased
-    FROM GameDiscount d
-    JOIN d.game g
-    WHERE d.active = true AND :now BETWEEN d.startDate AND d.endDate
-""")
-    Page<CardItemDtoInter> findDiscountedGames(
-            @Param("userId") Long userId,
-            @Param("now") LocalDateTime now, Pageable pageable);
+                SELECT
+                    g.id as id,
+                    g.title as title,
+                    g.imageUrl as imageUrl,
+                    g.price as price,
+                    d.discountPercent as discountPercent,
+                    g.averageRating as rating,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserFavoriteGames uf WHERE uf.game = g AND uf.user.id = :userId
+                    ) THEN true ELSE false END as isFavorite,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM CartItem ci WHERE ci.game = g AND ci.cart.user.id = :userId
+                    ) THEN true ELSE false END as isInCart,
+                    CASE WHEN EXISTS (
+                        SELECT 1 FROM UserPurchasedGames up WHERE up.game = g AND up.user.id = :userId
+                    ) THEN true ELSE false END as isPurchased
+                FROM GameDiscount d
+                JOIN d.game g
+                WHERE d.active = true AND :now BETWEEN d.startDate AND d.endDate
+            """)
+    Page<CardItemDtoInter> findDiscountedGames(@Param("userId") Long userId,
+                                               @Param("now") LocalDateTime now, Pageable pageable);
 
 }

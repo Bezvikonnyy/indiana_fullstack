@@ -4,7 +4,7 @@ import indiana.indi.indiana.config.JWTUtil;
 import indiana.indi.indiana.controller.payload.AuthUserPayload;
 import indiana.indi.indiana.dto.users.AuthDto;
 import indiana.indi.indiana.dto.users.AuthResponseDto;
-import indiana.indi.indiana.mapperInterface.users.AuthMapperInterface;
+import indiana.indi.indiana.mapper.users.AuthMapperInterface;
 import indiana.indi.indiana.service.user.customUser.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

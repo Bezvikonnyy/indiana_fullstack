@@ -31,7 +31,7 @@ public class GameRating {
     private Game game;
 
     @Column(name = "rating", nullable = false)
-    private Integer rating; // 1–5
+    private Integer rating;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

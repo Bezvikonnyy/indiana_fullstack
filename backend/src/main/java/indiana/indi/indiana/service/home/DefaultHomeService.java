@@ -4,8 +4,8 @@ import indiana.indi.indiana.dto.games.CardItemDto;
 import indiana.indi.indiana.dto.news.NewsDto;
 import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
 import indiana.indi.indiana.dtoInterface.news.NewsDtoInter;
-import indiana.indi.indiana.mapperInterface.games.CardItemMapper;
-import indiana.indi.indiana.mapperInterface.news.NewsMapper;
+import indiana.indi.indiana.mapper.games.CardItemMapper;
+import indiana.indi.indiana.mapper.news.NewsMapper;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.repository.news.NewsRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class DefaultHomeService implements HomeService {
     @Override
     public Set<CardItemDto> gamesLatestArrivals(Long userId) {
         Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
-        Set<CardItemDtoInter> gameInter = gameRepository.getGameByHome(userId,pageable).toSet();
+        Set<CardItemDtoInter> gameInter = gameRepository.findLatestGames(userId, LocalDateTime.now(), pageable).toSet();
         return gameInter.stream().map(itemMapper::toDto).collect(Collectors.toSet());
     }
 
@@ -43,7 +44,8 @@ public class DefaultHomeService implements HomeService {
     @Override
     public Set<CardItemDto> gamesDiscounts(Long userId) {
         Pageable pageable = PageRequest.of(0, 5, Sort.by("price").descending());
-        Set<CardItemDtoInter> gameInter = gameRepository.getGameByHome(userId,pageable).toSet();
+        Set<CardItemDtoInter> gameInter = gameRepository.findDiscountedGames(userId, LocalDateTime.now(),pageable)
+                .toSet();
         return gameInter.stream().map(itemMapper::toDto).collect(Collectors.toSet());
     }
 }

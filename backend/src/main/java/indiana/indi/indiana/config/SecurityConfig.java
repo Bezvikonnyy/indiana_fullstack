@@ -65,6 +65,9 @@ public class SecurityConfig {
                                 "/api/news/*",
                                 "/api/game",
                                 "/api/game/*",
+                                "/api/game/latest/**",
+                                "/api/game/discount/**",
+                                "/api/game/popular/**",
                                 "/css/**",
                                 "/js/**",
                                 "/uploads/**",
@@ -77,7 +80,8 @@ public class SecurityConfig {
                                 "/api/comment/create_comment",
                                 "/api/comment/edit_comment/**",
                                 "/api/comment/delete_comment/**",
-                                "/api/cart/**"
+                                "/api/cart/**",
+                                "/api/game/rating/**"
                                 )
                         .hasAnyAuthority("ROLE_USER", "ROLE_AUTHOR", "ROLE_ADMIN")
                         .requestMatchers("/api/admin/**")

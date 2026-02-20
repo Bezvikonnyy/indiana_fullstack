@@ -8,8 +8,8 @@ import indiana.indi.indiana.dto.users.UserDto;
 import indiana.indi.indiana.dtoInterface.games.CardItemDtoInter;
 import indiana.indi.indiana.entity.users.User;
 import indiana.indi.indiana.mapper.users.UserMapper;
-import indiana.indi.indiana.mapperInterface.games.CardItemMapper;
-import indiana.indi.indiana.mapperInterface.users.ProfileMapperInterface;
+import indiana.indi.indiana.mapper.games.CardItemMapper;
+import indiana.indi.indiana.mapper.users.ProfileMapperInterface;
 import indiana.indi.indiana.repository.games.GameRepository;
 import indiana.indi.indiana.repository.users.UserRepository;
 import indiana.indi.indiana.service.cart.CRUDCartServiceImpl;
@@ -18,6 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,19 +67,19 @@ public class UserForControllerServiceImpl implements UserForControllerService {
 
     @Override
     public Set<CardItemDto> purchasedGame(Long userId) {
-        Set<CardItemDtoInter> dtoInter = gameRepository.findBuyersCardItemById(userId);
+        Set<CardItemDtoInter> dtoInter = gameRepository.findBuyersCardItemById(userId, LocalDateTime.now());
         return dtoInter.stream().map(itemMapper::toDto).collect(Collectors.toSet());
     }
 
     @Override
     public List<CardItemDto> myGame(Long userId) {
-        List<CardItemDtoInter> dtoInter = gameRepository.findAuthorsCardItemById(userId);
+        List<CardItemDtoInter> dtoInter = gameRepository.findAuthorsCardItemById(userId, LocalDateTime.now());
         return dtoInter.stream().map(itemMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public Set<CardItemDto> favoriteGames(Long userId) {
-        Set<CardItemDtoInter> dtoInter = gameRepository.findFavoritesCardItemById(userId);
+        Set<CardItemDtoInter> dtoInter = gameRepository.findFavoritesCardItemById(userId, LocalDateTime.now());
         return dtoInter.stream().map(itemMapper::toDto).collect(Collectors.toSet());
     }
 
@@ -89,7 +90,7 @@ public class UserForControllerServiceImpl implements UserForControllerService {
         if(!exists) {
             userRepository.addGameFavorite(userId, gameId);
         } else {userRepository.removeGameFavorite(userId, gameId);}
-        CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId)
+        CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId, LocalDateTime.now())
                 .orElseThrow(() -> new EntityNotFoundException("Game not found."));
         return itemMapper.toDto(cardInter);
     }
@@ -101,7 +102,7 @@ public class UserForControllerServiceImpl implements UserForControllerService {
         if(!exists) {
             userRepository.addGameCart(userId, gameId);
         } else {userRepository.removeGameCart(userId, gameId);}
-        CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId)
+        CardItemDtoInter cardInter = gameRepository.getGameById(userId, gameId, LocalDateTime.now())
                 .orElseThrow(() -> new EntityNotFoundException("Game not found."));
         return itemMapper.toDto(cardInter);
     }

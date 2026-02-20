@@ -4,12 +4,12 @@ import {GameForm} from './GameForm';
 import './GameForm.css';
 import {editGame} from "../../services/games/editGame";
 import {getGame} from "../../services/games/getGame";
-import {GameFullDto} from "../../types/GameFullDto";
+import {CardItemDto} from "../../types/games/CardItemDto";
 
 export const EditGamePage = () => {
     const {id} = useParams();
     const navigate = useNavigate();
-    const [initialData, setInitialData] = useState<GameFullDto | null>(null);
+    const [initialData, setInitialData] = useState<CardItemDto | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
